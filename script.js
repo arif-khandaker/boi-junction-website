@@ -1895,7 +1895,7 @@ function renderCart() {
       <p class="cart-signed-banner">${SIGNED_PEN}<span>প্রতিটি বই আসবে <strong>লেখকের নিজ হাতের স্বাক্ষরসহ</strong> — আপনার নামে, আপনার জন্য।</span></p>
       ${cartSetDiscount() ? `<p class="cart-setnote">🎁 ${cartSets().map((x) => esc(x.st.title)).join(", ")} — সেট ছাড় ${taka(cartSetDiscount())}। সাথে লেখকের অটোগ্রাফ, হাতে লেখা চিঠি ও ফ্রি ডেলিভারি।</p>` : ""}
       <p class="cart-total"><span>বইয়ের মোট দাম</span><strong>${taka(total)}</strong></p>
-      <p class="cart-note">${cartFreeDelivery() ? "সেট অফারে ডেলিভারি ফ্রি।" : "ডেলিভারি চার্জ আপনার ঠিকানা অনুযায়ী হিসাব হয়। অর্ডার নিশ্চিত করার সময় WhatsApp-এ জানিয়ে দেওয়া হবে।"}</p>` + cartEbooksBlock();
+      <p class="cart-note">${cartFreeDelivery() ? "সেট অফারে ডেলিভারি ফ্রি।" : "ডেলিভারি খরচ আলাদা। ঠিকানা অনুযায়ী অর্ডারের পর WhatsApp-এ জানানো হবে।"}</p>` + cartEbooksBlock();
     actions.innerHTML =
       `<button class="btn btn-gold" data-cart-act="to-info">অর্ডারের তথ্য দিন →</button>` +
       `<button class="btn btn-outline-gold" data-close>আরও বই দেখুন</button>`;
