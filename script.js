@@ -2691,7 +2691,7 @@ if (yearEl) yearEl.textContent = toBn(new Date().getFullYear());
     bar.className = "install-bar";
     bar.setAttribute("role", "dialog");
     bar.setAttribute("aria-label", "অ্যাপ ইনস্টল করুন");
-    bar.innerHTML = `<img src="/icon-192.png" alt="" width="48" height="48"><div class="install-text"><strong>আরিফ খন্দকার অ্যাপ</strong><span>হোম স্ক্রিনে রাখুন, এক ট্যাপে খুলুন</span></div><button type="button" class="install-go">ইনস্টল</button><button type="button" class="install-x" aria-label="বন্ধ করুন">×</button>`;
+    bar.innerHTML = `<img src="/icon-192.png" alt="" width="48" height="48"><div class="install-text"><strong>বই জংশন অ্যাপ</strong><span>হোম স্ক্রিনে রাখুন, এক ট্যাপে খুলুন</span></div><button type="button" class="install-go">ইনস্টল</button><button type="button" class="install-x" aria-label="বন্ধ করুন">×</button>`;
     document.body.appendChild(bar);
     requestAnimationFrame(() => bar.classList.add("open"));
     if (window.akTrack) akTrack("install_banner_shown");
