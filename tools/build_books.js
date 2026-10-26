@@ -18,7 +18,7 @@ const SETS = grab("SETS");
 const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://wwwboijunction.com";
 const AUTHOR_SITE = "https://authorarifkhandaker.com";
-const V = "20261028c";
+const V = "20261029a";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -110,6 +110,8 @@ function page(b) {
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://*.googleapis.com https://www.gstatic.com https://api.web3forms.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.firebaseapp.com; frame-src https://accounts.google.com https://*.firebaseapp.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com; worker-src 'self'; manifest-src 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(b.title)} — ${esc(b.genre)} | ${AUTHOR} · বই জংশন</title>
 <meta name="description" content="${esc(d)}">
@@ -127,7 +129,7 @@ function page(b) {
 <link rel="manifest" href="/manifest.webmanifest">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H027R58T1E"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-H027R58T1E');</script>
+<script src="/gtag-init.js?v=${V}"></script>
 <link rel="stylesheet" href="/reviews.css?v=${V}">
 <style>
 @font-face{font-family:"AK Serif";src:url("/ak-serif.woff?v=3") format("woff");font-weight:400 500;font-display:swap}
@@ -185,10 +187,7 @@ ${reviewSection(b)}
 <footer>© বই জংশন (Boi Junction)। সর্বস্বত্ব সংরক্ষিত। · লেখক: <a href="https://authorarifkhandaker.com/" rel="noopener">${AUTHOR}</a> · <a href="/#books">সব বই</a></footer>
 <script src="/firebase-config.js?v=${V}"></script>
 <script src="/reviews.js?v=${V}"></script>
-<script>
-document.getElementById("copy").addEventListener("click",function(){var b=this,u=location.href;function ok(){b.textContent="লিংক কপি হয়েছে ✓";setTimeout(function(){b.textContent="লিংক কপি করুন"},2200)}
-if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(ok,function(){prompt("লিংক:",u)})}else{prompt("লিংক:",u)}});
-</script>
+<script src="/copy-link.js?v=${V}"></script>
 </body>
 </html>
 `;

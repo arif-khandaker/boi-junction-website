@@ -2,6 +2,8 @@
 <html lang="bn" class="books-first">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://*.googleapis.com https://www.gstatic.com https://api.web3forms.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.firebaseapp.com; frame-src https://accounts.google.com https://*.firebaseapp.com; object-src 'none'; base-uri 'self'; form-action 'self' https://api.web3forms.com; worker-src 'self'; manifest-src 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>বই জংশন (Boi Junction) — আরিফ খন্দকারের বই, লেখকের স্বাক্ষরসহ</title>
   <meta name="description" content="বই জংশন (Boi Junction)-এ আরিফ খন্দকারের সব প্রকাশিত বই — উপন্যাস, থ্রিলার, গল্প ও কবিতা। লেখকের স্বাক্ষরসহ সরাসরি অর্ডার করুন, বিকাশ-নগদ-রকেটে পেমেন্ট।">
@@ -30,14 +32,8 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
   <link rel="manifest" href="/manifest.webmanifest">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H027R58T1E"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-H027R58T1E');
-    window.akTrack = function (name, params) { try { gtag('event', name, params || {}); } catch (e) {} };
-  </script>
-  <link rel="stylesheet" href="style.css?v=20261028c">
+  <script src="/gtag-init.js?v=20261029a"></script>
+  <link rel="stylesheet" href="style.css?v=20261029a">
   <style>
     @font-face{font-family:"AK Sans";src:url("ak-sans.woff?v=3") format("woff");font-weight:300 600;font-style:normal;font-display:swap}
     @font-face{font-family:"AK Serif";src:url("ak-serif.woff?v=3") format("woff");font-weight:400 500;font-style:normal;font-display:swap}
@@ -129,7 +125,7 @@
     #biography .timeline-now .timeline-year{color:#2e1f12}
     @media (max-width:540px){#intro .intro-text p:not(.lead):not(.section-eyebrow){font-size:16.5px;padding-left:14px}#intro::after,#biography::after{top:22px}}
   </style>
-  <link rel="stylesheet" href="bj.css?v=20261028c">
+  <link rel="stylesheet" href="bj.css?v=20261029a">
 </head>
 <body>
 
@@ -439,15 +435,15 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=20261028c"></script>
-  <script src="board.js?v=20261028c"></script>
-  <script src="ticket.js?v=20261028c"></script>
-  <script src="announce.js?v=20261028c"></script>
-  <script src="extras.js?v=20261028c"></script>
-  <script src="more.js?v=20261028c"></script>
+  <script src="script.js?v=20261029a"></script>
+  <script src="board.js?v=20261029a"></script>
+  <script src="ticket.js?v=20261029a"></script>
+  <script src="announce.js?v=20261029a"></script>
+  <script src="extras.js?v=20261029a"></script>
+  <script src="more.js?v=20261029a"></script>
   <script src="firebase-config.js?v=20261026c"></script>
-  <script src="orders.js?v=20261028c"></script>
-  <script src="rail.js?v=20261028c"></script>
-  <script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})})}</script>
+  <script src="orders.js?v=20261029a"></script>
+  <script src="rail.js?v=20261029a"></script>
+  <script src="/sw-reg.js?v=20261029a"></script>
 </body>
 </html>
