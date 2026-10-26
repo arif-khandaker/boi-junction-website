@@ -23,7 +23,7 @@
   if (typeof BOOKS === "undefined") return;
   const buyable = BOOKS.filter((b) => b.slug && b.title && num(b.price) > 0);
   /* "পরের ট্রেন"-এ আপাতত শুধু এই ১১টি বই আসবে (তালিকা বদলাতে নিচের নামগুলো বদলান) */
-  const NEXT_SLUGS = ["asman-jominer-upakhyan", "ekhane-tabij-bikri-hoy", "boro-bhai", "akulpathar", "rojonigandha-resort", "nira", "gulshan", "ajat", "unamanush", "bedona-ronger-bari", "ajmeri"];
+  const NEXT_SLUGS = ["asman-jominer-upakhyan", "ekhane-tabij-bikri-hoy", "boro-bhai", "akulpathar", "rojonigandha-resort", "nira", "gulshan", "ajat", "unamanush", "bedona-ronger-bari", "ajmeri", "banalata-sen"];
   const nextPool = buyable.filter((b) => NEXT_SLUGS.indexOf(b.slug) >= 0);
 
   /* ---------- ১. প্ল্যাটফর্ম সাইনবোর্ড ---------- */
@@ -73,12 +73,13 @@
   /* ---------- ২. পরের ট্রেন (মেজাজ বেছে বই) ---------- */
   const mood = document.getElementById("bj-next");
   if (!mood) return;
+  const SPECIAL = new Set(["banalata-sen"]); /* নির্দিষ্ট মেজাজে বাঁধা বই, অন্য মেজাজে আসবে না */
   const MOODS = [
     { k: "fear", t: "ভয় ও রহস্য চাই", sub: "বুক ধুকপুক করা রাত", test: (g) => /থ্রিলার|হরর/.test(g) },
     { k: "love", t: "প্রেমে ডুবতে চাই", sub: "মন নরম করা গল্প", test: (g) => /রোমান্টিক/.test(g) },
     { k: "sad", t: "একা ও মন খারাপ", sub: "নীরবে পড়ার মতো", test: (g) => /কাব্য|কবিতা|গল্প/.test(g) || g === "উপন্যাস" },
-    { k: "new", t: "অন্যরকম কিছু", sub: "চেনা ছকের বাইরে", test: (g) => /সায়েন্স ফিকশন|ঐতিহাসিক|সাইকোলজিক্যাল/.test(g) },
-  ].map((m) => ({ ...m, pool: nextPool.filter((b) => m.test(String(b.genre || ""))) })).filter((m) => m.pool.length);
+    { k: "new", t: "অন্যরকম কিছু", sub: "চেনা ছকের বাইরে", slugs: ["banalata-sen"], test: (g) => /সায়েন্স ফিকশন|ঐতিহাসিক|সাইকোলজিক্যাল/.test(g) },
+  ].map((m) => ({ ...m, pool: nextPool.filter((b) => (m.slugs ? m.slugs.indexOf(b.slug) >= 0 : !SPECIAL.has(b.slug) && m.test(String(b.genre || "")))) })).filter((m) => m.pool.length);
   if (!MOODS.length) return;
   mood.innerHTML =
     `<div class="md-panel"><div class="md-top"><span class="md-lamp" aria-hidden="true"></span><span>পরের ট্রেন কোন দিকে?</span></div>` +
