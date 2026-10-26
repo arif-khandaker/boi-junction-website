@@ -160,3 +160,24 @@
 .pk-go:disabled{opacity:.7;cursor:progress}
 @media (prefers-reduced-motion:reduce){.book.tk,.pk-res{transition:none;animation:none}.pk-win.is-tick .pk-name{animation:none}.book.tk.is-punched .tk-stamp{animation:none}}
 @media (max-width:540px){.book.tk .btn{padding:8px 4px;font-size:13.5px;gap:4px}.book.tk .btn svg{width:15px;height:15px}}
+
+/* ===== পাতার ওপরে রেললাইন ===== */
+.bj-rail{position:fixed;left:0;right:0;top:64px;height:24px;z-index:95;pointer-events:none;transition:opacity .25s}
+body.rail-hide .bj-rail{opacity:0}
+.rl-track{position:absolute;left:12px;right:12px;top:15px;height:3px;background:repeating-linear-gradient(90deg,rgba(201,164,92,.38) 0 2px,transparent 2px 9px),linear-gradient(rgba(201,164,92,.22),rgba(201,164,92,.22)) center/100% 1px no-repeat}
+.rl-done{position:absolute;left:0;top:16px;height:2px;background:linear-gradient(90deg,transparent,var(--gold));opacity:.75}
+.rl-stop{position:absolute;top:10px;width:22px;height:22px;margin-left:-11px;pointer-events:auto;display:grid;place-items:center;-webkit-tap-highlight-color:transparent}
+.rl-stop i{width:9px;height:9px;border-radius:50%;background:#0e0d0b;border:2px solid rgba(201,164,92,.55);transition:background .25s,border-color .25s,transform .25s}
+.rl-stop.is-past i{background:var(--gold);border-color:var(--gold)}
+.rl-stop.is-here i{transform:scale(1.35);box-shadow:0 0 0 4px rgba(201,164,92,.18)}
+.rl-train{position:absolute;left:0;top:0;width:44px;height:18px;fill:var(--gold);filter:drop-shadow(0 2px 4px rgba(0,0,0,.6));will-change:transform}
+.rl-train .w{fill:#0e0d0b}
+.rl-name{position:absolute;right:12px;top:-1px;padding:2px 9px;font-size:12px;line-height:1.5;color:#f3e3bd;background:rgba(14,13,11,.88);border:1px solid rgba(201,164,92,.35);border-radius:20px;white-space:nowrap}
+.rl-name.is-pop{animation:rlPop .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes rlPop{from{transform:translateY(-6px) scale(.9);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.rl-name.is-pop{animation:none}.bj-rail{transition:none}}
+.bj-rail{height:30px}
+.rl-track{top:21px}.rl-done{top:22px}
+.rl-stop{top:11px}
+.rl-train{width:56px;height:23px;top:-1px}
+.rl-name{top:28px;right:12px;font-size:12px}
