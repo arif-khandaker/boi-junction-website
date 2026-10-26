@@ -293,3 +293,5 @@ body.rail-hide .bj-rail{opacity:0}
 .tko-ref{margin:14px 0 0;color:#e8dec6;font-size:15px;line-height:1.7}.tko-ref b{color:var(--gold);letter-spacing:.04em}
 .tko-ref small{display:block;margin-top:2px;color:#9a917b;font-size:13px}
 .tko-copy{font:inherit;font-size:13px;margin-left:6px;padding:2px 10px;color:#1a1508;background:var(--gold);border:0;border-radius:14px;cursor:pointer}
+
+.bj-about h2{margin:0 0 12px}.bj-about p{max-width:720px;margin:0 0 10px;line-height:1.8}.bj-about a{text-decoration:underline}
