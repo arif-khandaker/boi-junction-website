@@ -16,9 +16,26 @@
     return cache;
   }
 
+  /* যাত্রী নম্বর: প্রতিটি অর্ডার সফলভাবে সেভ হলে একটি কাউন্টার ১ বাড়ে। ব্যর্থ হলে টিকিট নম্বর ছাড়াই আগের মতো আসে। */
+  var passP = {};
+  window.bjPassengerFor = function (ref) { return passP[ref] || Promise.resolve(0); };
+  async function bumpPassenger(fs, db, ref) {
+    try {
+      return await fs.runTransaction(db, async function (tx) {
+        var cref = fs.doc(db, "meta", "passengers");
+        var d = await tx.get(cref);
+        var next = (d.exists() ? Number(d.data().n) || 0 : 0) + 1;
+        tx.set(cref, { n: next, last: ref, updatedAt: fs.serverTimestamp() });
+        return next;
+      });
+    } catch (e) { return 0; }
+  }
+
   window.bjSaveOrder = async function (snap, method) {
+    var done = function () {};
     try {
       if (!snap || !REF_RE.test(snap.ref || "")) return;
+      passP[snap.ref] = new Promise(function (r) { done = r; });
       var b = await backend(); if (!b) return;
       var fs = b.fs, db = b.db;
       var items = (snap.items || []).slice(0, 30).map(function (x) { return { slug: String(x.slug || "").slice(0, 80), title: String(x.title || "").slice(0, 120), qty: Math.max(1, Math.min(99, x.qty | 0)), price: Math.max(0, x.price | 0) }; });
@@ -30,7 +47,9 @@
         status: "new", createdAt: fs.serverTimestamp()
       });
       await fs.setDoc(fs.doc(db, "orderStatus", snap.ref), { status: "new", updatedAt: fs.serverTimestamp() });
+      done(await bumpPassenger(fs, db, snap.ref));
     } catch (e) { /* চুপচাপ — অর্ডার ইমেইল/WhatsApp-এ ঠিকই গেছে */ }
+    finally { done(0); }
   };
 
   window.bjOrderStatus = async function (ref) {
