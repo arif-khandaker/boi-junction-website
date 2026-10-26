@@ -116,3 +116,5 @@
 .bj-author-link:hover,.bj-author-link:focus-visible{text-decoration-color:currentColor}
 .bj-author-in>a{display:block;justify-self:center;border-radius:50%}
 @media (max-width:640px){.bj-author-in>a{margin:0 auto}}
+
+.bj-all-list .bj-eb{font-style:normal;font-size:.68em;line-height:1;padding:2px 6px;margin-left:2px;border:1px solid rgba(201,164,92,.55);border-radius:20px;color:var(--gold);vertical-align:middle;white-space:nowrap}
