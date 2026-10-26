@@ -111,3 +111,8 @@
 .bj-post-card strong{color:#f3e3bd;font-weight:600}.bj-post-card b{color:var(--gold);font-weight:600}
 .bj-post-call{margin:20px 0 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)}
 .bj-post-call a{color:var(--gold);text-decoration:none;font-size:1.15em;letter-spacing:.03em}
+
+.bj-author-link{color:inherit;text-decoration:underline;text-decoration-color:rgba(26,21,8,.35);text-underline-offset:6px;text-decoration-thickness:2px;transition:text-decoration-color .2s}
+.bj-author-link:hover,.bj-author-link:focus-visible{text-decoration-color:currentColor}
+.bj-author-in>a{display:block;justify-self:center;border-radius:50%}
+@media (max-width:640px){.bj-author-in>a{margin:0 auto}}
