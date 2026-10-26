@@ -21,7 +21,7 @@
   const take = () => order[next++ % order.length];
 
   const rowHtml = (b) =>
-    `<a class="dep-row" href="/b/${esc(b.slug)}/" data-slug="${esc(b.slug)}"><span class="dep-flap"><span class="dep-to">${esc(b.title)}</span><span class="dep-pl"><i>${bn(plat(b))}</i> ${esc(b.genre)}</span><span class="dep-fare">${esc(bn(b.price).replace(" টাকা", ""))}<small>৳</small></span></span></a>`;
+    `<div class="dep-row" data-slug="${esc(b.slug)}"><div class="dep-flap"><a class="dep-to" href="/b/${esc(b.slug)}/">${esc(b.title)}</a><span class="dep-pl"><i>${bn(plat(b))}</i> ${esc(b.genre)}</span><span class="dep-fare">${esc(bn(b.price).replace(" টাকা", ""))}<small>৳</small></span><button type="button" class="dep-buy" data-cart-add="${esc(b.slug)}" aria-label="${esc(b.title)} কার্টে নিন">+ কার্ট</button></div></div>`;
 
   root.innerHTML =
     `<div class="dep-head"><span class="dep-title"><b class="dep-lamp" aria-hidden="true"></b>এখন ছাড়ছে</span><span class="dep-clock" id="dep-clock" aria-hidden="true"></span></div>` +

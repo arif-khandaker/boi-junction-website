@@ -74,3 +74,15 @@
   .bj-dep{margin-top:26px}
   .dep-flap{padding:10px 16px}
 }
+
+/* বোর্ডের সারি থেকে সরাসরি কার্টে */
+.dep-cols,.dep-flap{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) 64px 78px}
+.dep-cols span:nth-child(3){text-align:right}.dep-cols::after{content:""}
+.dep-to{text-decoration:none}
+.dep-buy{font:inherit;font-size:14px;color:#1a1508;background:var(--gold);border:0;border-radius:4px;padding:7px 8px;cursor:pointer;white-space:nowrap}
+.dep-buy:hover,.dep-buy:focus-visible{background:#e2c98f}
+.dep-buy:active{transform:translateY(1px)}
+@media (max-width:560px){
+  .dep-flap{grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"to fare buy" "pl pl buy";align-items:center}
+  .dep-buy{grid-area:buy;padding:9px 10px}
+}
