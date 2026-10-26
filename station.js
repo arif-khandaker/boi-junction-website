@@ -22,6 +22,9 @@
 
   if (typeof BOOKS === "undefined") return;
   const buyable = BOOKS.filter((b) => b.slug && b.title && num(b.price) > 0);
+  /* "পরের ট্রেন"-এ আপাতত শুধু এই ১১টি বই আসবে (তালিকা বদলাতে নিচের নামগুলো বদলান) */
+  const NEXT_SLUGS = ["asman-jominer-upakhyan", "ekhane-tabij-bikri-hoy", "boro-bhai", "akulpathar", "rojonigandha-resort", "nira", "gulshan", "ajat", "unamanush", "bedona-ronger-bari", "ajmeri"];
+  const nextPool = buyable.filter((b) => NEXT_SLUGS.indexOf(b.slug) >= 0);
 
   /* ---------- ১. প্ল্যাটফর্ম সাইনবোর্ড ---------- */
   const plat = document.getElementById("bj-plat");
@@ -75,7 +78,7 @@
     { k: "love", t: "প্রেমে ডুবতে চাই", sub: "মন নরম করা গল্প", test: (g) => /রোমান্টিক/.test(g) },
     { k: "sad", t: "একা ও মন খারাপ", sub: "নীরবে পড়ার মতো", test: (g) => /কাব্য|কবিতা|গল্প/.test(g) || g === "উপন্যাস" },
     { k: "new", t: "অন্যরকম কিছু", sub: "চেনা ছকের বাইরে", test: (g) => /সায়েন্স ফিকশন|ঐতিহাসিক|সাইকোলজিক্যাল/.test(g) },
-  ].map((m) => ({ ...m, pool: buyable.filter((b) => m.test(String(b.genre || ""))) })).filter((m) => m.pool.length);
+  ].map((m) => ({ ...m, pool: nextPool.filter((b) => m.test(String(b.genre || ""))) })).filter((m) => m.pool.length);
   if (!MOODS.length) return;
   mood.innerHTML =
     `<div class="md-panel"><div class="md-top"><span class="md-lamp" aria-hidden="true"></span><span>পরের ট্রেন কোন দিকে?</span></div>` +
@@ -100,7 +103,7 @@
       `<p class="md-line">আপনার পরের ট্রেন${pl ? ` · প্ল্যাটফর্ম ${bn(pl)}` : ""}</p>` +
       `<div class="md-card"><a class="md-cover" href="/b/${esc(b.slug)}/">${cover}</a><div class="md-info"><a class="md-name" href="/b/${esc(b.slug)}/">${esc(b.title)}</a><p class="md-genre">${esc(b.genre || "")} · ${esc(bn(b.price))}</p>` +
       `<div class="md-act"><button type="button" class="btn btn-gold" data-cart-add="${esc(b.slug)}">+ কার্ট</button><a href="#" class="btn btn-outline-gold" data-wa="title" data-title="${esc(b.title)}">WhatsApp অর্ডার</a></div></div></div>` +
-      `<div class="md-more"><button type="button" class="md-again" data-again="${m.k}">আরেকটা দেখি</button><button type="button" class="md-share" data-share="${esc(b.slug)}" data-t="${esc(b.title)}">বন্ধুকে পাঠান</button></div>`;
+      `<div class="md-more">${m.pool.length > 1 ? `<button type="button" class="md-again" data-again="${m.k}">আরেকটা দেখি</button>` : ""}<button type="button" class="md-share" data-share="${esc(b.slug)}" data-t="${esc(b.title)}">বন্ধুকে পাঠান</button></div>`;
   };
   mood.addEventListener("click", (e) => {
     const o = e.target.closest(".md-opt");
