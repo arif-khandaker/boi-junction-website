@@ -21,7 +21,7 @@
       const btn = card.querySelector("[data-cart-add]");
       const slug = btn ? btn.dataset.cartAdd : "";
       const b = BOOKS.find((x) => x.slug === slug);
-      const pl = b ? genres.indexOf(b.genre) + 1 : 0;
+      const pl = b ? (window.bjPlatform && window.bjPlatform(b.genre)) || genres.indexOf(b.genre) + 1 : 0;
       const head = document.createElement("div");
       head.className = "tk-head";
       head.innerHTML = `<span>টিকিট নং ${bn(String(n + 1).padStart(3, "0"))}</span><span>${pl ? "প্ল্যাটফর্ম " + bn(pl) : ""}</span>`;
