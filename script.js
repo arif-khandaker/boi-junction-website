@@ -15,7 +15,7 @@ const SITE = {
   whatsappNumber: "8801823818887",
 
   // ইমেইল ঠিকানা
-  email: "arifkhandaker896@gmail.com",
+  email: "boijunction5@gmail.com",
 
   // লেখকের ছবি — GitHub-এ আপলোড করা ছবির ফাইলের নাম
   portrait: "author.jpg",
