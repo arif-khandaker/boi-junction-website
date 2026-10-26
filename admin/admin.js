@@ -1,3 +1,4 @@
+if(window.top!==window.self){document.documentElement.style.display="none";try{window.top.location=window.self.location;}catch(e){}throw new Error("framed");}
 const BN="০১২৩৪৫৬৭৮৯", bn=s=>String(s).replace(/\d/g,d=>BN[d]);
 const esc=t=>String(t==null?"":t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const STATUS=[["new","অর্ডার পেয়েছি"],["paid","পেমেন্ট নিশ্চিত"],["packing","প্যাক হচ্ছে"],["shipped","ডাকে গেছে"],["delivered","পৌঁছে গেছে"],["cancelled","বাতিল"]];
