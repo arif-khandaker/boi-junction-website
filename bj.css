@@ -196,3 +196,39 @@ body.rail-hide .bj-rail{opacity:0}
 @keyframes anRun{to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.an-run{animation:none;overflow-x:auto}.an-tag i{animation:none}}
 @media (max-width:540px){.an-tag{padding:0 10px;font-size:13.5px}.an-item{font-size:14.5px}}
+
+/* ===== যাত্রার টিকিট (অর্ডারের পর) ===== */
+.bj-tkov{position:fixed;inset:0;z-index:700;display:grid;place-items:center;padding:16px;background:rgba(5,4,3,.88);opacity:0;transition:opacity .3s;overflow-y:auto}
+.bj-tkov.is-in{opacity:1}
+.tko-panel{position:relative;width:min(100%,460px);text-align:center;padding:22px 18px 20px;background:#12100c;border:1px solid rgba(201,164,92,.4);border-radius:14px;transform:translateY(24px);transition:transform .45s cubic-bezier(.2,.9,.2,1)}
+.bj-tkov.is-in .tko-panel{transform:none}
+.tko-x{position:absolute;right:10px;top:6px;width:38px;height:38px;border:0;background:none;color:#cfc7b6;font-size:30px;cursor:pointer;line-height:1}
+.tko-h{margin:0 0 12px;font-family:var(--font-display);font-size:22px;color:#f3e3bd}
+.tko-img{display:block;width:100%;height:auto;border-radius:10px;box-shadow:0 20px 40px -18px #000;animation:tkoIn .7s cubic-bezier(.2,.9,.2,1) both}
+@keyframes tkoIn{from{transform:translateY(40px) rotate(-3deg);opacity:0}to{transform:none;opacity:1}}
+.tko-s{margin:14px 0;color:#cfc7b6;font-size:15px;line-height:1.7}
+.tko-act{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.tko-act .btn{min-height:44px;padding:8px 18px}
+
+/* ===== আজকের লাইন ===== */
+.bj-line{padding:54px 0 10px;background:#0b0a08}
+.bl-card{position:relative;max-width:760px;margin:0 auto;padding:46px 28px 30px;text-align:center}
+.bl-mark{position:absolute;left:50%;top:-18px;transform:translateX(-50%);font-family:var(--font-display);font-size:120px;line-height:1;color:rgba(201,164,92,.28);pointer-events:none}
+.bl-kicker{margin:0 0 14px;font-size:14.5px;color:var(--gold)}
+.bl-q{margin:0;font-family:var(--font-display);font-size:clamp(24px,5.6vw,38px);line-height:1.6;color:#f6ecd4;text-wrap:balance}
+.bl-by{margin:16px 0 22px;font-size:16px;color:#bdb39b}.bl-by a{color:#f3e3bd;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(201,164,92,.5)}
+.bl-act{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.bl-act .btn{min-height:44px;padding:8px 20px}
+
+/* ===== আজকের মেজাজ ===== */
+.bj-mood{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 10px;margin:0 auto 22px;max-width:760px}
+.bm-l{width:100%;text-align:center;font-size:14px;color:#9a917b}
+.bj-mood button{font:inherit;font-size:14.5px;padding:8px 16px;color:#cfc7b6;background:transparent;border:1px solid rgba(201,164,92,.4);border-radius:30px;cursor:pointer;transition:background .25s,color .25s,border-color .25s}
+.bj-mood button:hover{border-color:var(--gold)}
+.bj-mood button[aria-pressed="true"]{background:var(--gold);color:#1a1508;border-color:var(--gold)}
+#bj-mood-cv{position:fixed;inset:0;width:100vw;height:100vh;z-index:90;pointer-events:none}
+.bj-vig{position:fixed;inset:0;z-index:89;pointer-events:none;opacity:0;transition:opacity .8s}
+.bj-vig.is-thriller{opacity:1;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 38%,rgba(40,0,6,.38) 100%);animation:vigPulse 6s ease-in-out infinite}
+.bj-vig.is-romantic{opacity:1;background:radial-gradient(ellipse at 50% 0,rgba(255,170,110,.07),rgba(0,0,0,0) 62%)}
+@keyframes vigPulse{0%,100%{filter:brightness(1)}48%{filter:brightness(1.0)}50%{filter:brightness(.62)}52%{filter:brightness(1)}}
+@media (prefers-reduced-motion:reduce){.bj-vig.is-thriller{animation:none}.tko-img{animation:none}.tko-panel{transition:none}}

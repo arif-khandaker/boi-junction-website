@@ -1757,6 +1757,16 @@ const cartSetDiscount = () => cartSets().reduce((n, x) => n + x.k * (setSum(x.st
 const cartFreeDelivery = () => cartSets().length > 0;
 const cartTotal = () => cart.reduce((n, x) => n + priceOf(bookBySlug(x.slug)) * x.qty, 0) - cartSetDiscount();
 
+/* অর্ডার পাঠানোর পর "যাত্রার টিকিট" বানানোর জন্য কার্টের ছবি (কার্ট খালি করার আগে) */
+function orderSnap(ref) {
+  return {
+    ref,
+    name: (cartForm.name || "").trim(),
+    total: cartTotal(),
+    items: cart.map((x) => { const b = bookBySlug(x.slug) || {}; return { title: b.title || "", cover: b.cover || "", qty: x.qty }; }).filter((x) => x.title),
+  };
+}
+const newOrderRef = () => "BJ-" + new Date().toISOString().slice(2, 10).replace(/-/g, "") + "-" + Math.random().toString(36).slice(2, 6).toUpperCase();
 let cartStep = "cart";
 let orderSending = false;
 const cartForm = { name: "", phone: "", address: "", area: "ঢাকার ভেতরে", note: "", signName: "", signMsg: "", gift: false, giftTo: "", giftCard: "", method: PAY.methods[0], trx: "" };
@@ -1994,8 +2004,9 @@ function cartAction(act, slug) {
   } else if (act === "send-site") {
     if (!cart.length || orderSending || !SITE.orderFormKey) return;
     orderSending = true; renderCart();
-    const ref = "AK-" + new Date().toISOString().slice(2, 10).replace(/-/g, "") + "-" + Math.random().toString(36).slice(2, 6).toUpperCase();
+    const ref = newOrderRef();
     const total = cartTotal();
+    const snap = orderSnap(ref);
     const items = cart.map((x) => ({ item_id: x.slug, quantity: x.qty }));
     fetch("https://api.web3forms.com/submit", {
       method: "POST",
@@ -2003,7 +2014,7 @@ function cartAction(act, slug) {
       body: JSON.stringify({
         access_key: SITE.orderFormKey,
         subject: `নতুন বই অর্ডার ${ref} — ${cartForm.name.trim()}`,
-        from_name: "আরিফ খন্দকার ওয়েবসাইট",
+        from_name: "বই জংশন ওয়েবসাইট",
         name: cartForm.name.trim(),
         phone: cartForm.phone.trim(),
         message: `অর্ডার নম্বর: ${ref}\n\n` + cartOrderMessage(),
@@ -2016,6 +2027,7 @@ function cartAction(act, slug) {
       cart = []; saveCart(); updateFab(); cartStep = "cart"; cartForm.signName = ""; cartForm.signMsg = ""; cartForm.gift = false; cartForm.giftTo = ""; cartForm.giftCard = "";
       closeModal();
       toast(`ধন্যবাদ! আপনার অর্ডার পৌঁছেছে। অর্ডার নম্বর: ${ref}`);
+      if (window.bjTicket) setTimeout(() => window.bjTicket(snap), 450);
     }).catch(() => {
       orderSending = false; renderCart();
       toast("অর্ডার পাঠানো যায়নি। নেট দেখে আবার চেষ্টা করুন, বা WhatsApp-এ পাঠান।");
@@ -2023,11 +2035,13 @@ function cartAction(act, slug) {
     return;
   } else if (act === "send") {
     if (!cart.length) return;
+    const snapWa = orderSnap(newOrderRef());
     if (openWhatsApp(cartOrderMessage())) {
       if (window.akTrack) akTrack("order_sent", { currency: "BDT", value: cartTotal(), items: cart.map((x) => ({ item_id: x.slug, quantity: x.qty })) });
       cart = []; saveCart(); updateFab(); cartStep = "cart"; cartForm.signName = ""; cartForm.signMsg = ""; cartForm.gift = false; cartForm.giftTo = ""; cartForm.giftCard = "";
       closeModal();
       toast("ধন্যবাদ! WhatsApp-এ অর্ডার পাঠিয়ে দিন");
+      if (window.bjTicket) setTimeout(() => window.bjTicket(snapWa), 450);
     }
     return;
   }
