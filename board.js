@@ -21,7 +21,7 @@
   const take = () => order[next++ % order.length];
 
   const rowHtml = (b) =>
-    `<div class="dep-row" data-slug="${esc(b.slug)}"><div class="dep-flap"><a class="dep-to" href="/b/${esc(b.slug)}/">${esc(b.title)}</a><span class="dep-pl"><i>${bn(plat(b))}</i> ${esc(b.genre)}</span><span class="dep-fare">${esc(bn(b.price).replace(" টাকা", ""))}<small>৳</small></span><button type="button" class="dep-buy" data-cart-add="${esc(b.slug)}" aria-label="${esc(b.title)} কার্টে নিন">+ কার্ট</button></div></div>`;
+    `<div class="dep-row" data-slug="${esc(b.slug)}"><div class="dep-flap"><a class="dep-to" href="/b/${esc(b.slug)}/">${esc(b.title)}</a><span class="dep-pl"><i>${bn(plat(b))}</i> ${esc(b.genre)}</span><span class="dep-fare">${esc(bn(b.price).replace(" টাকা", ""))}<small>৳</small></span><span class="dep-act"><button type="button" class="dep-buy" data-cart-add="${esc(b.slug)}" aria-label="${esc(b.title)} কার্টে নিন">+ কার্ট</button><a href="#" class="dep-wa" data-wa="title" data-title="${esc(b.title)}" aria-label="${esc(b.title)} WhatsApp-এ অর্ডার">${typeof ICONS !== "undefined" ? ICONS.whatsapp : "WA"}<span>অর্ডার</span></a></span></div></div>`;
 
   root.innerHTML =
     `<div class="dep-head"><span class="dep-title"><b class="dep-lamp" aria-hidden="true"></b>এখন ছাড়ছে</span><span class="dep-clock" id="dep-clock" aria-hidden="true"></span></div>` +

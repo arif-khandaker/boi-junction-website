@@ -86,3 +86,17 @@
   .dep-flap{grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"to fare buy" "pl pl buy";align-items:center}
   .dep-buy{grid-area:buy;padding:9px 10px}
 }
+
+/* কার্টের পাশে WhatsApp অর্ডার */
+.dep-cols,.dep-flap{grid-template-columns:minmax(0,1.4fr) minmax(0,.9fr) 58px 168px}
+.dep-act{display:flex;gap:6px;justify-content:flex-end}
+.dep-wa{display:inline-flex;align-items:center;gap:5px;font-size:14px;color:#eaf8ef;background:#128c4a;border-radius:4px;padding:7px 9px;text-decoration:none;white-space:nowrap}
+.dep-wa svg{width:16px;height:16px;fill:currentColor}
+.dep-wa:hover,.dep-wa:focus-visible{background:#17a559}
+@media (max-width:560px){
+  .dep-flap{grid-template-columns:minmax(0,1fr) auto auto;grid-template-areas:"to fare buy" "pl pl buy"}
+  .dep-act{grid-area:buy;flex-direction:column}
+  .dep-buy,.dep-wa{padding:7px 9px;font-size:13px;justify-content:center;text-align:center}
+  .dep-buy{grid-area:auto}
+}
+@media (max-width:560px){.dep-to{white-space:normal;font-size:18px;line-height:1.3}.dep-flap{align-items:start}.dep-act{align-self:center}}
