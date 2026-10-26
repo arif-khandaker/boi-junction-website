@@ -8,7 +8,7 @@
   if (list.length < 6) return;
   const genres = [];
   list.forEach((b) => { if (genres.indexOf(b.genre) < 0) genres.push(b.genre); });
-  const plat = (b) => genres.indexOf(b.genre) + 1;
+  const plat = (b) => (window.bjPlatform && window.bjPlatform(b.genre)) || genres.indexOf(b.genre) + 1;
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
