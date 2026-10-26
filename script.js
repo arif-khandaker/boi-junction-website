@@ -33,7 +33,7 @@ const SITE = {
    লিংক খালি থাকলে আইকনটি দেখাবে না। */
 const SOCIAL = [
   { type: "instagram", label: "ইনস্টাগ্রাম — বই জংশন", url: "https://www.instagram.com/boijunction5/" },
-  { type: "facebook",  label: "লেখকের ফেসবুক পেইজ", url: "https://www.facebook.com/share/1K8DX3NsqR/" },
+  { type: "facebook",  label: "ফেসবুক পেইজ — বই জংশন", url: "https://www.facebook.com/share/1GHxphsRdu/" },
 ]
 
 
