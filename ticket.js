@@ -51,8 +51,10 @@
   /* ---------- ২. ভাগ্যে ছেড়ে দিন ---------- */
   const box = document.getElementById("bj-pick");
   if (!box) return;
-  const pool = BOOKS.filter((b) => b.slug && b.title && num(b.price) > 0);
-  if (pool.length < 5) return;
+  /* আজকের টিকিটে শুধু এই ৬টি বই (ক্রম বদলাতে বা বই বদলাতে নিচের তালিকা বদলান) */
+  const PICKS = ["akulpathar", "ekhane-tabij-bikri-hoy", "boro-bhai", "rojonigandha-resort", "asman-jominer-upakhyan", "ajmeri"];
+  const pool = PICKS.map((sl) => BOOKS.find((b) => b.slug === sl)).filter((b) => b && b.title && num(b.price) > 0);
+  if (pool.length < 2) return;
   box.innerHTML =
     `<div class="pk-panel"><div class="pk-top"><span class="pk-lamp" aria-hidden="true"></span><span>আজকের টিকিট</span></div>` +
     `<div class="pk-win" id="pk-win" aria-live="polite"><span class="pk-ph">কোন বই পড়বেন ঠিক করতে পারছেন না?</span></div>` +

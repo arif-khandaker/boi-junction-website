@@ -18,7 +18,7 @@ const SETS = grab("SETS");
 const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://wwwboijunction.com";
 const AUTHOR_SITE = "https://authorarifkhandaker.com";
-const V = "20261027v";
+const V = "20261027w";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
