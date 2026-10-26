@@ -2143,6 +2143,28 @@ function toggleMenu(force) {
 menuBtn.addEventListener("click", () => toggleMenu());
 $$(".site-nav a").forEach((a) => a.addEventListener("click", () => toggleMenu(false)));
 
+/* পাতার ভেতরের লিংকে (#books, #dakpiyon…) চাপলে ঠিক জায়গায় পৌঁছায়: পাতা অনেক লম্বা, ছবি লোড হতে হতে জায়গা সরে যায়, তাই কয়েকবার ঠিক করে নেওয়া হয় */
+document.addEventListener("click", (e) => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a || e.defaultPrevented || a.hasAttribute("data-wa")) return;
+  const id = a.getAttribute("href").slice(1);
+  const target = id && document.getElementById(id);
+  if (!target) return;
+  e.preventDefault();
+  if (document.body.classList.contains("menu-open")) toggleMenu(false);
+  const root = document.documentElement;
+  const go = () => {
+    const hd = document.getElementById("site-header"); const h = hd ? hd.offsetHeight : 60;
+    const top = target.getBoundingClientRect().top + window.scrollY - h + 2;
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, Math.max(0, top));
+  };
+  setTimeout(go, 80);
+  [400, 900, 1600].forEach((ms) => setTimeout(go, ms));
+  setTimeout(() => { root.style.scrollBehavior = ""; }, 1800);
+  try { history.replaceState(null, "", "#" + id); } catch (err) {}
+});
+
 /* ---------- স্ক্রল করলে হেডার ---------- */
 const header = $("#site-header");
 const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 40);
