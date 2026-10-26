@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // অ্যাডমিন = আপনি। admins/{আপনার uid} নামে একটি ডকুমেন্ট থাকলেই অ্যাডমিন।
+    function isAdmin() {
+      return request.auth != null && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+    match /admins/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+    match /reviews/{id} {
+      // সবাই শুধু প্রকাশিত রিভিউ পড়তে পারে; নিজের রিভিউ নিজে; অ্যাডমিন সব।
+      allow read: if resource.data.status == 'approved'
+                  || (request.auth != null && resource.data.uid == request.auth.uid)
+                  || isAdmin();
+      // পাঠক: লগইন করে, প্রতি বইয়ে একটি, অপেক্ষমাণ অবস্থায়।
+      allow create: if request.auth != null
+                    && id == request.resource.data.slug + '_' + request.auth.uid
+                    && request.resource.data.keys().hasOnly(['slug','uid','name','rating','text','kind','status','createdAt'])
+                    && request.resource.data.uid == request.auth.uid
+                    && request.resource.data.kind == 'reader'
+                    && request.resource.data.status == 'pending'
+                    && request.resource.data.rating is int
+                    && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() >= 15 && request.resource.data.text.size() <= 1500
+                    && request.resource.data.name is string
+                    && request.resource.data.name.size() >= 1 && request.resource.data.name.size() <= 40
+                    && request.resource.data.slug is string && request.resource.data.slug.size() <= 80
+                    && request.resource.data.createdAt == request.time;
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin()
+                    || (request.auth != null && resource.data.uid == request.auth.uid && resource.data.status == 'pending');
+    }
+
+    // ---- অর্ডার (শুধু অ্যাডমিন পড়তে পারে; ক্রেতা শুধু নতুন অর্ডার জমা দিতে পারে) ----
+    match /orders/{ref} {
+      allow read: if isAdmin();
+      allow create: if ref.matches('^BJ-[0-9]{6}-[0-9A-Z]{4}$')
+                    && request.resource.data.keys().hasOnly(['ref','name','phone','address','area','items','total','method','status','createdAt'])
+                    && request.resource.data.ref == ref
+                    && request.resource.data.status == 'new'
+                    && request.resource.data.method in ['site','whatsapp']
+                    && request.resource.data.name is string && request.resource.data.name.size() <= 80
+                    && request.resource.data.phone is string && request.resource.data.phone.size() <= 20
+                    && request.resource.data.address is string && request.resource.data.address.size() <= 400
+                    && request.resource.data.area is string && request.resource.data.area.size() <= 30
+                    && request.resource.data.items is list && request.resource.data.items.size() >= 1 && request.resource.data.items.size() <= 30
+                    && request.resource.data.total is int && request.resource.data.total >= 0 && request.resource.data.total <= 1000000
+                    && request.resource.data.createdAt == request.time;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ---- অর্ডারের অবস্থা (শুধু নম্বর জানা থাকলে একটি করে দেখা যায়; তালিকা দেখা যায় না; কোনো ব্যক্তিগত তথ্য নেই) ----
+    match /orderStatus/{ref} {
+      allow get: if true;
+      allow list: if false;
+      allow create: if (ref.matches('^BJ-[0-9]{6}-[0-9A-Z]{4}$')
+                        && request.resource.data.keys().hasOnly(['status','updatedAt'])
+                        && request.resource.data.status == 'new'
+                        && request.resource.data.updatedAt == request.time)
+                    || isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}

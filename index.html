@@ -37,7 +37,7 @@
     gtag('config', 'G-H027R58T1E');
     window.akTrack = function (name, params) { try { gtag('event', name, params || {}); } catch (e) {} };
   </script>
-  <link rel="stylesheet" href="style.css?v=20261027z">
+  <link rel="stylesheet" href="style.css?v=20261028c">
   <style>
     @font-face{font-family:"AK Sans";src:url("ak-sans.woff?v=3") format("woff");font-weight:300 600;font-style:normal;font-display:swap}
     @font-face{font-family:"AK Serif";src:url("ak-serif.woff?v=3") format("woff");font-weight:400 500;font-style:normal;font-display:swap}
@@ -129,7 +129,7 @@
     #biography .timeline-now .timeline-year{color:#2e1f12}
     @media (max-width:540px){#intro .intro-text p:not(.lead):not(.section-eyebrow){font-size:16.5px;padding-left:14px}#intro::after,#biography::after{top:22px}}
   </style>
-  <link rel="stylesheet" href="bj.css?v=20261027z">
+  <link rel="stylesheet" href="bj.css?v=20261028c">
 </head>
 <body>
 
@@ -282,6 +282,15 @@
           <p><strong>ঢাকার বাইরে</strong> ৪৮ থেকে ৭২ ঘণ্টার মধ্যে বই পৌঁছানো হয়। খরচ <b>৯০ টাকা</b>।</p>
           <p class="bj-post-call">বই জংশন: <a href="tel:+8801823818887">০১৮২৩৮১৮৮৮৭</a></p>
         </div>
+        <div class="bj-track">
+          <h3>আপনার অর্ডার এখন কোথায়?</h3>
+          <form id="trk-form" novalidate>
+            <label class="sr-only" for="trk-ref">অর্ডার নম্বর</label>
+            <input id="trk-ref" autocomplete="off" autocapitalize="characters" placeholder="অর্ডার নম্বর, যেমন BJ-261026-AB12" maxlength="20">
+            <button type="submit" class="btn btn-gold">দেখুন</button>
+          </form>
+          <div id="trk-out" aria-live="polite"></div>
+        </div>
       </div>
     </section>
 
@@ -398,7 +407,7 @@
       </div>
       <div class="footer-bottom">
         <p>© <span id="year">২০২৬</span> বই জংশন। সর্বস্বত্ব সংরক্ষিত।</p>
-        <p class="footer-privacy">সাইটের উন্নতির জন্য গুগল অ্যানালিটিক্সের মাধ্যমে নামহীন ভিজিটর-সংখ্যা গোনা হয়।</p>
+        <p class="footer-privacy">সাইটের উন্নতির জন্য গুগল অ্যানালিটিক্সের মাধ্যমে নামহীন ভিজিটর-সংখ্যা গোনা হয়। অর্ডারের তথ্য শুধু বই পাঠানোর কাজে ব্যবহার হয়।</p>
         <a href="#home" class="to-top">উপরে যান ↑</a>
       </div>
     </div>
@@ -430,13 +439,15 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=20261027z"></script>
-  <script src="board.js?v=20261027z"></script>
-  <script src="ticket.js?v=20261027z"></script>
-  <script src="announce.js?v=20261027z"></script>
-  <script src="extras.js?v=20261027z"></script>
-  <script src="more.js?v=20261027z"></script>
-  <script src="rail.js?v=20261027z"></script>
+  <script src="script.js?v=20261028c"></script>
+  <script src="board.js?v=20261028c"></script>
+  <script src="ticket.js?v=20261028c"></script>
+  <script src="announce.js?v=20261028c"></script>
+  <script src="extras.js?v=20261028c"></script>
+  <script src="more.js?v=20261028c"></script>
+  <script src="firebase-config.js?v=20261026c"></script>
+  <script src="orders.js?v=20261028c"></script>
+  <script src="rail.js?v=20261028c"></script>
   <script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})})}</script>
 </body>
 </html>

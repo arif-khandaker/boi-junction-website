@@ -1762,11 +1762,14 @@ function orderSnap(ref) {
   return {
     ref,
     name: (cartForm.name || "").trim(),
+    phone: (cartForm.phone || "").trim(),
+    address: (cartForm.address || "").trim(),
+    area: cartForm.area || "",
     total: cartTotal(),
-    items: cart.map((x) => { const b = bookBySlug(x.slug) || {}; return { title: b.title || "", cover: b.cover || "", qty: x.qty }; }).filter((x) => x.title),
+    items: cart.map((x) => { const b = bookBySlug(x.slug) || {}; return { slug: b.slug || x.slug, title: b.title || "", cover: b.cover || "", qty: x.qty, price: priceOf(b) }; }).filter((x) => x.title),
   };
 }
-const newOrderRef = () => "BJ-" + new Date().toISOString().slice(2, 10).replace(/-/g, "") + "-" + Math.random().toString(36).slice(2, 6).toUpperCase();
+const newOrderRef = () => "BJ-" + new Date().toISOString().slice(2, 10).replace(/-/g, "") + "-" + Math.random().toString(36).slice(2, 6).toUpperCase().padEnd(4, "0");
 let cartStep = "cart";
 let orderSending = false;
 const cartForm = { name: "", phone: "", address: "", area: "ঢাকার ভেতরে", note: "", signName: "", signMsg: "", gift: false, giftTo: "", giftCard: "", method: PAY.methods[0], trx: "" };
@@ -2033,6 +2036,7 @@ function cartAction(act, slug) {
       cart = []; saveCart(); updateFab(); cartStep = "cart"; cartForm.signName = ""; cartForm.signMsg = ""; cartForm.gift = false; cartForm.giftTo = ""; cartForm.giftCard = "";
       closeModal();
       toast(`ধন্যবাদ! আপনার অর্ডার পৌঁছেছে। অর্ডার নম্বর: ${ref}`);
+      if (window.bjSaveOrder) window.bjSaveOrder(snap, "site");
       if (window.bjTicket) setTimeout(() => window.bjTicket(snap), 450);
     }).catch(() => {
       orderSending = false; renderCart();
@@ -2042,11 +2046,12 @@ function cartAction(act, slug) {
   } else if (act === "send") {
     if (!cart.length) return;
     const snapWa = orderSnap(newOrderRef());
-    if (openWhatsApp(cartOrderMessage())) {
+    if (openWhatsApp(`অর্ডার নম্বর: ${snapWa.ref}\n\n` + cartOrderMessage())) {
       if (window.akTrack) akTrack("order_sent", { currency: "BDT", value: cartTotal(), items: cart.map((x) => ({ item_id: x.slug, quantity: x.qty })) });
       cart = []; saveCart(); updateFab(); cartStep = "cart"; cartForm.signName = ""; cartForm.signMsg = ""; cartForm.gift = false; cartForm.giftTo = ""; cartForm.giftCard = "";
       closeModal();
       toast("ধন্যবাদ! WhatsApp-এ অর্ডার পাঠিয়ে দিন");
+      if (window.bjSaveOrder) window.bjSaveOrder(snapWa, "whatsapp");
       if (window.bjTicket) setTimeout(() => window.bjTicket(snapWa), 450);
     }
     return;

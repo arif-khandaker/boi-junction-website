@@ -158,6 +158,7 @@
     o.className = "bj-tkov"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "আপনার যাত্রার টিকিট");
     o.innerHTML = `<div class="tko-panel"><button type="button" class="tko-x" aria-label="বন্ধ করুন">×</button>` +
       `<p class="tko-h">আপনার যাত্রার টিকিট তৈরি</p><img class="tko-img" src="${url}" alt="বই জংশন যাত্রার টিকিট — ${esc(snap.name || "পাঠক")}" width="540" height="750">` +
+      `<p class="tko-ref">অর্ডার নম্বর: <b id="tko-refv">${esc(snap.ref || "")}</b> <button type="button" class="tko-copy" id="tko-copy">কপি</button><small>“ডাকপিয়ন” অংশে এই নম্বর দিলে অর্ডার এখন কোথায় দেখতে পাবেন।</small></p>` +
       `<p class="tko-s">ছবিটা সেভ করে Facebook বা Instagram-এ দিন। বই জংশনকে ট্যাগ করতে ভুলবেন না।</p>` +
       `<div class="tko-act"><button type="button" class="btn btn-gold" id="tko-share">শেয়ার করুন</button><a class="btn btn-outline-gold" id="tko-save" href="${url}" download="boi-junction-ticket.png">ছবি সেভ করুন</a></div></div>`;
     document.body.appendChild(o); tkOverlay = o;
@@ -175,6 +176,12 @@
           navigator.share({ files: [file], title: "বই জংশন — আমার যাত্রার টিকিট", text: "আমি বই জংশন থেকে বই নিলাম 📚 https://wwwboijunction.com/" }).catch(() => {});
         } else { o.querySelector("#tko-save").click(); }
       }, "image/png");
+    });
+    const cp = o.querySelector("#tko-copy");
+    if (cp) cp.addEventListener("click", () => {
+      const v = snap.ref || "";
+      const ok = () => { cp.textContent = "কপি হয়েছে ✓"; };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(ok, ok); else ok();
     });
     o.querySelector(".tko-x").focus();
   };
