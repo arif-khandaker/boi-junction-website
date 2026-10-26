@@ -37,7 +37,7 @@
     gtag('config', 'G-H027R58T1E');
     window.akTrack = function (name, params) { try { gtag('event', name, params || {}); } catch (e) {} };
   </script>
-  <link rel="stylesheet" href="style.css?v=20261027l">
+  <link rel="stylesheet" href="style.css?v=20261027m">
   <style>
     @font-face{font-family:"AK Sans";src:url("ak-sans.woff?v=3") format("woff");font-weight:300 600;font-style:normal;font-display:swap}
     @font-face{font-family:"AK Serif";src:url("ak-serif.woff?v=3") format("woff");font-weight:400 500;font-style:normal;font-display:swap}
@@ -129,7 +129,7 @@
     #biography .timeline-now .timeline-year{color:#2e1f12}
     @media (max-width:540px){#intro .intro-text p:not(.lead):not(.section-eyebrow){font-size:16.5px;padding-left:14px}#intro::after,#biography::after{top:22px}}
   </style>
-  <link rel="stylesheet" href="bj.css?v=20261027l">
+  <link rel="stylesheet" href="bj.css?v=20261027m">
 </head>
 <body>
 
@@ -163,6 +163,7 @@
         <ul>
           <li><a href="#books">বইসমূহ</a></li>
           <li><a href="#how-to-order">কীভাবে অর্ডার করবেন</a></li>
+          <li><a href="#dakpiyon">ডাকপিয়ন</a></li>
           <li><a href="#author">লেখক</a></li>
           <li><a href="#contact">যোগাযোগ</a></li>
         </ul>
@@ -240,6 +241,18 @@
 
         <!-- সম্পূর্ণ গ্রন্থতালিকা script.js ফাইলের BOOK_LIST অংশে -->
         <div class="catalog reveal" id="catalog"></div>
+      </div>
+    </section>
+
+    <section id="dakpiyon" class="section section-dark bj-post">
+      <div class="container">
+        <div class="bj-post-card">
+          <span class="bj-post-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2Zm0 2.2 5.9 2.9L12 10 6.1 7.1 12 4.2ZM5 8.7l6 3v7.6l-6-3V8.7Zm14 0v7.6l-6 3v-7.6l6-3Z"/></svg></span>
+          <h2>ডাকপিয়ন</h2>
+          <p><strong>ঢাকার ভেতরে</strong> ২৪ ঘণ্টার মধ্যে বই পৌঁছানো হয়। খরচ <b>৫০ টাকা</b>।</p>
+          <p><strong>ঢাকার বাইরে</strong> ৪৮ থেকে ৭২ ঘণ্টার মধ্যে বই পৌঁছানো হয়। খরচ <b>৯০ টাকা</b>।</p>
+          <p class="bj-post-call">বই জংশন: <a href="tel:+8801823818887">০১৮২৩৮১৮৮৮৭</a></p>
+        </div>
       </div>
     </section>
 
@@ -370,8 +383,8 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=20261027l"></script>
-  <script src="board.js?v=20261027l"></script>
+  <script src="script.js?v=20261027m"></script>
+  <script src="board.js?v=20261027m"></script>
   <script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})})}</script>
 </body>
 </html>

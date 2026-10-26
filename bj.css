@@ -100,3 +100,14 @@
   .dep-buy{grid-area:auto}
 }
 @media (max-width:560px){.dep-to{white-space:normal;font-size:18px;line-height:1.3}.dep-flap{align-items:start}.dep-act{align-self:center}}
+
+/* ডাকপিয়ন — ডেলিভারির তথ্য */
+.bj-post{padding:64px 0}
+.bj-post-card{position:relative;max-width:560px;margin:34px auto 0;padding:54px 26px 28px;text-align:center;border:2px solid rgba(201,164,92,.28);border-radius:22px;background:rgba(201,164,92,.04)}
+.bj-post-ico{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);width:76px;height:76px;display:grid;place-items:center;border-radius:50%;background:#0e0d0b;border:4px solid rgba(201,164,92,.28);color:var(--gold)}
+.bj-post-ico svg{width:38px;height:38px}
+.bj-post-card h2{margin:0 0 14px;font-size:clamp(28px,7vw,36px)}
+.bj-post-card p{margin:0 0 14px;line-height:1.9;font-size:17px;color:#ddd5c3}
+.bj-post-card strong{color:#f3e3bd;font-weight:600}.bj-post-card b{color:var(--gold);font-weight:600}
+.bj-post-call{margin:20px 0 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.08)}
+.bj-post-call a{color:var(--gold);text-decoration:none;font-size:1.15em;letter-spacing:.03em}
