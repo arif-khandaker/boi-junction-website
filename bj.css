@@ -118,3 +118,45 @@
 @media (max-width:640px){.bj-author-in>a{margin:0 auto}}
 
 .bj-all-list .bj-eb{font-style:normal;font-size:.68em;line-height:1;padding:2px 6px;margin-left:2px;border:1px solid rgba(201,164,92,.55);border-radius:20px;color:var(--gold);vertical-align:middle;white-space:nowrap}
+
+/* ===== বইয়ের কার্ড = রেলের টিকিট ===== */
+.book.tk{position:relative;padding:12px 14px 16px;background:linear-gradient(#15130f,#100e0b);border:1px solid rgba(201,164,92,.3);border-radius:10px;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .35s}
+.book.tk:hover{transform:translateY(-4px) rotate(-.4deg);border-color:rgba(201,164,92,.6);box-shadow:0 22px 40px -22px rgba(0,0,0,.9)}
+.tk-head{display:flex;justify-content:space-between;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed rgba(201,164,92,.28);font-size:12.5px;color:#9a917b;letter-spacing:.03em}
+.book.tk .book-cover{margin-bottom:0}
+.tk-perf{position:relative;height:0;margin:20px -14px 18px;border-top:2px dashed rgba(201,164,92,.38)}
+.tk-perf::before,.tk-perf::after{content:"";position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:var(--ink);border:1px solid rgba(201,164,92,.3)}
+.tk-perf::before{left:-11px;clip-path:inset(0 0 0 50%)}.tk-perf::after{right:-11px;clip-path:inset(0 50% 0 0)}
+.tk-stamp{position:absolute;right:12px;top:58px;transform:rotate(-12deg) scale(1);padding:5px 12px;border:2px solid #3dbb72;border-radius:6px;color:#3dbb72;font-size:15px;font-weight:600;letter-spacing:.04em;background:rgba(8,12,9,.82);opacity:0;pointer-events:none;z-index:3}
+.book.tk.is-punched{border-color:rgba(61,187,114,.55)}
+.book.tk.is-punched .tk-stamp{opacity:1;animation:tkStamp .5s cubic-bezier(.2,1.6,.4,1) both}
+.book.tk.is-punched.no-anim .tk-stamp{animation:none}
+.book.tk.is-punched .tk-perf{border-top-color:rgba(61,187,114,.55)}
+@keyframes tkStamp{0%{transform:rotate(-12deg) scale(2.4);opacity:0}60%{opacity:1}100%{transform:rotate(-12deg) scale(1);opacity:1}}
+@media (max-width:540px){.book.tk{padding:10px 10px 14px}.tk-perf{margin-left:-10px;margin-right:-10px}.tk-head{font-size:11.5px;flex-wrap:wrap}.tk-stamp{font-size:13px;top:50px}}
+
+/* ===== ভাগ্যে ছেড়ে দিন ===== */
+.bj-pick{max-width:640px;margin:0 auto 34px}
+.pk-panel{position:relative;text-align:center;padding:16px 16px 18px;background:#080706;border:1px solid rgba(201,164,92,.38);border-radius:10px;box-shadow:0 0 0 5px #12100c,0 0 0 6px rgba(201,164,92,.16)}
+.pk-top{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px;font-family:var(--font-display);font-size:18px;color:#f3e3bd}
+.pk-lamp{width:9px;height:9px;border-radius:50%;background:#e5484d;box-shadow:0 0 10px #e5484d}
+.pk-win{min-height:64px;display:grid;place-items:center;padding:10px 12px;margin-bottom:14px;background:linear-gradient(#0d0b08 49%,#050403 51%);border:1px solid rgba(255,255,255,.07);border-radius:4px;overflow:hidden}
+.pk-ph{color:#8f866f;font-size:15px}
+.pk-name{font-family:var(--font-display);font-size:clamp(20px,5.4vw,28px);line-height:1.35;color:#f2b134;text-shadow:0 0 14px rgba(242,177,52,.35)}
+.pk-win.is-tick .pk-name{animation:pkTick .09s linear}
+@keyframes pkTick{from{transform:translateY(-55%);opacity:.3}to{transform:none;opacity:1}}
+.pk-win.is-landed .pk-name{color:#fff;text-shadow:0 0 18px rgba(242,177,52,.7)}
+.pk-win.is-hit{animation:pkHit .4s ease-out}
+@keyframes pkHit{0%{box-shadow:0 0 0 0 rgba(242,177,52,.8)}100%{box-shadow:0 0 0 18px rgba(242,177,52,0)}}
+.pk-res{display:flex;gap:14px;align-items:center;text-align:left;margin:0 0 14px;padding:12px;border:1px dashed rgba(201,164,92,.4);border-radius:8px;animation:pkIn .45s cubic-bezier(.2,.8,.2,1) both}
+.pk-res[hidden]{display:none}
+@keyframes pkIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.pk-cover img{display:block;width:64px;height:96px;object-fit:cover;border-radius:3px;box-shadow:0 8px 18px -8px #000}
+.pk-info{flex:1;min-width:0}.pk-genre{margin:0;font-size:13.5px;color:var(--gold)}.pk-price{margin:2px 0 10px;font-size:17px;color:#f3e3bd}
+.pk-act{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.pk-act .btn{min-height:40px;padding:6px 14px;font-size:14px}
+.pk-more{font-size:14px;color:#cfc7b6;text-decoration:underline;text-underline-offset:3px}
+.pk-go{min-width:220px}
+.pk-go:disabled{opacity:.7;cursor:progress}
+@media (prefers-reduced-motion:reduce){.book.tk,.pk-res{transition:none;animation:none}.pk-win.is-tick .pk-name{animation:none}.book.tk.is-punched .tk-stamp{animation:none}}
+@media (max-width:540px){.book.tk .btn{padding:8px 4px;font-size:13.5px;gap:4px}.book.tk .btn svg{width:15px;height:15px}}
