@@ -18,7 +18,7 @@ const SETS = grab("SETS");
 const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://wwwboijunction.com";
 const AUTHOR_SITE = "https://authorarifkhandaker.com";
-const V = "20261027d";
+const V = "20261027e";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -206,3 +206,14 @@ const dirs = (d) => (fs.existsSync(path.join(root, d)) ? fs.readdirSync(path.joi
 const urls = [SITE + "/", ...all.map((b) => `${SITE}/b/${b.slug}/`)];
 fs.writeFileSync(path.join(root, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n")}\n</urlset>\n`);
 console.log("sitemap.xml হালনাগাদ:", urls.length, "টি ঠিকানা");
+
+/* হোমপেজে সব বইয়ের সাধারণ লিংক-তালিকা + ItemList (গুগল সহজে সব বইয়ের পাতা খুঁজে পায়) */
+{
+  const ip = path.join(root, "index.html");
+  let h = fs.readFileSync(ip, "utf8");
+  const items = all.map((b) => `<li><a href="/b/${b.slug}/">${esc(b.title)}</a>${b.genre ? " <small>" + esc(b.genre) + "</small>" : ""}</li>`).join("");
+  const ld = { "@context": "https://schema.org", "@type": "ItemList", name: "বই জংশন — আরিফ খন্দকারের সব বই", itemListElement: all.map((b, i) => ({ "@type": "ListItem", position: i + 1, url: `${SITE}/b/${b.slug}/`, name: b.title })) };
+  const block = `<!--BJ-LIST-START-->\n    <section class="section section-dark bj-all" id="all-books"><div class="container"><h2>আরিফ খন্দকারের সব বই — বই জংশন</h2><p>বই জংশনে পাবেন আরিফ খন্দকারের উপন্যাস, থ্রিলার, গল্প ও কবিতার বই। যেকোনো বইয়ের নামে চাপ দিয়ে বিস্তারিত দেখুন।</p><ul class="bj-all-list">${items}</ul></div></section>\n    <script type="application/ld+json">${JSON.stringify(ld)}</script>\n    <!--BJ-LIST-END-->`;
+  h = h.replace(/<!--BJ-LIST-START-->[\s\S]*?<!--BJ-LIST-END-->/, () => block);
+  fs.writeFileSync(ip, h);
+}
