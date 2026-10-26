@@ -76,6 +76,7 @@
     const INK = "#1a1508", MUTE = "#7a6c4a";
     c.textAlign = "left";
     c.fillStyle = MUTE; c.font = `600 30px ${FONT_S}`; c.fillText("যাত্রী", X + 60, Y + 300);
+    if (snap.passenger > 0) { c.textAlign = "right"; c.fillStyle = "#c8353b"; c.font = `600 36px ${FONT_S}`; c.fillText("যাত্রী নং " + bn(snap.passenger), X + TW - 60, Y + 300); c.textAlign = "left"; }
     c.fillStyle = INK; c.font = `76px ${FONT_D}`;
     let nm = name; while (c.measureText(nm).width > TW - 120 && nm.length > 4) nm = nm.slice(0, -2);
     if (nm !== name) nm += "…";
@@ -149,6 +150,10 @@
   let tkOverlay = null;
   window.bjTicket = async function (snap) {
     if (!snap || !snap.items || !snap.items.length) return;
+    try {
+      const pno = await Promise.race([window.bjPassengerFor ? window.bjPassengerFor(snap.ref) : Promise.resolve(0), new Promise((r) => setTimeout(() => r(0), 4500))]);
+      snap = Object.assign({}, snap, { passenger: Number(pno) > 0 ? Number(pno) : 0 });
+    } catch (err) {}
     try { if (window.bjPassportAdd) window.bjPassportAdd(snap.items); } catch (e) {}
     let cv;
     try { cv = await drawTicket(snap); } catch (e) { return; }
@@ -157,7 +162,7 @@
     const o = document.createElement("div");
     o.className = "bj-tkov"; o.setAttribute("role", "dialog"); o.setAttribute("aria-modal", "true"); o.setAttribute("aria-label", "আপনার যাত্রার টিকিট");
     o.innerHTML = `<div class="tko-panel"><button type="button" class="tko-x" aria-label="বন্ধ করুন">×</button>` +
-      `<p class="tko-h">আপনার যাত্রার টিকিট তৈরি</p><img class="tko-img" src="${url}" alt="বই জংশন যাত্রার টিকিট — ${esc(snap.name || "পাঠক")}" width="540" height="750">` +
+      `<p class="tko-h">আপনার যাত্রার টিকিট তৈরি</p>${snap.passenger ? `<p class="tko-pno">আপনি বই জংশনের <b>${bn(snap.passenger)}</b> নম্বর যাত্রী 🎫</p>` : ""}<img class="tko-img" src="${url}" alt="বই জংশন যাত্রার টিকিট — ${esc(snap.name || "পাঠক")}" width="540" height="750">` +
       `<p class="tko-ref">অর্ডার নম্বর: <b id="tko-refv">${esc(snap.ref || "")}</b> <button type="button" class="tko-copy" id="tko-copy">কপি</button><small>“ডাকপিয়ন” অংশে এই নম্বর দিলে অর্ডার এখন কোথায় দেখতে পাবেন।</small></p>` +
       `<p class="tko-s">ছবিটা সেভ করে Facebook বা Instagram-এ দিন। বই জংশনকে ট্যাগ করতে ভুলবেন না।</p>` +
       `<div class="tko-act"><button type="button" class="btn btn-gold" id="tko-share">শেয়ার করুন</button><a class="btn btn-outline-gold" id="tko-save" href="${url}" download="boi-junction-ticket.png">ছবি সেভ করুন</a></div></div>`;
@@ -173,7 +178,7 @@
         if (!blob) return;
         const file = new File([blob], "boi-junction-ticket.png", { type: "image/png" });
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          navigator.share({ files: [file], title: "বই জংশন — আমার যাত্রার টিকিট", text: "আমি বই জংশন থেকে বই নিলাম 📚 https://wwwboijunction.com/" }).catch(() => {});
+          navigator.share({ files: [file], title: "বই জংশন — আমার যাত্রার টিকিট", text: (snap.passenger ? "আমি বই জংশনের " + bn(snap.passenger) + " নম্বর যাত্রী! " : "আমি বই জংশন থেকে বই নিলাম ") + "📚 https://wwwboijunction.com/" }).catch(() => {});
         } else { o.querySelector("#tko-save").click(); }
       }, "image/png");
     });

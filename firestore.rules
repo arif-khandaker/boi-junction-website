@@ -66,5 +66,23 @@ service cloud.firestore {
       allow update: if isAdmin();
       allow delete: if isAdmin();
     }
+    // ---- যাত্রী নম্বর (শুধু একটি সংখ্যা; প্রতিবার ঠিক ১ করে বাড়ানো যায়, আর বাড়াতে হলে সত্যিই একটি অর্ডার থাকতে হবে) ----
+    match /meta/passengers {
+      function validBump() {
+        return request.resource.data.keys().hasOnly(['n','last','updatedAt'])
+            && request.resource.data.n is int
+            && request.resource.data.last is string
+            && request.resource.data.last.matches('^BJ-[0-9]{6}-[0-9A-Z]{4}$')
+            && exists(/databases/$(database)/documents/orders/$(request.resource.data.last))
+            && request.resource.data.updatedAt == request.time;
+      }
+      allow get: if true;
+      allow list: if false;
+      allow create: if (validBump() && request.resource.data.n == 1) || isAdmin();
+      allow update: if (validBump()
+                        && request.resource.data.n == resource.data.n + 1
+                        && request.resource.data.last != resource.data.last) || isAdmin();
+      allow delete: if false;
+    }
   }
 }
