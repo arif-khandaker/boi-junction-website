@@ -232,3 +232,43 @@ body.rail-hide .bj-rail{opacity:0}
 .bj-vig.is-romantic{opacity:1;background:radial-gradient(ellipse at 50% 0,rgba(255,170,110,.07),rgba(0,0,0,0) 62%)}
 @keyframes vigPulse{0%,100%{filter:brightness(1)}48%{filter:brightness(1.0)}50%{filter:brightness(.62)}52%{filter:brightness(1)}}
 @media (prefers-reduced-motion:reduce){.bj-vig.is-thriller{animation:none}.tko-img{animation:none}.tko-panel{transition:none}}
+
+/* ===== এই সপ্তাহের বই ===== */
+.bj-week{padding:30px 0 6px;background:#0b0a08}
+.bw-card{display:flex;gap:18px;align-items:center;max-width:760px;margin:0 auto;padding:14px 18px;border:1px solid rgba(201,164,92,.38);border-left:4px solid var(--gold);border-radius:6px;background:linear-gradient(90deg,rgba(201,164,92,.1),rgba(201,164,92,.02))}
+.bw-cover img{display:block;width:78px;height:auto;border-radius:3px;box-shadow:0 10px 20px -10px #000}
+.bw-body{min-width:0}.bw-k{margin:0 0 2px;font-size:14px;color:var(--gold)}.bw-left{color:#f3e3bd}
+.bw-t{margin:0;font-family:var(--font-display);font-size:clamp(21px,5vw,28px);font-weight:400;line-height:1.3}.bw-t a{color:#fff;text-decoration:none}
+.bw-m{margin:2px 0 10px;font-size:15px;color:#bdb39b}
+.bw-act{display:flex;gap:8px;flex-wrap:wrap}.bw-act .btn{min-height:40px;padding:6px 16px;font-size:14.5px}
+
+/* ===== উপহার ===== */
+.bj-gift{padding:54px 0}
+.bj-gift-card{position:relative;max-width:620px;margin:0 auto;padding:40px 26px 30px;text-align:center;border:2px dashed rgba(201,164,92,.4);border-radius:16px;background:rgba(201,164,92,.04)}
+.bj-gift-ico{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);width:60px;height:60px;display:grid;place-items:center;font-size:28px;background:#0e0d0b;border:2px solid rgba(201,164,92,.4);border-radius:50%}
+.bj-gift-card h2{margin:6px 0 12px;font-size:clamp(24px,6vw,32px)}.bj-gift-card p{margin:0 auto 20px;max-width:46ch;line-height:1.9;color:#ddd5c3}
+
+/* ===== বইয়ের পাসপোর্ট ===== */
+.bj-pass{padding:54px 0}
+.bj-pass h2{text-align:center;margin:0 0 8px;font-size:clamp(26px,6vw,34px)}
+.bj-pass-sub{text-align:center;max-width:52ch;margin:0 auto 14px;color:#bdb39b;line-height:1.8}
+.bj-pass-level{text-align:center;margin:0 0 22px;color:var(--gold);font-size:17px}
+.bj-pass-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:560px;margin:0 auto;padding:20px;border:1px solid rgba(201,164,92,.35);border-radius:8px;background:linear-gradient(#15130f,#0f0d0a)}
+.ps{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px;text-align:center;border-radius:50%;line-height:1.25}
+.ps-empty{border:2px dashed rgba(201,164,92,.28);color:rgba(201,164,92,.35);font-size:20px}
+.ps-r,.ps-g{border:3px double currentColor;transform:rotate(-7deg);animation:psIn .5s cubic-bezier(.2,1.6,.4,1) both}
+.ps-g{transform:rotate(6deg)}
+.ps-r{color:#e5484d}.ps-g{color:#3dbb72}
+.ps-t{font-family:var(--font-display);font-size:clamp(12px,3.4vw,15px);overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.ps-d{font-size:10.5px;opacity:.85}
+@keyframes psIn{from{transform:scale(1.8) rotate(-20deg);opacity:0}to{opacity:1}}
+
+/* ===== পাঠকের পাতা ===== */
+.bj-readers{padding:54px 0}.bj-readers[hidden]{display:none}
+.bj-readers h2{text-align:center;margin:0 0 6px}.bj-readers-sub{text-align:center;color:#bdb39b;margin:0 0 24px}
+.bj-readers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.rd{margin:0;padding:16px;border:1px solid rgba(201,164,92,.3);border-radius:8px;background:rgba(255,255,255,.03)}
+.rd img{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;margin-bottom:12px}
+.rd blockquote{margin:0 0 10px;font-family:var(--font-display);font-size:18px;line-height:1.7;color:#f3e3bd}
+.rd figcaption{font-size:14px;color:#bdb39b}.rd figcaption span{color:var(--gold)}
+@media (prefers-reduced-motion:reduce){.ps-r,.ps-g{animation:none}}

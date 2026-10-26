@@ -1857,10 +1857,16 @@ function cartOrderMessage() {
 /* কার্টের নিচে "আরও বই": নিচের তালিকার যেসব বই কার্টে নেই সেগুলো দেখায়। বই বদলাতে SLUGS বদলান। */
 const CART_SUGGEST_SLUGS = ["ekhane-tabij-bikri-hoy", "boro-bhai", "rojonigandha-resort"];
 function cartEbooksBlock() {
-  const list = CART_SUGGEST_SLUGS.map((s) => bookBySlug(s)).filter((b) => b && canBuy(b) && !cart.some((x) => x.slug === b.slug));
+  /* কার্টের বইয়ের ধরনের মিল থাকা বই আগে, তারপর বাছাই করা কয়েকটি */
+  const genres = cart.map((x) => (bookBySlug(x.slug) || {}).genre).filter(Boolean);
+  const seen = new Set();
+  const list = [];
+  const push = (b) => { if (b && canBuy(b) && !cart.some((x) => x.slug === b.slug) && !seen.has(b.slug)) { seen.add(b.slug); list.push(b); } };
+  BOOKS.filter((b) => genres.includes(b.genre) && b.cover).slice(0, 12).forEach((b) => { if (list.length < 3) push(b); });
+  CART_SUGGEST_SLUGS.map((sl) => bookBySlug(sl)).forEach((b) => { if (list.length < 3) push(b); });
   if (!list.length) return "";
   return `<div class="cart-ebooks">
-    <h4>আরও বই দেখুন</h4>
+    <h4>${cart.length ? "এই বইগুলোও দেখতে পারেন" : "আরও বই দেখুন"}</h4>
     ${list.map((b) => `<div class="cart-ebook-row"><span class="cart-thumb">${b.cover ? `<img src="${esc(b.cover)}" alt="">` : ""}</span><span class="cart-info"><strong>${esc(b.title)}</strong><em>${taka(priceOf(b))}</em></span><button type="button" class="btn btn-gold" data-cart-add="${esc(b.slug)}">কার্টে যোগ করুন</button></div>`).join("")}
   </div>`;
 }
@@ -2566,8 +2572,8 @@ if (yearEl) yearEl.textContent = toBn(new Date().getFullYear());
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({
         access_key: SITE.orderFormKey,
-        subject: "নতুন বইয়ের খবরের গ্রাহক: " + email,
-        from_name: "আরিফ খন্দকার ওয়েবসাইট",
+        subject: "বই জংশন — নতুন বইয়ের খবরের গ্রাহক: " + email,
+        from_name: "বই জংশন ওয়েবসাইট",
         email: email,
         message: "নতুন বইয়ের খবর পেতে চান: " + email,
         botcheck: "",

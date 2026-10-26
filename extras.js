@@ -149,6 +149,7 @@
   let tkOverlay = null;
   window.bjTicket = async function (snap) {
     if (!snap || !snap.items || !snap.items.length) return;
+    try { if (window.bjPassportAdd) window.bjPassportAdd(snap.items); } catch (e) {}
     let cv;
     try { cv = await drawTicket(snap); } catch (e) { return; }
     const url = cv.toDataURL("image/png");
