@@ -35,10 +35,10 @@ service cloud.firestore {
                     || (request.auth != null && resource.data.uid == request.auth.uid && resource.data.status == 'pending');
     }
 
-    // ---- অর্ডার (শুধু অ্যাডমিন পড়তে পারে; ক্রেতা শুধু নতুন অর্ডার জমা দিতে পারে) ----
+    // ---- অর্ডার (শুধু অ্যাডমিন পড়তে পারে; ক্রেতা শুধু নতুন অর্ডার জমা দিতে পারে)। BJ-... = বই জংশন, AK-... = আরিফ খন্দকার সাইট ----
     match /orders/{ref} {
       allow read: if isAdmin();
-      allow create: if ref.matches('^BJ-[0-9]{6}-[0-9A-Z]{4}$')
+      allow create: if ref.matches('^(BJ|AK)-[0-9]{6}-[0-9A-Z]{4}$')
                     && request.resource.data.keys().hasOnly(['ref','name','phone','address','area','items','total','method','status','createdAt'])
                     && request.resource.data.ref == ref
                     && request.resource.data.status == 'new'
@@ -58,7 +58,7 @@ service cloud.firestore {
     match /orderStatus/{ref} {
       allow get: if true;
       allow list: if false;
-      allow create: if (ref.matches('^BJ-[0-9]{6}-[0-9A-Z]{4}$')
+      allow create: if (ref.matches('^(BJ|AK)-[0-9]{6}-[0-9A-Z]{4}$')
                         && request.resource.data.keys().hasOnly(['status','updatedAt'])
                         && request.resource.data.status == 'new'
                         && request.resource.data.updatedAt == request.time)
