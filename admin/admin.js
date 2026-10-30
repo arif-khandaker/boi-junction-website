@@ -10,11 +10,12 @@ const app=appM.initializeApp(window.AK_FIREBASE), au=authM.getAuth(app), db=fs.g
 const $=id=>document.getElementById(id);
 let ORD=[];
 $("login").onclick=()=>authM.signInWithPopup(au,new authM.GoogleAuthProvider()).catch(e=>{$("msg").textContent="ঢোকা যায়নি";});
-$("logout").onclick=()=>authM.signOut(au);
+$("logout").onclick=()=>{try{localStorage.removeItem("bj_admin");}catch(e){}authM.signOut(au);};
 authM.onAuthStateChanged(au,async u=>{
   if(!u){$("auth").classList.remove("hide");$("app").classList.add("hide");return;}
   let ok=false; try{ok=(await fs.getDoc(fs.doc(db,"admins",u.uid))).exists();}catch(e){}
   if(!ok){$("auth").classList.remove("hide");$("app").classList.add("hide");$("msg").innerHTML='<span class="err">এই অ্যাকাউন্টে অনুমতি নেই।</span>';return;}
+  try{localStorage.setItem("bj_admin","1");}catch(e){}
   $("auth").classList.add("hide");$("app").classList.remove("hide");$("who").textContent=u.displayName||u.email||"";
   STATUS.forEach(s=>{const o=document.createElement("option");o.value=s[0];o.textContent=s[1];$("fs").appendChild(o);});
   load();
