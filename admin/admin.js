@@ -10,6 +10,19 @@ const app=appM.initializeApp(window.AK_FIREBASE), au=authM.getAuth(app), db=fs.g
 const $=id=>document.getElementById(id);
 let ORD=[];
 $("login").onclick=()=>authM.signInWithPopup(au,new authM.GoogleAuthProvider()).catch(e=>{$("msg").textContent="ঢোকা যায়নি";});
+const sendBtn=$("esend");
+if(authM.isSignInWithEmailLink(au,location.href)){
+  let em=""; try{em=localStorage.getItem("bj-adm-email")||"";}catch(e){}
+  if(!em)em=prompt("যে ইমেইলে লিংক পেয়েছেন সেটি লিখুন")||"";
+  if(em)authM.signInWithEmailLink(au,em,location.href).then(()=>history.replaceState(null,"",location.pathname)).catch(()=>{$("msg").textContent="লিংকটি কাজ করেনি, আবার পাঠান";});
+}
+if(sendBtn)sendBtn.onclick=async()=>{
+  const em=($("email").value||"").trim(); if(!em){$("msg").textContent="ইমেইল লিখুন";return;}
+  try{await authM.sendSignInLinkToEmail(au,em,{url:location.origin+location.pathname,handleCodeInApp:true});
+    try{localStorage.setItem("bj-adm-email",em);}catch(e){}
+    $("msg").textContent="✉️ লিংক পাঠানো হয়েছে, ইমেইল (স্প্যামসহ) দেখুন";}
+  catch(e){$("msg").textContent="লিংক পাঠানো যায়নি";}
+};
 $("logout").onclick=()=>{try{localStorage.removeItem("bj_admin");}catch(e){}authM.signOut(au);};
 authM.onAuthStateChanged(au,async u=>{
   if(!u){$("auth").classList.remove("hide");$("app").classList.add("hide");return;}
