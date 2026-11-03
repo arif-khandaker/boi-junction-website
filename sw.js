@@ -1,6 +1,6 @@
 /* সাদামাটা সার্ভিস ওয়ার্কার: সবসময় আগে ইন্টারনেট থেকে নতুন পাতা আনে।
    ইন্টারনেট না থাকলে শেষ দেখা পাতা দেখায়। অর্ডার, ফর্ম বা বাইরের সাইটের অনুরোধে হাত দেয় না। */
-const CACHE = "bj-shell-v8";
+const CACHE = "bj-shell-v9";
 self.addEventListener("install", (e) => { self.skipWaiting(); });
 self.addEventListener("activate", (e) => {
   e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
@@ -12,6 +12,6 @@ self.addEventListener("fetch", (e) => {
     fetch(req).then((res) => {
       if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(req, copy)); }
       return res;
-    }).catch(() => caches.match(req).then((r) => r || caches.match("/")))
+    }).catch(() => caches.match(req).then((r) => r || (req.mode === "navigate" ? caches.match("/") : Response.error())))
   );
 });
