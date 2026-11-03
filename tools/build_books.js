@@ -18,7 +18,7 @@ const SETS = grab("SETS");
 const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://wwwboijunction.com";
 const AUTHOR_SITE = "https://authorarifkhandaker.com";
-const V = "20261031c";
+const V = "20261104a";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -50,6 +50,7 @@ function related(b) {
 
 const bnum = (t) => String(t).replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[d]);
 const taka = (n) => bnum(Number(n).toLocaleString("en-US")) + " টাকা";
+const WA = "8801823818887";
 const buyable = (x) => x && x.slug && num(x.price) > 0;
 const physical = BOOKS.filter(buyable);
 const bySlug = (sl) => physical.find((x) => x.slug === sl);
@@ -97,6 +98,11 @@ function page(b) {
   const cta = b.ebook
     ? `<a class="btn gold" href="${esc(b.link)}" target="_blank" rel="noopener">ইবুক কিনুন ↗</a>`
     : `<a class="btn gold" href="/#book-${esc(b.slug)}">${priceN > 0 ? "কার্টে যোগ করুন / অর্ডার" : "বইয়ের বিস্তারিত"}</a>`;
+  const canBuy = !b.ebook && priceN > 0;
+  const waMsg = `আসসালামু আলাইকুম। "${b.title}" বইটি (${taka(priceN)}) অর্ডার করতে চাই।`;
+  const waHref = `https://wa.me/${WA}?text=${encodeURIComponent(waMsg)}`;
+  const waBtn = canBuy ? `<a class="btn wa" href="${waHref}" target="_blank" rel="noopener">WhatsApp-এ অর্ডার করুন</a>` : "";
+  const bar = canBuy ? `<div class="buybar"><span class="pr">${taka(priceN)}</span><a class="btn gold" href="/#book-${esc(b.slug)}">কার্টে যোগ করুন</a><a class="btn wa" href="${waHref}" target="_blank" rel="noopener">WhatsApp-এ অর্ডার</a></div>` : "";
   const rel = related(b);
   const details = [
     ["ধরন", b.genre + (b.ebook ? " · ইবুক" : "")],
@@ -151,7 +157,14 @@ h1{font-family:"AK Tiro","AK Serif",serif;font-weight:400;font-size:clamp(34px,7
 .by{color:#a59c8b;margin:0 0 22px;font-size:15px}
 dl{margin:0 0 22px;display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-size:15px}
 dt{color:#a59c8b}dd{margin:0}
-.signed{display:inline-block;margin:0 0 18px;border:1px solid rgba(201,164,92,.5);border-radius:999px;padding:6px 14px;color:#e2c98f;font-size:14px}
+.signed{margin:18px 0 14px;border:1px solid rgba(201,164,92,.6);border-radius:14px;padding:12px 16px;background:rgba(201,164,92,.1);color:#f0d9a0;font-size:18px;font-weight:600;line-height:1.5}
+.btn.wa{background:#25d366;border-color:#25d366;color:#04210f;font-weight:600}
+.ship{margin:16px 0 0;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.04);font-size:14.5px;line-height:1.7;color:#d8d2c3;text-align:left}
+.ship b{color:#e2c98f}
+.buybar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;gap:10px;align-items:center;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(14,13,11,.96);border-top:1px solid rgba(201,164,92,.4);backdrop-filter:blur(6px)}
+.buybar .pr{font-weight:700;font-size:15px;color:#fff;white-space:nowrap}
+.buybar .btn{flex:1;text-align:center;padding:12px 8px;font-size:14px;white-space:nowrap}
+body.hasbar{padding-bottom:84px}
 .actions{display:flex;flex-wrap:wrap;gap:10px}
 .btn{font:inherit;font-size:15px;padding:11px 20px;border-radius:999px;border:1px solid rgba(201,164,92,.5);background:transparent;color:#e2c98f;cursor:pointer;text-decoration:none}
 .btn.gold{background:#c9a45c;color:#1a1508;border-color:#c9a45c;font-weight:600}
@@ -165,7 +178,7 @@ footer{margin-top:50px;padding:26px 22px;text-align:center;color:#a59c8b;font-si
 @media (max-width:640px){.book{grid-template-columns:1fr;text-align:center}.book img{max-width:220px;margin:0 auto}dl{text-align:left;max-width:320px;margin-left:auto;margin-right:auto}.actions{justify-content:center}.rel{grid-template-columns:repeat(2,1fr)}.syn p{text-align:left}}
 </style>
 </head>
-<body>
+<body${canBuy ? ' class="hasbar"' : ""}>
 <header class="top"><a class="brand" href="/"><span style="color:#e5484d">বই</span> <span style="color:#3dbb72">জংশন</span><small>BOI JUNCTION</small></a><a class="back" href="/#books">← সব বই</a></header>
 <main>
 <div class="book">
@@ -174,9 +187,10 @@ ${b.cover ? `<img src="/${esc(b.cover)}" alt="${esc(b.title)} — প্রচ�
 <p class="kicker">${esc(b.genre)}${b.ebook ? " · ইবুক" : ""}</p>
 <h1>${esc(b.title)}</h1>
 <p class="by">${AUTHOR}</p>
-${!b.ebook && priceN > 0 ? '<p class="signed">✎ লেখকের স্বাক্ষরসহ</p>' : ""}
 <dl>${details.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
-<div class="actions">${cta}<button type="button" class="btn" id="copy">লিংক কপি করুন</button><a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener">ফেসবুকে শেয়ার</a></div>
+${canBuy ? '<p class="signed">✎ লেখকের স্বাক্ষরসহ বই, সরাসরি আপনার ঠিকানায়</p>' : ""}
+<div class="actions">${cta}${waBtn}<button type="button" class="btn" id="copy">লিংক কপি করুন</button><a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener">ফেসবুকে শেয়ার</a></div>
+${canBuy ? '<p class="ship"><b>ডেলিভারি:</b> ঢাকার ভেতরে ২৪ ঘণ্টায় (৫০ টাকা), ঢাকার বাইরে ৪৮–৭২ ঘণ্টায় (৯০ টাকা)।<br><b>পেমেন্ট:</b> বিকাশ, নগদ বা রকেটে।</p>' : ""}
 </div>
 </div>
 ${syn.length ? `<h2>সারসংক্ষেপ</h2><div class="syn">${syn.map((p) => `<p>${esc(p).replace(/\n/g, "<br>")}</p>`).join("")}</div>` : ""}
@@ -187,6 +201,7 @@ ${reviewSection(b)}
 <footer>© বই জংশন (Boi Junction)। সর্বস্বত্ব সংরক্ষিত। · লেখক: <a href="https://authorarifkhandaker.com/" rel="noopener">${AUTHOR}</a> · <a href="/#books">সব বই</a></footer>
 <script src="/firebase-config.js?v=${V}"></script>
 <script src="/reviews.js?v=${V}"></script>
+${bar}
 <script src="/copy-link.js?v=${V}"></script>
 </body>
 </html>
