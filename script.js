@@ -2277,6 +2277,13 @@ document.addEventListener("error", (e) => {
   const img = e.target;
   if (!(img instanceof HTMLImageElement)) return;
   const cover = img.closest(".book-cover");
+  if (cover && !img.dataset.retried && img.getAttribute("src")) {
+    /* নেটওয়ার্ক একবার ফসকালে সঙ্গে সঙ্গে ফাঁকা নকশা না দেখিয়ে আরেকবার চেষ্টা */
+    img.dataset.retried = "1";
+    const u = img.getAttribute("src");
+    setTimeout(() => { img.src = u + (u.includes("?") ? "&" : "?") + "r=" + Date.now(); }, 800);
+    return;
+  }
   if (cover) {
     const title = img.getAttribute("alt").replace(" — প্রচ্ছদ", "");
     cover.innerHTML = coverMarkup({ title, cover: "" });
