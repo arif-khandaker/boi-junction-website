@@ -377,6 +377,7 @@ const BOOKS = [
   {
     title: "রাজপাট",
     slug: "rajpat",
+    out: true,
     synopsis: [
       "১৬২৯ সালে বিদ্রোহী মুঘল সেনাপতি খান জাহান লোদি আহমদনগরের নিজাম শাহের সাথে মিলিত হয়ে সম্রাট শাহজাহানের বিরুদ্ধে বিদ্রোহ করে। বিদ্রোহ দমনে সম্রাট শাহজাহান বুরহানপুরে যাত্রা করেন। সম্রাজ্ঞী মমতাজ তখন চৌদ্দতম সন্তানকে গর্ভে ধারন করেছেন। তাঁর স্বাস্থ্যের অবস্থাও ভালো ছিলো না। গর্ভাবস্থার জটিলতা নিয়েও তিনি তাঁর স্বামীর স্বপ্ন পূরণের জন্য বুরহানপুর যান।",
       "১৬৩১ সালে সন্তান জন্মের সময় নানা জটিলতায় সন্তান বেঁচে গেলেও মমতাজ মারা যান। তাঁর বয়স তখন মাত্র চল্লিশ বছর। শোকে কাতর শাহজাহান তাঁর দ্বিতীয় পুত্র শাহ সুজাকে মায়ের দাফনের জন্য উপযুক্ত জায়গা খুঁজে বের করার জন্য আদেশ করেন।",
@@ -623,6 +624,7 @@ const BOOKS = [
   {
     title: "চামেলি কটেজ",
     slug: "chameli-cottage",
+    out: true,
     synopsis: [
       "সন্ধ্যার আগমুহূর্তে তাদের ঢাকায় পৌঁছুনোর কথা। কিন্তু পৌঁছুতে পারেনি। তারা যখন আশুলিয়া এসে পৌঁছোয় তখন সন্ধ্যা নয়, রাত। সন্ধ্যাকে আরো অনেক আগেই রাত তার অন্ধকারের পেটে গিলে খেয়েছে। খেয়ে ভরা পেটে রাত এখন বেশ দাপটের সঙ্গে চতুর্দিকে ঘোর কালো অন্ধকার ছড়িয়ে-ছিটিয়ে রেখেছে।",
       "তবে রাত হলেও সময়টা ঠিক কয়টা তা তারা কেউই বুঝতে পারছে না কারণ তাদের কারোর হাতেই সময় দেখার মতো ঘড়ি বা মোবাইল কোনোটাই নেই। আশুলিয়া বাজারে বটগাছ তলায় দু' একটা চায়ের দোকানের ভেতর হারিকেন কিংবা কুপি জ্বলছে।",
@@ -667,6 +669,7 @@ const BOOKS = [
   {
     title: "যে শহরে তুমি নেই",
     slug: "je-shohore-tumi-nei",
+    out: true,
     synopsis: [
     ],
     genre: "রোমান্টিক উপন্যাস",
@@ -710,6 +713,7 @@ const BOOKS = [
   {
     title: "হাজার বসন্ত তোমার অপেক্ষায়",
     slug: "hajar-basanta-tomar-opekkhay",
+    out: true,
     synopsis: [
     ],
     genre: "রোমান্টিক উপন্যাস",
@@ -723,6 +727,7 @@ const BOOKS = [
   {
     title: "মেঘমালা",
     slug: "meghmala",
+    out: true,
     synopsis: [
     ],
     genre: "কাব্যগ্রন্থ",
@@ -756,6 +761,7 @@ const PRIORITY_SLUGS = ["ajat", "bedona-ronger-bari", "gulshan", "asman-jominer-
   const rank = (b) => { const i = PRIORITY_SLUGS.indexOf(b.slug); return i === -1 ? 999 : i; };
   const keep = BOOKS.map((b, i) => [b, i]);
   keep.sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1]);
+  keep.sort((a, b) => (a[0].out ? 1 : 0) - (b[0].out ? 1 : 0));
   BOOKS.splice(0, BOOKS.length, ...keep.map((x) => x[0]));
 })();
 
@@ -911,11 +917,11 @@ const EBOOKS = [
    ebook: true লিখলে বইটি "ইবুক" হিসেবে দেখাবে। out: true লিখলে "স্টক আউট" লেখা দেখাবে।
    নতুন বই যোগ করতে একটি লাইন কপি করে নাম ও ধরন বদলান। */
 const BOOK_LIST = [
-  { title: "মেঘমালা", genre: "কাব্যগ্রন্থ", ebook: false },
+  { title: "মেঘমালা", genre: "কাব্যগ্রন্থ", ebook: false, out: true },
   { title: "সন্ধ্যাবেলায় বৃষ্টি", genre: "কাব্যগ্রন্থ", ebook: false, out: true },
   { title: "চাঁদমুখী", genre: "উপন্যাস", ebook: false, out: true },
-  { title: "যে শহরে তুমি নেই", genre: "রোমান্টিক উপন্যাস", ebook: false },
-  { title: "হাজার বসন্ত তোমার অপেক্ষায়", genre: "রোমান্টিক উপন্যাস", ebook: false },
+  { title: "যে শহরে তুমি নেই", genre: "রোমান্টিক উপন্যাস", ebook: false, out: true },
+  { title: "হাজার বসন্ত তোমার অপেক্ষায়", genre: "রোমান্টিক উপন্যাস", ebook: false, out: true },
   { title: "অর্ধেক প্রেম অর্ধেক বিরহ", genre: "উপন্যাস", ebook: false },
   { title: "পৃথিবীর জন্য ভালোবাসা", genre: "সায়েন্স ফিকশন", ebook: false },
   { title: "বালুচরের বালিকা", genre: "রোমান্টিক উপন্যাস", ebook: false },
@@ -924,7 +930,7 @@ const BOOK_LIST = [
   { title: "জনমভর", genre: "উপন্যাস", ebook: false },
   { title: "আকাশ দেখার নিমন্ত্রণে", genre: "উপন্যাস", ebook: false },
   { title: "রাজেশ্বরী", genre: "উপন্যাস", ebook: false },
-  { title: "চামেলি কটেজ", genre: "উপন্যাস", ebook: false },
+  { title: "চামেলি কটেজ", genre: "উপন্যাস", ebook: false, out: true },
   { title: "বনলতা এক্সপ্রেস", genre: "উপন্যাস", ebook: false },
   { title: "ষোলো আনা", genre: "উপন্যাস", ebook: false },
   { title: "কৃষ্ণচূড়া তোমাকে দিলাম", genre: "উপন্যাস", ebook: false },
@@ -934,7 +940,7 @@ const BOOK_LIST = [
   { title: "অশ্বারোহী", genre: "উপন্যাস", ebook: false },
   { title: "নাগরদোলা", genre: "উপন্যাস", ebook: false },
   { title: "নগরে নরক", genre: "উপন্যাস", ebook: false },
-  { title: "রাজপাট", genre: "উপন্যাস", ebook: false },
+  { title: "রাজপাট", genre: "উপন্যাস", ebook: false, out: true },
   { title: "রাজধানী", genre: "উপন্যাস", ebook: false },
   { title: "গঙ্গাযমুনা", genre: "উপন্যাস", ebook: false },
   { title: "ও মন তোমাকে দেখাবো আমার চোখের শ্রাবণ", genre: "কাব্যগ্রন্থ", ebook: false },
@@ -1282,7 +1288,8 @@ const NEW_BOOK_YEAR = "২০২৬";
 const isNewBook = (b) => Boolean(b && b.year && String(b.year).includes(NEW_BOOK_YEAR));
 const coverBadge = (b) => (isNewBook(b) ? '<span class="cover-badge">নতুন</span>' : "");
 
-const orderButton = (i, label = "WhatsApp-এ অর্ডার") =>
+const orderButton = (i, label = "WhatsApp-এ অর্ডার") => BOOKS[i] && BOOKS[i].out
+  ? `<span class="btn btn-out" aria-disabled="true">স্টক আউট</span>` :
   `<a href="#" class="btn btn-gold" data-wa="book" data-index="${i}">${ICONS.whatsapp} ${label}</a>`;
 const hasSynopsis = (b) => Array.isArray(b.synopsis) && b.synopsis.some(isFilled);
 const synopsisButton = (i) => hasSynopsis(BOOKS[i])
@@ -1325,7 +1332,7 @@ function renderBooks() {
     return `
     <article class="book reveal" id="book-${esc(book.slug || "n" + i)}">
       <button class="book-cover" data-open="book" data-index="${i}" aria-label="${esc(book.title)} — বিস্তারিত">
-        ${coverMarkup(book)}${coverBadge(book)}
+        ${coverMarkup(book)}${coverBadge(book)}${book.out ? '<span class="cover-out">স্টক আউট</span>' : ""}
       </button>
       <p class="book-genre">${esc(book.genre)}</p>
       <h3 class="book-title"><a class="book-title-link" href="/b/${esc(book.slug || "")}/">${esc(book.title)}</a></h3>
@@ -1760,7 +1767,7 @@ const PAY = {
 
 const bnToNum = (str) => Number(String(str).replace(/[০-৯]/g, (d) => BN_DIGITS.indexOf(d)).replace(/[^\d]/g, "")) || 0;
 const priceOf = (b) => (b && isFilled(b.price) ? bnToNum(b.price) : 0);
-const canBuy = (b) => Boolean(b && b.slug && priceOf(b) > 0);
+const canBuy = (b) => Boolean(b && b.slug && !b.out && priceOf(b) > 0);
 const taka = (n) => `${toBn(Number(n).toLocaleString("en-US"))} টাকা`;
 const bookBySlug = (slug) => BOOKS.find((b) => b.slug === slug);
 const CART_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.2l2.1 10.2a1.5 1.5 0 0 0 1.5 1.2h7.9a1.5 1.5 0 0 0 1.5-1.1L20 8H6.3"/><circle cx="9.5" cy="19.2" r="1.3"/><circle cx="16.5" cy="19.2" r="1.3"/></svg>';

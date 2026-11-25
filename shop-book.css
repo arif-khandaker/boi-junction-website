@@ -22,3 +22,4 @@ h1,h2{font-family:"Noto Sans Bengali","AK Sans",sans-serif;font-weight:700;color
 .rel a{color:#1f2430}
 footer,.foot{color:#667085}
 .rv *{color:inherit}
+.btn.out{background:#f1f3f6;border-color:#d5dae3;color:#98a2b3;cursor:default}

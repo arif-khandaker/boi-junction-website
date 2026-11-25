@@ -674,3 +674,8 @@ picture{display:contents}
 .rk-stars b{color:#f5a623;font-size:14px}
 .rk-stars span{color:#98a2b3}
 .price-chips{margin-top:8px}
+
+/* স্টক আউট */
+.cover-out{position:absolute;left:0;right:0;bottom:0;padding:6px 0;text-align:center;background:rgba(31,36,48,.82);color:#fff;font-size:13px;font-weight:700;letter-spacing:.3px}
+.book:has(.cover-out) .book-cover img{filter:grayscale(.55) opacity(.8)}
+.btn-out{background:#f1f3f6!important;border:1.5px solid #d5dae3!important;color:#98a2b3!important;cursor:default;pointer-events:none}
