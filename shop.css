@@ -535,3 +535,8 @@ figcaption { color: var(--rk-muted) !important; }
 .social-box *, .social-box h3, .social-box h4, .sb-title { color: var(--rk-text) !important; }
 .social-box svg { color: var(--rk-blue) !important; }
 .social-box a { color: var(--rk-text) !important; }
+
+/* হেডারের শব্দ-লোগো (আইকন ছাড়া) */
+.brand-word { font-family: "Noto Sans Bengali", sans-serif; font-weight: 700; font-size: 30px; line-height: 1.2; white-space: nowrap; letter-spacing: .5px; }
+.brand-word .w1 { color: #7a1f2b; } .brand-word .w2 { color: #f28c1e; } .brand-word .w3 { color: #d92d2d; } .brand-word .w4 { color: #111; }
+@media (min-width: 861px) { .brand-word { font-size: 38px; } }

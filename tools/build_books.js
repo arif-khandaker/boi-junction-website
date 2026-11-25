@@ -18,7 +18,7 @@ const SETS = grab("SETS");
 const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://boijunction.com";
 const AUTHOR_SITE = "https://authorarifkhandaker.com";
-const V = "20261125d";
+const V = "20261125e";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -180,7 +180,7 @@ footer{margin-top:50px;padding:26px 22px;text-align:center;color:#a59c8b;font-si
 <link rel="stylesheet" href="/shop-book.css?v=${V}">
 </head>
 <body${canBuy ? ' class="hasbar"' : ""}>
-<header class="top"><a class="brand" href="/"><span style="color:#e5484d">বই</span> <span style="color:#3dbb72">জংশন</span><small>BOI JUNCTION</small></a><a class="back" href="/#books">← সব বই</a></header>
+<header class="top"><a class="brand" href="/"><span style="color:#7a1f2b">ব</span><span style="color:#f28c1e">ই</span> <span style="color:#d92d2d">জং</span><span style="color:#111">শ</span><span style="color:#7a1f2b">ন</span><small>BOIJUNCTION.COM</small></a><a class="back" href="/#books">← সব বই</a></header>
 <main>
 <div class="book">
 ${b.cover ? `<img src="/${esc(b.cover)}" alt="${esc(b.title)} — প্রচ্ছদ" width="240" height="360">` : "<div></div>"}
