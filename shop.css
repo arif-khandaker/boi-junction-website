@@ -645,3 +645,25 @@ figcaption { color: var(--rk-muted) !important; }
 .rk-allhead[hidden], #rk-rails[hidden] { display: none; }
 .rk-trust b { color: var(--rk-text) !important; } .rk-trust span { color: var(--rk-muted) !important; }
 .rk-rail-row .book .book-title { min-height: 0; }
+
+/* ---- ফ্রি ডেলিভারির পাটা ---- */
+.rk-freebar { background: linear-gradient(90deg, #1f7a4a, #2b8a3e); color: #fff; text-align: center; padding: 7px 12px; font-size: 14px; line-height: 1.5; }
+.rk-freebar b { color: #fff; font-weight: 600; }
+.free-bar { margin: 12px 0 0; padding: 10px 12px; border-radius: 12px; background: #eef8f0; border: 1px solid #cfe6d5; color: #1f5a30; font-size: 14px; }
+.free-bar p { margin: 0 0 6px; line-height: 1.6; } .free-bar.is-done p { margin: 0; }
+.free-track { display: block; height: 8px; background: #d9eadf; border-radius: 99px; overflow: hidden; } .free-track i { display: block; height: 100%; background: #2b8a3e; border-radius: 99px; transition: width .4s; }
+.cart-suggest { margin: 14px 0 0; } .cart-suggest h4 { font-size: 15px; margin: 0 0 8px; color: var(--rk-text); }
+.cs-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.cs-item { border: 1px solid var(--rk-line); border-radius: 12px; padding: 8px 6px; text-align: center; background: #fff; display: flex; flex-direction: column; gap: 3px; }
+.cs-item img { width: 56px; height: 76px; object-fit: cover; margin: 0 auto; border-radius: 3px; box-shadow: 0 4px 10px -4px rgba(0,0,0,.4); }
+.cs-item strong { font-size: 12.5px; line-height: 1.35; color: var(--rk-text); } .cs-item em { font-style: normal; font-size: 12.5px; color: var(--rk-muted); }
+.cs-item .btn { min-height: 32px; padding: 3px 6px; font-size: 12px; margin-top: auto; }
+
+/* ---- সার্চ সাজেশন ও সাজানো ---- */
+.rk-search { position: relative; }
+.rk-suggest { position: absolute; left: 6px; right: 6px; top: calc(100% + 6px); z-index: 150; margin: 0; padding: 4px; list-style: none; background: #fff; border: 1px solid var(--rk-line); border-radius: 12px; box-shadow: 0 12px 30px -10px rgba(16,24,40,.3); }
+.rk-suggest[hidden] { display: none; }
+.rk-suggest a { display: block; padding: 9px 12px; border-radius: 8px; color: var(--rk-text); text-decoration: none; font-size: 15px; }
+.rk-suggest a:hover { background: var(--rk-pale); color: var(--rk-blue); }
+.rk-sort { display: flex; align-items: center; gap: 8px; margin: 6px 2px 0; font-size: 13.5px; color: var(--rk-muted); }
+.rk-sort select { font: inherit; font-size: 14px; border: 1px solid var(--rk-line); border-radius: 999px; padding: 4px 12px; background: #fff; color: var(--rk-text); }
