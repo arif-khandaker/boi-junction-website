@@ -1773,11 +1773,9 @@ function cartFreeBar() {
 }
 function cartSuggest() {
   const inCart = new Set(cart.map((x) => x.slug));
-  const left = FREE_DELIVERY_MIN - cartTotal();
   let pool = BOOKS.filter((b) => canBuy(b) && !inCart.has(b.slug));
   if (!pool.length) return "";
   /* ফ্রি ডেলিভারির কাছে পৌঁছাতে সাহায্য করে এমন বই আগে */
-  pool.sort((a, b) => Math.abs(priceOf(a) - left) - Math.abs(priceOf(b) - left));
   pool = pool.slice(0, 3);
   return `<div class="cart-suggest"><h4>এর সঙ্গে আরও নিতে পারেন</h4><div class="cs-row">${pool.map((b) => `<div class="cs-item">${b.cover ? `<img src="${esc(b.cover)}" alt="${esc(b.title)}" loading="lazy">` : ""}<strong>${esc(b.title)}</strong><em>${taka(priceOf(b))}</em><button type="button" class="btn btn-gold" data-cart-add="${esc(b.slug)}">+ যোগ করুন</button></div>`).join("")}</div></div>`;
 }
