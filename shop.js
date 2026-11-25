@@ -140,4 +140,40 @@
     if (inp) inp.addEventListener("input", sync2);
     if (chips) chips.addEventListener("click", function () { setTimeout(sync2, 0); });
   }
+
+  /* ---- হেডার সার্চের সাজেশন ---- */
+  try {
+    var qbox = $("#rk-q"), sug = $("#rk-suggest");
+    if (qbox && sug && grid) {
+      var titles = Array.prototype.map.call(grid.querySelectorAll(".book"), function (c) {
+        var t = c.querySelector(".book-title"), l = c.querySelector(".book-title-link");
+        return t ? { n: t.textContent.trim(), h: l ? l.getAttribute("href") : "#books" } : null;
+      }).filter(Boolean);
+      qbox.addEventListener("input", function () {
+        var v = qbox.value.trim().toLowerCase();
+        sug.innerHTML = "";
+        if (!v) { sug.hidden = true; return; }
+        var m = titles.filter(function (x) { return x.n.toLowerCase().indexOf(v) > -1; }).slice(0, 6);
+        m.forEach(function (x) { var li = document.createElement("li"), a = document.createElement("a"); a.href = x.h; a.textContent = x.n; li.appendChild(a); sug.appendChild(li); });
+        sug.hidden = !m.length;
+      });
+      document.addEventListener("click", function (e) { if (!e.target.closest(".rk-search")) sug.hidden = true; });
+    }
+  } catch (e) {}
+
+  /* ---- দাম অনুযায়ী সাজানো ---- */
+  try {
+    var sel = $("#rk-sort");
+    if (sel && grid) {
+      var orig = Array.prototype.slice.call(grid.children);
+      var bn = "০১২৩৪৫৬৭৮৯";
+      var num = function (c) { var p = c.querySelector(".price"); var s = (p ? p.textContent : "").replace(/[০-৯]/g, function (d) { return bn.indexOf(d); }).replace(/[^0-9]/g, ""); return parseInt(s || "0", 10); };
+      sel.addEventListener("change", function () {
+        var arr = orig.slice();
+        if (sel.value === "asc") arr.sort(function (a, b) { return num(a) - num(b); });
+        if (sel.value === "desc") arr.sort(function (a, b) { return num(b) - num(a); });
+        arr.forEach(function (c) { grid.appendChild(c); });
+      });
+    }
+  } catch (e) {}
 })();

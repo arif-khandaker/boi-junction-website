@@ -33,8 +33,8 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=4">
   <link rel="manifest" href="/manifest.webmanifest">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-H027R58T1E"></script>
-  <script src="/gtag-init.js?v=20261126c"></script>
-  <link rel="stylesheet" href="style.css?v=20261126c">
+  <script src="/gtag-init.js?v=20261126d"></script>
+  <link rel="stylesheet" href="style.css?v=20261126d">
   <style>
     @font-face{font-family:"AK Sans";src:url("ak-sans.woff?v=4") format("woff");font-weight:300 600;font-style:normal;font-display:swap}
     @font-face{font-family:"AK Serif";src:url("ak-serif.woff?v=4") format("woff");font-weight:400 500;font-style:normal;font-display:swap}
@@ -126,8 +126,8 @@
     #biography .timeline-now .timeline-year{color:#2e1f12}
     @media (max-width:540px){#intro .intro-text p:not(.lead):not(.section-eyebrow){font-size:16.5px;padding-left:14px}#intro::after,#biography::after{top:22px}}
   </style>
-  <link rel="stylesheet" href="bj.css?v=20261126c">
-  <link rel="stylesheet" href="shop.css?v=20261126c">
+  <link rel="stylesheet" href="bj.css?v=20261126d">
+  <link rel="stylesheet" href="shop.css?v=20261126d">
 </head>
 <body>
 
@@ -146,6 +146,7 @@
   <a class="skip-link" href="#main">মূল লেখায় যান</a>
 
   <div class="rk-hotline"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2a9.7 9.7 0 0 0-8.4 14.6L2.3 21.8l5.1-1.3A9.7 9.7 0 1 0 12 2.2z" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span><b>অর্ডার ও জিজ্ঞাসা:</b> WhatsApp <a href="#" data-wa="general">০১৮২৩-৮১৮৮৮৭</a></span></div>
+  <div class="rk-freebar"><span>🚚</span> <b>৩,০০০ টাকার বই কিনলেই ডেলিভারি একদম ফ্রি!</b></div>
 
   <header class="site-header" id="site-header">
     <div class="container header-inner">
@@ -163,6 +164,7 @@
         <label class="sr-only" for="rk-q">বই খুঁজুন</label>
         <input type="search" id="rk-q" placeholder="বইয়ের নাম বা ধরন লিখে খুঁজুন…" autocomplete="off" enterkeyhint="search">
         <button type="submit">খুঁজুন</button>
+        <ul class="rk-suggest" id="rk-suggest" hidden></ul>
       </form>
       <nav class="site-nav" id="site-nav" aria-label="প্রধান মেনু">
         <ul>
@@ -202,7 +204,7 @@
         <a class="rk-offer" id="rk-offer" href="#book-sets" hidden></a>
         <ul class="rk-trust" aria-label="আমাদের প্রতিশ্রুতি">
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l4-1L19 8l-3-3L5 16zM14 7l3 3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><b>লেখকের স্বাক্ষর</b><span>প্রতিটি বইয়ে</span></li>
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7zM7 19a1.6 1.6 0 1 0 0-.01M17 19a1.6 1.6 0 1 0 0-.01" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><b>দ্রুত ডেলিভারি</b><span>ঢাকার ভেতরে ও বাইরে</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7zM7 19a1.6 1.6 0 1 0 0-.01M17 19a1.6 1.6 0 1 0 0-.01" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><b>ফ্রি ডেলিভারি</b><span>৩,০০০ টাকার বই কিনলে</span></li>
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.4" fill="none" stroke="currentColor" stroke-width="1.7"/></svg><b>সহজ পেমেন্ট</b><span>বিকাশ · নগদ · রকেট</span></li>
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><b>সরাসরি লেখকের কাছ থেকে</b><span>খাঁটি বই</span></li>
         </ul>
@@ -233,6 +235,7 @@
           </label>
           <div class="book-chips" id="book-chips" role="group" aria-label="বইয়ের ধরন"></div>
           <p class="book-count" id="book-count" aria-live="polite"></p>
+          <label class="rk-sort"><span>সাজান:</span> <select id="rk-sort"><option value="">নতুন আগে</option><option value="asc">দাম: কম → বেশি</option><option value="desc">দাম: বেশি → কম</option></select></label>
         </div>
         <div class="featured-book" id="featured-book"></div>
         <div class="book-grid" id="book-grid"></div>
@@ -512,19 +515,19 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=20261126c"></script>
-  <script src="station.js?v=20261126c"></script>
-  <script src="coming.js?v=20261126c"></script>
-  <script src="board.js?v=20261126c"></script>
-  <script src="ticket.js?v=20261126c"></script>
-  <script src="announce.js?v=20261126c"></script>
-  <script src="extras.js?v=20261126c"></script>
-  <script src="more.js?v=20261126c"></script>
+  <script src="script.js?v=20261126d"></script>
+  <script src="station.js?v=20261126d"></script>
+  <script src="coming.js?v=20261126d"></script>
+  <script src="board.js?v=20261126d"></script>
+  <script src="ticket.js?v=20261126d"></script>
+  <script src="announce.js?v=20261126d"></script>
+  <script src="extras.js?v=20261126d"></script>
+  <script src="more.js?v=20261126d"></script>
   <script src="firebase-config.js?v=20261026c"></script>
-  <script src="orders.js?v=20261126c"></script>
-  <script src="notify.js?v=20261126c"></script>
-  <script src="rail.js?v=20261126c"></script>
-  <script src="shop.js?v=20261126c"></script>
-  <script src="/sw-reg.js?v=20261126c"></script>
+  <script src="orders.js?v=20261126d"></script>
+  <script src="notify.js?v=20261126d"></script>
+  <script src="rail.js?v=20261126d"></script>
+  <script src="shop.js?v=20261126d"></script>
+  <script src="/sw-reg.js?v=20261126d"></script>
 </body>
 </html>

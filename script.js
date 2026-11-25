@@ -1753,7 +1753,25 @@ const setCount = (st) => Math.min(...st.slugs.map((sl) => { const x = cart.find(
 const setSum = (st) => st.slugs.reduce((n, sl) => n + priceOf(bookBySlug(sl)), 0);
 const cartSets = () => SETS.map((st) => ({ st, k: setCount(st) })).filter((x) => x.k > 0);
 const cartSetDiscount = () => cartSets().reduce((n, x) => n + x.k * (setSum(x.st) - x.st.price), 0);
-const cartFreeDelivery = () => cartSets().length > 0;
+const FREE_DELIVERY_MIN = 3000; /* এই টাকার বই কিনলে ডেলিভারি ফ্রি */
+const cartFreeDelivery = () => cartSets().length > 0 || cartTotal() >= FREE_DELIVERY_MIN;
+const cartFreeReason = () => (cartSets().length > 0 ? "সেট অফারে" : `${taka(FREE_DELIVERY_MIN)}-এর বই কেনায়`);
+function cartFreeBar() {
+  const t = cartTotal();
+  if (cartFreeDelivery()) return `<div class="free-bar is-done"><p>🎉 অভিনন্দন! ${esc(cartFreeReason())} আপনার <strong>ডেলিভারি ফ্রি</strong>।</p></div>`;
+  const left = FREE_DELIVERY_MIN - t, pct = Math.max(4, Math.min(100, Math.round((t / FREE_DELIVERY_MIN) * 100)));
+  return `<div class="free-bar"><p>🚚 আর <strong>${taka(left)}</strong>-এর বই নিলেই <strong>ডেলিভারি ফ্রি</strong>!</p><span class="free-track"><i style="width:${pct}%"></i></span></div>`;
+}
+function cartSuggest() {
+  const inCart = new Set(cart.map((x) => x.slug));
+  const left = FREE_DELIVERY_MIN - cartTotal();
+  let pool = BOOKS.filter((b) => canBuy(b) && !inCart.has(b.slug));
+  if (!pool.length) return "";
+  /* ফ্রি ডেলিভারির কাছে পৌঁছাতে সাহায্য করে এমন বই আগে */
+  pool.sort((a, b) => Math.abs(priceOf(a) - left) - Math.abs(priceOf(b) - left));
+  pool = pool.slice(0, 3);
+  return `<div class="cart-suggest"><h4>এর সঙ্গে আরও নিতে পারেন</h4><div class="cs-row">${pool.map((b) => `<div class="cs-item">${b.cover ? `<img src="${esc(b.cover)}" alt="${esc(b.title)}" loading="lazy">` : ""}<strong>${esc(b.title)}</strong><em>${taka(priceOf(b))}</em><button type="button" class="btn btn-gold" data-cart-add="${esc(b.slug)}">+ যোগ করুন</button></div>`).join("")}</div></div>`;
+}
 const cartTotal = () => cart.reduce((n, x) => n + priceOf(bookBySlug(x.slug)) * x.qty, 0) - cartSetDiscount();
 
 /* অর্ডার পাঠানোর পর "যাত্রার টিকিট" বানানোর জন্য কার্টের ছবি (কার্ট খালি করার আগে) */
@@ -1841,7 +1859,7 @@ function cartOrderMessage() {
     "",
     ...cartSets().map((x) => `সেট: ${x.st.title} × ${toBn(x.k)} (ছাড় ধরে)`),
     `বইয়ের মোট দাম: ${taka(cartTotal())}`,
-    cartFreeDelivery() ? "ডেলিভারি: ফ্রি (সেট অফার); সাথে লেখকের অটোগ্রাফ ও হাতে লেখা চিঠি" : "ডেলিভারি খরচ: আলাদা (দয়া করে জানাবেন)",
+    cartFreeDelivery() ? `ডেলিভারি: ফ্রি (${cartFreeReason()}); সাথে লেখকের অটোগ্রাফ` : "ডেলিভারি খরচ: আলাদা (দয়া করে জানাবেন)",
     "",
     `নাম: ${cartForm.name.trim()}`,
     `মোবাইল: ${cartForm.phone.trim()}`,
@@ -1912,8 +1930,10 @@ function renderCart() {
       </ul>
       <p class="cart-signed-banner">${SIGNED_PEN}<span>প্রতিটি বই আসবে <strong>লেখকের নিজ হাতের স্বাক্ষরসহ</strong> — আপনার নামে, আপনার জন্য।</span></p>
       ${cartSetDiscount() ? `<p class="cart-setnote">🎁 ${cartSets().map((x) => esc(x.st.title)).join(", ")} — সেট ছাড় ${taka(cartSetDiscount())}। সাথে লেখকের অটোগ্রাফ, হাতে লেখা চিঠি ও ফ্রি ডেলিভারি।</p>` : ""}
+      ${cartFreeBar()}
       <p class="cart-total"><span>বইয়ের মোট দাম</span><strong>${taka(total)}</strong></p>
-      <p class="cart-note">${cartFreeDelivery() ? "সেট অফারে ডেলিভারি ফ্রি।" : "ডেলিভারি খরচ আলাদা। ঠিকানা অনুযায়ী অর্ডারের পর WhatsApp-এ জানানো হবে।"}</p>` + cartEbooksBlock();
+      ${cartSuggest()}
+      <p class="cart-note">${cartFreeDelivery() ? `${cartFreeReason()} ডেলিভারি ফ্রি।` : "ডেলিভারি খরচ আলাদা। ঠিকানা অনুযায়ী অর্ডারের পর WhatsApp-এ জানানো হবে।"}</p>` + cartEbooksBlock();
     actions.innerHTML =
       `<button class="btn btn-gold" data-cart-act="to-info">অর্ডারের তথ্য দিন →</button>` +
       `<button class="btn btn-outline-gold" data-close>আরও বই দেখুন</button>`;
