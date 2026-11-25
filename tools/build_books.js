@@ -18,7 +18,7 @@ const SETS = grab("SETS");
 const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://boijunction.com";
 const AUTHOR_SITE = "https://authorarifkhandaker.com";
-const V = "20261126a";
+const V = "20261126b";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -219,7 +219,7 @@ console.log("বইয়ের পাতা তৈরি:", all.length);
 /* sitemap.xml: হোমপেজ + লেখার পাতা + বইয়ের পাতা */
 const dirs = (d) => (fs.existsSync(path.join(root, d)) ? fs.readdirSync(path.join(root, d)).filter((n) => fs.existsSync(path.join(root, d, n, "index.html"))).sort() : []);
 const urls = [SITE + "/", ...all.map((b) => `${SITE}/b/${b.slug}/`)];
-fs.writeFileSync(path.join(root, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n")}\n</urlset>\n`);
+fs.writeFileSync(path.join(root, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${u}</loc><lastmod>${new Date().toISOString().slice(0,10)}</lastmod></url>`).join("\n")}\n</urlset>\n`);
 console.log("sitemap.xml হালনাগাদ:", urls.length, "টি ঠিকানা");
 
 /* হোমপেজে সব বইয়ের সাধারণ লিংক-তালিকা + ItemList (গুগল সহজে সব বইয়ের পাতা খুঁজে পায়) */
