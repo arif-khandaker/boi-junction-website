@@ -56,4 +56,35 @@
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  /* স্লাইডার: নিজে নিজে চলে */
+  var sl = $("#rk-slider");
+  if (sl) {
+    var track = $(".rk-track", sl), slides = sl.querySelectorAll(".rk-slide"), dots = $(".rk-dots", sl), idx = 0, timer = null, DELAY = 3000;
+    var dotEls = [];
+    for (var i = 0; i < slides.length; i++) {
+      (function (n) {
+        var d = document.createElement("button");
+        d.type = "button"; d.setAttribute("role", "tab"); d.setAttribute("aria-label", "স্লাইড " + (n + 1));
+        d.addEventListener("click", function () { go(n); start(); });
+        dots.appendChild(d); dotEls.push(d);
+      })(i);
+    }
+    function go(n) {
+      idx = (n + slides.length) % slides.length;
+      track.style.transform = "translateX(" + (-100 * idx) + "%)";
+      dotEls.forEach(function (d, k) { d.setAttribute("aria-selected", k === idx ? "true" : "false"); });
+    }
+    function start() { stop(); if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) timer = setInterval(function () { go(idx + 1); }, DELAY); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    sl.addEventListener("mouseenter", stop); sl.addEventListener("mouseleave", start);
+    var x0 = null;
+    sl.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; stop(); }, { passive: true });
+    sl.addEventListener("touchend", function (e) {
+      if (x0 !== null) { var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) go(idx + (dx < 0 ? 1 : -1)); }
+      x0 = null; start();
+    });
+    document.addEventListener("visibilitychange", function () { document.hidden ? stop() : start(); });
+    go(0); start();
+  }
 })();
