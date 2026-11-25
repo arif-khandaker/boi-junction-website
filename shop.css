@@ -599,3 +599,23 @@ figcaption { color: var(--rk-muted) !important; }
 .footer-name { display: none; }
 /* ইমেইলে পাঠান বোতাম পড়া যাক */
 .contact-form .btn-outline-gold, .contact-form .btn-outline, .contact-form .btn-ghost, .contact-form .btn:not(.btn-gold) { color: var(--rk-blue) !important; border-color: var(--rk-blue) !important; background: #fff !important; }
+
+/* ইবুক তালিকা: ছোট সারি-কার্ড */
+.ebook-shelf { margin: 20px 0 8px; padding: 16px 14px; background: #fff; border: 1px solid var(--rk-line); border-radius: 14px; box-shadow: var(--rk-shadow); }
+.ebook-head { text-align: left; margin-bottom: 14px; }
+.ebook-head h3 { color: var(--rk-text) !important; font-size: 20px; margin: 0 0 4px; }
+.ebook-head p:last-child { color: var(--rk-muted) !important; opacity: 1; font-size: 14px; line-height: 1.7; }
+.ebook-list { grid-template-columns: 1fr; gap: 12px; justify-content: stretch; }
+@media (min-width: 700px) { .ebook-list { grid-template-columns: 1fr 1fr; } }
+.ebook-card { max-width: none; flex-direction: row !important; text-align: left !important; align-items: center; gap: 14px; padding: 10px; border: 1px solid var(--rk-line); border-radius: 12px; background: #fff; }
+.ebook-card .book-cover { flex: 0 0 84px !important; width: 84px; aspect-ratio: 2 / 3; padding: 0 !important; background: none; border-radius: 4px; display: block; overflow: hidden; position: relative; box-shadow: 0 4px 12px -4px rgba(0,0,0,.35); }
+.ebook-card .book-cover img { width: 100%; height: 100%; object-fit: cover; box-shadow: none; border-radius: 0; }
+.ebook-card .cover-badge { top: 4px; left: 0; right: auto; font-size: 11px; padding: 1px 7px; background: var(--rk-red); color: #fff; clip-path: none; border-radius: 0 4px 4px 0; }
+.ebook-info .book-genre { display: block !important; color: var(--rk-muted); font-size: 12.5px; margin: 0; }
+.ebook-info .book-title { color: var(--rk-text) !important; font-size: 16px; margin: 2px 0; -webkit-line-clamp: 2; }
+.ebook-info .book-meta { font-size: 12.5px !important; color: var(--rk-muted) !important; opacity: 1; margin: 0 0 8px !important; }
+.ebook-info .book-meta .price { font-size: 14px; color: var(--rk-text); font-weight: 700; }
+.ebook-card .book-actions { display: flex !important; flex-wrap: wrap; gap: 6px; justify-content: flex-start !important; }
+.ebook-card .btn { min-height: 34px; padding: 4px 12px; font-size: 13px; }
+.ebook-card .btn-outline-gold { display: inline-flex !important; }
+.ebook-card [data-ebook-buy], .ebook-card .btn-gold { background: var(--rk-blue) !important; color: #fff !important; border-color: var(--rk-blue) !important; }
