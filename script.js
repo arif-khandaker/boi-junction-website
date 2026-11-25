@@ -750,6 +750,15 @@ const BOOKS = [
   },
 ];
 
+/* এই বইগুলো তালিকার শুরুতে দেখাবে (এই ক্রমে)। ক্রম বদলাতে এই তালিকা বদলান। */
+const PRIORITY_SLUGS = ["ajat", "bedona-ronger-bari", "gulshan", "asman-jominer-upakhyan", "ajmeri", "unamanush", "nira", "rojonigandha-resort"];
+(function () {
+  const rank = (b) => { const i = PRIORITY_SLUGS.indexOf(b.slug); return i === -1 ? 999 : i; };
+  const keep = BOOKS.map((b, i) => [b, i]);
+  keep.sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1]);
+  BOOKS.splice(0, BOOKS.length, ...keep.map((x) => x[0]));
+})();
+
 
 /* ---------- ইবুক (প্রিন্টেড বইয়ের নিচে আলাদা জায়গায় দেখায়) ----------
    link: ইবুক কেনার ঠিকানা। নতুন ইবুক যোগ করতে একটি { … } ব্লক কপি করুন। */
@@ -1764,11 +1773,9 @@ function cartFreeBar() {
 }
 function cartSuggest() {
   const inCart = new Set(cart.map((x) => x.slug));
-  const left = FREE_DELIVERY_MIN - cartTotal();
   let pool = BOOKS.filter((b) => canBuy(b) && !inCart.has(b.slug));
   if (!pool.length) return "";
   /* ফ্রি ডেলিভারির কাছে পৌঁছাতে সাহায্য করে এমন বই আগে */
-  pool.sort((a, b) => Math.abs(priceOf(a) - left) - Math.abs(priceOf(b) - left));
   pool = pool.slice(0, 3);
   return `<div class="cart-suggest"><h4>এর সঙ্গে আরও নিতে পারেন</h4><div class="cs-row">${pool.map((b) => `<div class="cs-item">${b.cover ? `<img src="${esc(b.cover)}" alt="${esc(b.title)}" loading="lazy">` : ""}<strong>${esc(b.title)}</strong><em>${taka(priceOf(b))}</em><button type="button" class="btn btn-gold" data-cart-add="${esc(b.slug)}">+ যোগ করুন</button></div>`).join("")}</div></div>`;
 }
