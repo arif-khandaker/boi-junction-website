@@ -1265,7 +1265,9 @@ function renderTimeline() {
 /* ---------- রেন্ডার: বই ---------- */
 function coverMarkup(book) {
   if (book.cover) {
-    return `<img src="${esc(book.cover)}" alt="${esc(book.title)} — প্রচ্ছদ" loading="lazy">`;
+    const w = /\.jpg$/i.test(book.cover) ? book.cover.replace(/\.jpg$/i, ".webp") : "";
+    const im = `<img src="${esc(book.cover)}" alt="${esc(book.title)} — প্রচ্ছদ" loading="lazy" decoding="async">`;
+    return w ? `<picture><source srcset="${esc(w)}" type="image/webp">${im}</picture>` : im;
   }
   return `
     <span class="cover-design" aria-hidden="true">
@@ -1389,7 +1391,12 @@ function initBookFilter() {
   const featured = $("#featured-book");
   if (!box || !input || !chipsEl || !grid) return;
 
-  const norm = (t) => String(t || "").toLowerCase().replace(/[\s\-_.,]+/g, " ").trim();
+  /* বানান ভুলেও খুঁজে পেতে: ই/ঈ, উ/ঊ, ি/ী, ু/ূ, ন/ণ, স/শ/ষ, য/জ এক ধরা হয় */
+  const FOLD = { "ী": "ি", "ূ": "ু", "ঈ": "ই", "ঊ": "উ", "ণ": "ন", "শ": "স", "ষ": "স", "য়": "য", "ড়": "ড", "ঢ়": "ঢ" };
+  const fold = (t) => String(t || "").toLowerCase().replace(/[\u200c\u200d]/g, "")
+    .replace(/[ীূঈঊণশষ]|য়|ড়|ঢ়/g, (c) => FOLD[c]).replace(/ড়/g, "ড");
+  window.bjFold = fold;
+  const norm = (t) => fold(t).replace(/[\s\-_.,]+/g, " ").trim();
   const GROUPS = [
     { label: "সব", test: () => true },
     { label: "নতুন বই", test: isNewBook },
@@ -1406,6 +1413,18 @@ function initBookFilter() {
   const ebHay = ebList.map((e) => norm([e.title, e.genre, e.publisher, e.year, "ইবুক ebook"].join(" ")));
   if (!ebList.length) GROUPS.pop();
   let group = 0;
+  let band = 0;
+  const BANDS = [
+    { label: "যেকোনো দাম", test: () => true },
+    { label: "৫০০ টাকার নিচে", test: (b) => priceOf(b) > 0 && priceOf(b) < 500 },
+    { label: "৫০০–১০০০ টাকা", test: (b) => priceOf(b) >= 500 && priceOf(b) <= 1000 },
+    { label: "১০০০ টাকার বেশি", test: (b) => priceOf(b) > 1000 },
+  ];
+  const bandEl = document.createElement("div");
+  bandEl.id = "price-chips"; bandEl.className = "book-chips price-chips";
+  bandEl.setAttribute("aria-label", "দামের সীমা");
+  bandEl.innerHTML = BANDS.map((x, i) => `<button type="button" class="chip${i === 0 ? " is-on" : ""}" data-price="${i}" aria-pressed="${i === 0}">${x.label}</button>`).join("");
+  chipsEl.insertAdjacentElement("afterend", bandEl);
 
   chipsEl.innerHTML = GROUPS.map((g, i) => {
     const n = g.ebook ? ebList.length : i === 0 ? BOOKS.length + ebList.length : BOOKS.filter(g.test).length;
@@ -1420,12 +1439,12 @@ function initBookFilter() {
     const words = q ? q.split(" ") : [];
     let shown = 0;
     BOOKS.forEach((b, i) => {
-      const ok = GROUPS[group].test(b) && words.every((w) => hay[i].includes(w));
+      const ok = GROUPS[group].test(b) && BANDS[band].test(b) && words.every((w) => hay[i].includes(w));
       if (nodes[i]) nodes[i].hidden = !ok;
       if (ok) shown++;
     });
     if (shelf && ebList.length) {
-      const ebOn = group === 0 || GROUPS[group].ebook;
+      const ebOn = (group === 0 || GROUPS[group].ebook) && band === 0;
       let ebShown = 0;
       ebCards.forEach((card, i) => {
         const ok = ebOn && words.every((w) => ebHay[i].includes(w));
@@ -1435,7 +1454,7 @@ function initBookFilter() {
       shelf.hidden = !ebShown;
       shown += ebShown;
     }
-    const filtering = q || group !== 0;
+    const filtering = q || group !== 0 || band !== 0;
     countEl.innerHTML = !filtering ? "" : shown
       ? `${toBn(shown)}টি বই পাওয়া গেছে · <button type="button" class="chip-clear" data-chip-clear>সব বই দেখুন</button>`
       : `কোনো বই পাওয়া যায়নি। অন্য শব্দে খুঁজুন · <button type="button" class="chip-clear" data-chip-clear>সব বই দেখুন</button>`;
@@ -1444,6 +1463,13 @@ function initBookFilter() {
 
   let timer;
   input.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(apply, 120); });
+  bandEl.addEventListener("click", (e) => {
+    const c = e.target.closest("[data-price]");
+    if (!c) return;
+    band = +c.dataset.price;
+    $$(".chip", bandEl).forEach((x) => { const on = x === c; x.classList.toggle("is-on", on); x.setAttribute("aria-pressed", on); });
+    apply();
+  });
   box.addEventListener("click", (e) => {
     const chip = e.target.closest("[data-chip]");
     if (chip) {
@@ -1451,7 +1477,8 @@ function initBookFilter() {
       $$(".chip", chipsEl).forEach((c) => { const on = c === chip; c.classList.toggle("is-on", on); c.setAttribute("aria-pressed", on); });
       apply();
     } else if (e.target.closest("[data-chip-clear]")) {
-      input.value = ""; group = 0;
+      input.value = ""; group = 0; band = 0;
+      $$(".chip", bandEl).forEach((c, i) => { c.classList.toggle("is-on", i === 0); c.setAttribute("aria-pressed", i === 0); });
       $$(".chip", chipsEl).forEach((c, i) => { c.classList.toggle("is-on", i === 0); c.setAttribute("aria-pressed", i === 0); });
       apply();
     }

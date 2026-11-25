@@ -133,27 +133,30 @@
     /* খোঁজা বা ধরন বাছলে সারি লুকায়, নইলে দেখায় */
     var inp = $("#book-search"), chips = $("#book-chips");
     function sync2() {
-      var filtered = (inp && inp.value.trim() !== "") || (chips && chips.querySelector(".chip.is-on") && chips.querySelector(".chip.is-on").getAttribute("data-chip") !== "0");
+      var pc = $("#price-chips .chip.is-on");
+      var filtered = (inp && inp.value.trim() !== "") || (pc && pc.getAttribute("data-price") !== "0") || (chips && chips.querySelector(".chip.is-on") && chips.querySelector(".chip.is-on").getAttribute("data-chip") !== "0");
       rails.hidden = !!filtered;
       if (head) head.hidden = !!filtered;
     }
     if (inp) inp.addEventListener("input", sync2);
     if (chips) chips.addEventListener("click", function () { setTimeout(sync2, 0); });
+    var pcs = $("#price-chips"); if (pcs) pcs.addEventListener("click", function () { setTimeout(sync2, 0); });
   }
 
   /* ---- হেডার সার্চের সাজেশন ---- */
   try {
     var qbox = $("#rk-q"), sug = $("#rk-suggest");
     if (qbox && sug && grid) {
+      var F = function (t) { return (window.bjFold ? window.bjFold(t) : String(t).toLowerCase()); };
       var titles = Array.prototype.map.call(grid.querySelectorAll(".book"), function (c) {
         var t = c.querySelector(".book-title"), l = c.querySelector(".book-title-link");
-        return t ? { n: t.textContent.trim(), h: l ? l.getAttribute("href") : "#books" } : null;
+        return t ? { n: t.textContent.trim(), f: F(t.textContent.trim()), h: l ? l.getAttribute("href") : "#books" } : null;
       }).filter(Boolean);
       qbox.addEventListener("input", function () {
-        var v = qbox.value.trim().toLowerCase();
+        var v = F(qbox.value.trim());
         sug.innerHTML = "";
         if (!v) { sug.hidden = true; return; }
-        var m = titles.filter(function (x) { return x.n.toLowerCase().indexOf(v) > -1; }).slice(0, 6);
+        var m = titles.filter(function (x) { return x.f.indexOf(v) > -1; }).slice(0, 6);
         m.forEach(function (x) { var li = document.createElement("li"), a = document.createElement("a"); a.href = x.h; a.textContent = x.n; li.appendChild(a); sug.appendChild(li); });
         sug.hidden = !m.length;
       });
@@ -176,4 +179,34 @@
       });
     }
   } catch (e) {}
+
+  /* ---- কার্ডে রিভিউ-তারা (Firebase থেকে, ধীরে ও চুপচাপ) ---- */
+  function stars() {
+    var cfg = window.AK_FIREBASE;
+    if (!cfg) return;
+    var B = "https://www.gstatic.com/firebasejs/10.12.2/";
+    Promise.all([import(B + "firebase-app.js"), import(B + "firebase-firestore.js")]).then(function (m) {
+      var a = m[0].initializeApp(cfg, "stars"), fs = m[1], db = fs.getFirestore(a);
+      return fs.getDocs(fs.query(fs.collection(db, "reviews"), fs.where("status", "==", "approved"), fs.limit(1000)));
+    }).then(function (snap) {
+      var agg = {};
+      snap.docs.forEach(function (d) {
+        var x = d.data();
+        if (x.kind === "author" || !(x.rating > 0) || !x.slug) return;
+        var o = agg[x.slug] || (agg[x.slug] = { s: 0, n: 0 });
+        o.s += x.rating; o.n++;
+      });
+      var toBn = function (v) { return String(v).replace(/\d/g, function (d) { return "০১২৩৪৫৬৭৮৯".charAt(d); }); };
+      Array.prototype.forEach.call(document.querySelectorAll(".book"), function (c) {
+        var l = c.querySelector(".book-title-link"); if (!l || c.querySelector(".rk-stars")) return;
+        var m = /\/b\/([^/]+)\//.exec(l.getAttribute("href") || ""), o = m && agg[m[1]];
+        if (!o) return;
+        var p = document.createElement("p");
+        p.className = "rk-stars";
+        p.innerHTML = "<b>★</b> " + toBn((Math.round(o.s / o.n * 10) / 10).toFixed(1)) + " <span>(" + toBn(o.n) + ")</span>";
+        var t = c.querySelector(".book-title"); if (t) t.insertAdjacentElement("afterend", p);
+      });
+    }).catch(function () {});
+  }
+  (window.requestIdleCallback || function (f) { setTimeout(f, 1500); })(stars);
 })();

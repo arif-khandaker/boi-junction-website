@@ -18,7 +18,8 @@ const SETS = grab("SETS");
 const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://boijunction.com";
 const AUTHOR_SITE = "https://authorarifkhandaker.com";
-const V = "20261126e";
+const pic = (c, attrs) => /\.jpg$/i.test(c) ? `<picture><source srcset="/${esc(c.replace(/\.jpg$/i, ".webp"))}" type="image/webp"><img src="/${esc(c)}" ${attrs}></picture>` : `<img src="/${esc(c)}" ${attrs}>`;
+const V = "20261126f";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -72,7 +73,7 @@ function sideBoxes(b) {
     const bs = st.slugs.map(bySlug).filter(Boolean);
     if (bs.length !== st.slugs.length) return;
     const sum = bs.reduce((n, x) => n + num(x.price), 0);
-    out += `<div class="bd set"><p class="bd-eye">✦ বিশেষ সেট</p><h3>${esc(st.title)}</h3><div class="bd-covers">${bs.map((x) => `<img src="/${esc(x.cover)}" alt="${esc(x.title)}" loading="lazy">`).join("")}</div><p class="bd-names">${bs.map((x) => esc(x.title)).join(" · ")}</p><div class="bd-price"><s>${taka(sum)}</s><strong>${taka(st.price)}</strong></div><span class="bd-save">🎉 ছাড় ${taka(sum - st.price)}</span><ul>${st.perks.map((x) => `<li>${esc(x)}</li>`).join("")}</ul><button type="button" class="btn gold" data-set-add="${st.slugs.join(",")}">সেটটি কার্টে নিন</button><small class="bd-note">কার্টে গিয়ে বিকাশ, নগদ বা রকেটে পেমেন্ট করুন।</small></div>`;
+    out += `<div class="bd set"><p class="bd-eye">✦ বিশেষ সেট</p><h3>${esc(st.title)}</h3><div class="bd-covers">${bs.map((x) => `${pic(x.cover, `alt="${esc(x.title)}" loading="lazy"`)}`).join("")}</div><p class="bd-names">${bs.map((x) => esc(x.title)).join(" · ")}</p><div class="bd-price"><s>${taka(sum)}</s><strong>${taka(st.price)}</strong></div><span class="bd-save">🎉 ছাড় ${taka(sum - st.price)}</span><ul>${st.perks.map((x) => `<li>${esc(x)}</li>`).join("")}</ul><button type="button" class="btn gold" data-set-add="${st.slugs.join(",")}">সেটটি কার্টে নিন</button><small class="bd-note">কার্টে গিয়ে বিকাশ, নগদ বা রকেটে পেমেন্ট করুন।</small></div>`;
   });
   return out;
 }
@@ -183,7 +184,7 @@ footer{margin-top:50px;padding:26px 22px;text-align:center;color:#a59c8b;font-si
 <header class="top"><a class="brand" href="/"><span style="color:#7a1f2b">ব</span><span style="color:#f28c1e">ই</span> <span style="color:#d92d2d">জং</span><span style="color:#111">শ</span><span style="color:#7a1f2b">ন</span><small>BOIJUNCTION.COM</small></a><a class="back" href="/#books">← সব বই</a></header>
 <main>
 <div class="book">
-${b.cover ? `<img src="/${esc(b.cover)}" alt="${esc(b.title)} — প্রচ্ছদ" width="240" height="360">` : "<div></div>"}
+${b.cover ? `${pic(b.cover, `alt="${esc(b.title)} — প্রচ্ছদ" width="240" height="360"`)}` : "<div></div>"}
 <div>
 <p class="kicker">${esc(b.genre)}${b.ebook ? " · ইবুক" : ""}</p>
 <h1>${esc(b.title)}</h1>
@@ -197,7 +198,7 @@ ${canBuy ? '<p class="ship"><b>ডেলিভারি:</b> ঢাকার ভ
 ${syn.length ? `<h2>সারসংক্ষেপ</h2><div class="syn">${syn.map((p) => `<p>${esc(p).replace(/\n/g, "<br>")}</p>`).join("")}</div>` : ""}
 ${reviewSection(b)}
 <h2>${rel.length && rel.every((x) => x.genre === b.genre) ? "একই ধরনের আরও বই" : "আরও বই"}</h2>
-<div class="rel">${rel.map((x) => `<a href="/b/${x.slug}/"><img src="/${esc(x.cover)}" alt="${esc(x.title)}" loading="lazy"><b>${esc(x.title)}</b><small>${esc(x.genre)}${buyable(x) ? " · " + taka(num(x.price)) : ""}</small></a>`).join("")}</div>
+<div class="rel">${rel.map((x) => `<a href="/b/${x.slug}/">${pic(x.cover, `alt="${esc(x.title)}" loading="lazy"`)}<b>${esc(x.title)}</b><small>${esc(x.genre)}${buyable(x) ? " · " + taka(num(x.price)) : ""}</small></a>`).join("")}</div>
 </main>
 <footer>© বই জংশন (Boi Junction)। সর্বস্বত্ব সংরক্ষিত। · লেখক: <a href="https://authorarifkhandaker.com/" rel="noopener">${AUTHOR}</a> · <a href="/#books">সব বই</a></footer>
 <script src="/firebase-config.js?v=${V}"></script>
