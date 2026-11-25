@@ -87,4 +87,57 @@
     document.addEventListener("visibilitychange", function () { document.hidden ? stop() : start(); });
     go(0); start();
   }
+
+  /* ---- অফার স্ট্রিপ (সেটের ছাড়) ---- */
+  try {
+    var off = $("#rk-offer");
+    if (off && typeof SETS !== "undefined" && SETS.length) {
+      var st = SETS[0], sum = setSum(st), save = sum - st.price;
+      if (save > 0) {
+        off.innerHTML = "<b>✦ " + st.title + "</b> — মাত্র <strong>" + taka(st.price) + "</strong> <s>" + taka(sum) + "</s> <em>" + taka(save) + " সাশ্রয়</em>";
+        off.hidden = false;
+      }
+    }
+  } catch (e) {}
+
+  /* ---- ধরন অনুযায়ী সারি (রেইল) ---- */
+  var rails = $("#rk-rails"), grid = $("#book-grid");
+  if (rails && grid && grid.children.length) {
+    var cards = Array.prototype.slice.call(grid.querySelectorAll(".book"));
+    var groups = [
+      { t: "নতুন বই", f: function (c) { return !!c.querySelector(".cover-badge"); } },
+      { t: "থ্রিলার উপন্যাস", f: function (c) { return /থ্রিলার/.test(g(c)); } },
+      { t: "রোমান্টিক উপন্যাস", f: function (c) { return /রোমান্টিক/.test(g(c)); } },
+      { t: "কাব্যগ্রন্থ", f: function (c) { return /কাব্য|কবিতা/.test(g(c)); } },
+      { t: "সমকালীন উপন্যাস", f: function (c) { return g(c).trim() === "উপন্যাস"; } },
+      { t: "সায়েন্স ফিকশন", f: function (c) { return /সায়েন্স ফিকশন/.test(g(c)); } }
+    ];
+    function g(c) { var e = c.querySelector(".book-genre"); return e ? e.textContent : ""; }
+    groups.forEach(function (gr) {
+      var list = cards.filter(gr.f);
+      if (!list.length) return;
+      var sec = document.createElement("section");
+      sec.className = "rk-rail";
+      sec.innerHTML = '<div class="rk-rail-head"><h2></h2></div><div class="rk-rail-row"></div>';
+      sec.querySelector("h2").textContent = gr.t;
+      var row = sec.querySelector(".rk-rail-row");
+      list.forEach(function (c) {
+        var cl = c.cloneNode(true);
+        cl.removeAttribute("id"); cl.classList.remove("reveal"); cl.classList.add("is-visible");
+        Array.prototype.forEach.call(cl.querySelectorAll("[id]"), function (n) { n.removeAttribute("id"); });
+        row.appendChild(cl);
+      });
+      rails.appendChild(sec);
+    });
+    var head = $("#rk-allhead"); if (head) head.hidden = false;
+    /* খোঁজা বা ধরন বাছলে সারি লুকায়, নইলে দেখায় */
+    var inp = $("#book-search"), chips = $("#book-chips");
+    function sync2() {
+      var filtered = (inp && inp.value.trim() !== "") || (chips && chips.querySelector(".chip.is-on") && chips.querySelector(".chip.is-on").getAttribute("data-chip") !== "0");
+      rails.hidden = !!filtered;
+      if (head) head.hidden = !!filtered;
+    }
+    if (inp) inp.addEventListener("input", sync2);
+    if (chips) chips.addEventListener("click", function () { setTimeout(sync2, 0); });
+  }
 })();
