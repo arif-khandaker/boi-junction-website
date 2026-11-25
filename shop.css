@@ -592,3 +592,10 @@ figcaption { color: var(--rk-muted) !important; }
 /* সেকশন-ভাগ পরিচ্ছন্ন */
 .bj-post, .bj-gift { background: transparent !important; box-shadow: none !important; }
 .bj-about, .bj-author { background: transparent; }
+
+/* ফুটারের লোগো: সাদা পাটায় রঙিন শব্দ-লোগো */
+.footer-word { display: inline-block; background: #fff; border-radius: 14px; padding: 6px 22px 8px; margin-bottom: 8px; box-shadow: 0 6px 18px -8px rgba(0,0,0,.5); }
+.footer-word .brand-word { font-size: 36px; }
+.footer-name { display: none; }
+/* ইমেইলে পাঠান বোতাম পড়া যাক */
+.contact-form .btn-outline-gold, .contact-form .btn-outline, .contact-form .btn-ghost, .contact-form .btn:not(.btn-gold) { color: var(--rk-blue) !important; border-color: var(--rk-blue) !important; background: #fff !important; }
