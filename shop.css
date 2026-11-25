@@ -540,3 +540,55 @@ figcaption { color: var(--rk-muted) !important; }
 .brand-word { font-family: "Noto Sans Bengali", sans-serif; font-weight: 700; font-size: 30px; line-height: 1.2; white-space: nowrap; letter-spacing: .5px; }
 .brand-word .w1 { color: #7a1f2b; } .brand-word .w2 { color: #f28c1e; } .brand-word .w3 { color: #d92d2d; } .brand-word .w4 { color: #111; }
 @media (min-width: 861px) { .brand-word { font-size: 38px; } }
+
+/* =========================================================
+   সাদামাটা বইয়ের দোকান: স্টেশন-ধাঁচের সাজ বাদ
+   ========================================================= */
+.bj-announce, #week-book, #aj-line, #coming, #readers, #passport, #all-books, .bj-vig, #bj-mood-cv, .bj-mood,
+#bj-pick, #bj-next, #bj-plat, .quiz-cta, #quote-cards, #catalog, #featured-book, .bj-dep, .bj-points,
+.cursor-glow, .bj-rail, .to-top-btn { display: none !important; }
+#books > .container > header.section-head .section-sub { display: none; }
+
+/* স্লাইডার */
+.bj-hero.rk-home { padding: 12px 0 4px; }
+.rk-slider { position: relative; border-radius: 14px; overflow: hidden; box-shadow: var(--rk-shadow); background: #222; }
+.rk-track { display: flex; transition: transform .5s ease; will-change: transform; }
+.rk-slide { flex: 0 0 100%; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px 26px; height: 168px; color: #fff; }
+.rk-slide-text { min-width: 0; }
+.rk-slide-tag { display: inline-block; font-size: 12px; background: rgba(255,255,255,.18); padding: 1px 10px; border-radius: 999px; margin-bottom: 4px; }
+.rk-slide h2 { margin: 0 0 2px; color: #fff; font-size: clamp(20px, 5.6vw, 30px); line-height: 1.3; font-weight: 700; }
+.rk-slide p { margin: 0 0 8px; font-size: 13.5px; color: #f2e8e2; }
+.rk-slide p b { color: #fff; font-size: 15px; }
+.rk-slide-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.rk-sb { font: inherit; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,.8); background: transparent; color: #fff; text-decoration: none; cursor: pointer; line-height: 1.4; }
+.rk-sb-main { background: #fff; color: #333; border-color: #fff; }
+.rk-slide-img { flex: none; height: 100%; display: flex; align-items: center; }
+.rk-slide-img img { height: 118px; width: auto; border-radius: 3px; box-shadow: 0 8px 20px -6px rgba(0,0,0,.6); }
+.rk-dots { position: absolute; left: 0; right: 0; bottom: 8px; display: flex; justify-content: center; gap: 7px; }
+.rk-dots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: rgba(255,255,255,.5); cursor: pointer; }
+.rk-dots button[aria-selected="true"] { background: #fff; width: 20px; border-radius: 6px; }
+@media (min-width: 861px) {
+  .rk-slide { height: 250px; padding: 24px 60px 34px; }
+  .rk-slide h2 { font-size: 38px; } .rk-slide p { font-size: 16px; } .rk-sb { font-size: 15px; padding: 9px 22px; }
+  .rk-slide-img img { height: 190px; }
+}
+
+/* ক্যাটাগরি টাইল ছোট ও পরিচ্ছন্ন */
+.rk-cats { grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; }
+.rk-cat { padding: 10px 2px 8px; font-size: 12.5px; box-shadow: none; }
+.rk-cat span { width: 40px; height: 40px; }
+@media (min-width: 640px) { .rk-cats { grid-template-columns: repeat(5, 1fr); } }
+
+/* বইয়ের কার্ড: শুধু প্রচ্ছদ, নাম, দাম, কার্ট */
+.book .synopsis-box, .book .btn-outline-gold, .book .book-genre, .book .book-meta .pub, .book .signed-badge { display: none !important; }
+.book .book-meta { font-size: 0; margin: 0 12px 8px; }
+.book .book-meta .price { font-size: 16px; color: var(--rk-text); }
+.book { box-shadow: none; }
+.book-cover { aspect-ratio: 3 / 4; padding: 10px 16%; }
+.section { padding: 22px 0; }
+.section-head { margin-bottom: 12px; }
+.section-eyebrow { display: none; }
+
+/* সেকশন-ভাগ পরিচ্ছন্ন */
+.bj-post, .bj-gift { background: transparent !important; box-shadow: none !important; }
+.bj-about, .bj-author { background: transparent; }

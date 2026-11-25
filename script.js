@@ -1310,8 +1310,7 @@ function renderBooks() {
       ${synopsisButton(0)}
     </div>`;
 
-  grid.innerHTML = BOOKS.slice(1).map((book, n) => {
-    const i = n + 1;
+  grid.innerHTML = BOOKS.map((book, i) => {
     return `
     <article class="book reveal" id="book-${esc(book.slug || "n" + i)}">
       <button class="book-cover" data-open="book" data-index="${i}" aria-label="${esc(book.title)} — বিস্তারিত">
@@ -1405,7 +1404,7 @@ function initBookFilter() {
   }).join("");
 
   const hay = BOOKS.map((b) => norm([b.title, b.genre, b.publisher, b.year, (b.slug || "").replace(/-/g, " ")].join(" ")));
-  const nodes = BOOKS.map((b, i) => (i === 0 ? featured : $("#book-" + (b.slug || "n" + i))));
+  const nodes = BOOKS.map((b, i) => $("#book-" + (b.slug || "n" + i)));
 
   function apply() {
     const q = norm(input.value);
