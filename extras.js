@@ -131,7 +131,7 @@
     let bx = X + 60; c.fillStyle = INK; let seed = 7;
     for (let i = 0; i < ref.length * 6 && bx < X + 560; i++) { seed = (seed * 31 + ref.charCodeAt(i % ref.length) + i) % 9973; const w = 3 + (seed % 5); if (i % 2 === 0) c.fillRect(bx, Y + PERF + 190, w, 80); bx += w + 2; }
     c.textAlign = "left"; c.fillStyle = MUTE; c.font = `600 26px ${FONT_S}`; c.fillText("টিকিট নং " + bn(ref), X + 60, Y + PERF + 305);
-    c.textAlign = "right"; c.fillStyle = MUTE; c.fillText("wwwboijunction.com", X + TW - 60, Y + PERF + 305);
+    c.textAlign = "right"; c.fillStyle = MUTE; c.fillText("boijunction.com", X + TW - 60, Y + PERF + 305);
 
     // স্ট্যাম্প
     c.save(); c.translate(X + TW - 175, Y + PERF - 115); c.rotate(-0.22); c.globalAlpha = 0.88;
@@ -178,7 +178,7 @@
         if (!blob) return;
         const file = new File([blob], "boi-junction-ticket.png", { type: "image/png" });
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          navigator.share({ files: [file], title: "বই জংশন — আমার যাত্রার টিকিট", text: (snap.passenger ? "আমি বই জংশনের " + bn(snap.passenger) + " নম্বর যাত্রী! " : "আমি বই জংশন থেকে বই নিলাম ") + "📚 https://wwwboijunction.com/" }).catch(() => {});
+          navigator.share({ files: [file], title: "বই জংশন — আমার যাত্রার টিকিট", text: (snap.passenger ? "আমি বই জংশনের " + bn(snap.passenger) + " নম্বর যাত্রী! " : "আমি বই জংশন থেকে বই নিলাম ") + "📚 https://boijunction.com/" }).catch(() => {});
         } else { o.querySelector("#tko-save").click(); }
       }, "image/png");
     });
