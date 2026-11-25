@@ -2159,6 +2159,7 @@ document.addEventListener("click", (e) => {
     let msg = SITE.generalMessage;
     if (wa.dataset.wa === "book") msg = bookOrderMessage(BOOKS[+wa.dataset.index]);
     if (wa.dataset.wa === "title") msg = bookOrderMessage({ title: wa.dataset.title });
+    if (wa.dataset.wa === "subscribe") msg = "আসসালামু আলাইকুম। বই জংশনের নতুন বইয়ের খবর ও অফার WhatsApp-এ পেতে চাই।";
     openWhatsApp(msg);
     return;
   }
