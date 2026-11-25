@@ -109,3 +109,9 @@ $("csv").onclick=()=>{
   const lines=[cols.join(",")].concat(ORD.map(o=>[o.ref,new Date(o.t).toISOString(),o.name,o.phone,o.area,o.address,(o.items||[]).map(i=>i.title+" x"+i.qty).join("; "),o.total,o.method,o.status].map(q).join(",")));
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["﻿"+lines.join("\n")],{type:"text/csv;charset=utf-8"}));a.download="boi-junction-orders.csv";a.click();
 };
+
+if("Notification" in window&&Notification.permission==="default"){
+  const nb=document.createElement("button");nb.className="btn o";nb.textContent="🔔 নতুন অর্ডারের নোটিফিকেশন চালু করুন";
+  nb.onclick=()=>Notification.requestPermission().then(()=>nb.remove());
+  const w=$("who");if(w&&w.parentNode)w.parentNode.appendChild(nb);
+}

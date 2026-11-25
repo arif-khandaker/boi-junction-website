@@ -209,4 +209,76 @@
     }).catch(function () {});
   }
   (window.requestIdleCallback || function (f) { setTimeout(f, 1500); })(stars);
+
+  /* ---- পছন্দের তালিকা (উইশলিস্ট): ফোনেই জমা থাকে ---- */
+  try {
+    var KEY = "bj-wish", wish = [];
+    try { wish = JSON.parse(localStorage.getItem(KEY) || "[]"); if (!Array.isArray(wish)) wish = []; } catch (e) { wish = []; }
+    var save = function () { try { localStorage.setItem(KEY, JSON.stringify(wish)); } catch (e) {} };
+    var bnum = function (v) { return String(v).replace(/\d/g, function (d) { return "০১২৩৪৫৬৭৮৯".charAt(d); }); };
+    var slugOf = function (c) { var l = c.querySelector(".book-title-link"), m = l && /\/b\/([^/]+)\//.exec(l.getAttribute("href") || ""); return m ? m[1] : ""; };
+    var HEART = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg>';
+    var addHearts = function () {
+      Array.prototype.forEach.call(document.querySelectorAll("#book-grid .book, .rk-rail-row .book"), function (c) {
+        if (c.querySelector(".rk-heart")) return;
+        var sl = slugOf(c); if (!sl) return;
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "rk-heart"; b.setAttribute("data-wish", sl);
+        b.setAttribute("aria-label", "পছন্দের তালিকায় রাখুন"); b.innerHTML = HEART;
+        c.appendChild(b);
+      });
+    };
+    var mark = function () {
+      Array.prototype.forEach.call(document.querySelectorAll(".rk-heart"), function (b) {
+        var on = wish.indexOf(b.getAttribute("data-wish")) > -1;
+        b.classList.toggle("is-on", on); b.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      var n = wish.length;
+      Array.prototype.forEach.call(document.querySelectorAll("[data-wish-count]"), function (e) { e.textContent = n ? bnum(n) : ""; e.hidden = !n; });
+    };
+    var sheet = document.createElement("div");
+    sheet.id = "rk-wish"; sheet.hidden = true;
+    sheet.innerHTML = '<div class="wish-back" data-wclose></div><div class="wish-box" role="dialog" aria-label="পছন্দের তালিকা"><div class="wish-head"><b>♥ পছন্দের তালিকা</b><button type="button" data-wclose aria-label="বন্ধ করুন">✕</button></div><div class="wish-list"></div></div>';
+    document.body.appendChild(sheet);
+    var openSheet = function () {
+      var list = $(".wish-list", sheet);
+      list.innerHTML = "";
+      wish.forEach(function (sl) {
+        var b = bookBySlug(sl); if (!b) return;
+        var r = document.createElement("div"); r.className = "wish-row";
+        r.innerHTML = (b.cover ? '<img src="' + b.cover + '" alt="" width="48" height="72">' : "<span></span>") +
+          '<div><a href="/b/' + sl + '/"><b></b></a><small></small></div>' +
+          (b.out ? '<span class="wish-out">স্টক আউট</span>' : '<button type="button" class="btn btn-gold" data-cart-add="' + sl + '">কার্টে নিন</button>') +
+          '<button type="button" class="wish-rm" data-wish="' + sl + '" aria-label="বাদ দিন">✕</button>';
+        r.querySelector("b").textContent = b.title; r.querySelector("small").textContent = b.price || "";
+        list.appendChild(r);
+      });
+      if (!list.children.length) list.innerHTML = '<p class="wish-empty">এখনো কিছু রাখেননি। বইয়ের কোণার ♡ চাপলে এখানে জমবে।</p>';
+      sheet.hidden = false;
+    };
+    var cartBtn = $(".rk-cart");
+    if (cartBtn && !$(".rk-acts")) {
+      var acts = document.createElement("div"); acts.className = "rk-acts";
+      cartBtn.parentNode.insertBefore(acts, cartBtn);
+      var hb = document.createElement("button");
+      hb.type = "button"; hb.className = "rk-cart rk-wishbtn"; hb.setAttribute("aria-label", "পছন্দের তালিকা");
+      hb.innerHTML = HEART + '<span class="rk-cart-count" data-wish-count hidden></span>';
+      hb.addEventListener("click", openSheet);
+      acts.appendChild(hb); acts.appendChild(cartBtn);
+    }
+    document.addEventListener("click", function (e) {
+      var h = e.target.closest("[data-wish]");
+      if (h) {
+        e.preventDefault(); e.stopPropagation();
+        var sl = h.getAttribute("data-wish"), i = wish.indexOf(sl);
+        if (i > -1) wish.splice(i, 1); else wish.unshift(sl);
+        save(); mark();
+        if (!sheet.hidden && h.classList.contains("wish-rm")) openSheet();
+        return;
+      }
+      if (e.target.closest("[data-wclose]")) { sheet.hidden = true; return; }
+      if (e.target.closest("#rk-wish [data-cart-add]")) setTimeout(function () { sheet.hidden = true; }, 50);
+    }, true);
+    addHearts(); mark();
+  } catch (e) { window.__wishErr = e; }
 })();

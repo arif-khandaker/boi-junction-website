@@ -22,7 +22,11 @@
         if (!n) return;
         var who = newest && newest.name ? " · সর্বশেষ: " + String(newest.name).slice(0, 24) : "";
         bar.textContent = "🔔 " + bn(n) + "টি নতুন অর্ডার এসেছে" + who + " — দেখুন →";
-        if (last >= 0 && n > last) { try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {} }
+        if (last >= 0 && n > last) {
+          try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {}
+          try { if ("Notification" in window && Notification.permission === "granted") new Notification("🔔 বই জংশন: নতুন অর্ডার", { body: bn(n) + "টি অর্ডার অপেক্ষায়" + who, icon: "/icon-192.png" }); } catch (e) {}
+          try { var ac = new (window.AudioContext || window.webkitAudioContext)(), o = ac.createOscillator(), g = ac.createGain(); o.connect(g); g.connect(ac.destination); o.frequency.value = 880; g.gain.value = 0.15; o.start(); o.stop(ac.currentTime + 0.35); } catch (e) {}
+        }
         last = n;
         document.title = "(" + bn(n) + ") " + document.title.replace(/^\([^)]*\)\s*/, "");
       }

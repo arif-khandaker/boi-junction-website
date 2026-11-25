@@ -19,7 +19,7 @@ const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://boijunction.com";
 const AUTHOR_SITE = "https://authorarifkhandaker.com";
 const pic = (c, attrs) => /\.jpg$/i.test(c) ? `<picture><source srcset="/${esc(c.replace(/\.jpg$/i, ".webp"))}" type="image/webp"><img src="/${esc(c)}" ${attrs}></picture>` : `<img src="/${esc(c)}" ${attrs}>`;
-const V = "20261126g";
+const V = "20261126i";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -85,7 +85,7 @@ function reviewSection(b) {
 function page(b) {
   const url = `${SITE}/b/${b.slug}/`;
   const d = desc(b);
-  const image = b.cover ? `${SITE}/${b.cover}` : `${SITE}/author.jpg`;
+  const image = fs.existsSync(path.join(root, "og", b.slug + ".jpg")) ? `${SITE}/og/${b.slug}.jpg` : b.cover ? `${SITE}/${b.cover}` : `${SITE}/author.jpg`;
   const priceN = num(b.price);
   const ld = {
     "@context": "https://schema.org", "@type": "Book", name: b.title, inLanguage: "bn", url, genre: b.genre, image,
@@ -131,6 +131,8 @@ function page(b) {
 <meta property="og:title" content="${esc(b.title)} — ${AUTHOR} · বই জংশন">
 <meta property="og:description" content="${esc(d)}">
 <meta property="og:image" content="${image}">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:image" content="${image}">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.ico?v=4" sizes="any">
 <link rel="manifest" href="/manifest.webmanifest">
@@ -218,9 +220,49 @@ all.forEach((b) => {
 });
 console.log("বইয়ের পাতা তৈরি:", all.length);
 
+
+/* ---- "আরিফ খন্দকারের বই" পরিচিতি/ল্যান্ডিং পাতা ---- */
+(function () {
+  const dir = path.join(root, "arif-khandaker-books");
+  fs.mkdirSync(dir, { recursive: true });
+  const url = SITE + "/arif-khandaker-books/";
+  const printed = BOOKS.filter((b) => b.slug);
+  const groups = [...new Set(printed.map((b) => b.genre))];
+  const ld = [
+    { "@context": "https://schema.org", "@type": "Person", name: AUTHOR, alternateName: "Arif Khandaker", url: AUTHOR_SITE, jobTitle: "লেখক ও রেডিও জকি", sameAs: [AUTHOR_SITE] },
+    { "@context": "https://schema.org", "@type": "ItemList", name: AUTHOR + "-এর সব বই", itemListElement: printed.map((b, i) => ({ "@type": "ListItem", position: i + 1, url: `${SITE}/b/${b.slug}/`, name: b.title })) },
+  ];
+  const card = (b) => `<a class="lb" href="/b/${b.slug}/">${pic(b.cover, `alt="${esc(b.title)} — ${AUTHOR}" loading="lazy" width="150" height="225"`)}<b>${esc(b.title)}</b><small>${b.out ? "স্টক আউট" : esc(b.price || "")}</small></a>`;
+  const html = `<!doctype html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${AUTHOR}-এর বই — সব উপন্যাস ও কাব্যগ্রন্থ কিনুন | বই জংশন</title>
+<meta name="description" content="${AUTHOR}-এর সব বই এক জায়গায়: থ্রিলার, রোমান্টিক উপন্যাস, কাব্যগ্রন্থ ও আরও। লেখকের স্বাক্ষরসহ সরাসরি অর্ডার, সারা বাংলাদেশে ডেলিভারি।">
+<link rel="canonical" href="${url}">
+<meta name="theme-color" content="#7a1f2b">
+<meta property="og:type" content="website"><meta property="og:site_name" content="বই জংশন"><meta property="og:locale" content="bn_BD">
+<meta property="og:url" content="${url}"><meta property="og:title" content="${AUTHOR}-এর বই — বই জংশন">
+<meta property="og:description" content="${AUTHOR}-এর সব বই, লেখকের স্বাক্ষরসহ সরাসরি অর্ডার।"><meta property="og:image" content="${SITE}/boi-junction-logo.png?v=4">
+<link rel="icon" href="/favicon.ico?v=4" sizes="any"><link rel="manifest" href="/manifest.webmanifest">
+${ld.map((x) => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join("\n")}
+<link rel="stylesheet" href="/shop-book.css?v=${V}">
+<style>.lead{max-width:640px;margin:8px auto 24px;color:#475467;line-height:1.8}.lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:16px;margin:14px 0 30px}.lb{display:block;text-decoration:none;color:#1f2430;text-align:center}.lb img{width:100%;height:auto;aspect-ratio:2/3;object-fit:cover;border-radius:6px;box-shadow:0 6px 16px -8px rgba(16,24,40,.4)}.lb b{display:block;margin-top:8px;font-size:15px}.lb small{color:#667085}h1{text-align:center}</style>
+</head><body>
+<header class="top"><a class="brand" href="/"><span style="color:#7a1f2b">ব</span><span style="color:#f28c1e">ই</span> <span style="color:#d92d2d">জং</span><span style="color:#111">শ</span><span style="color:#7a1f2b">ন</span><small>BOIJUNCTION.COM</small></a><a class="back" href="/#books">← দোকানে যান</a></header>
+<main>
+<h1>${AUTHOR}-এর বই</h1>
+<p class="lead">${AUTHOR} বাংলাদেশের একজন লেখক ও রেডিও জকি। থ্রিলার, রোমান্টিক উপন্যাস, ঐতিহাসিক কাহিনি ও কবিতা মিলিয়ে তাঁর বই এখানে এক জায়গায়। প্রতিটি বই লেখকের স্বাক্ষরসহ সরাসরি আপনার ঠিকানায় পৌঁছে যায়। ৩,০০০ টাকার বই কিনলে ডেলিভারি ফ্রি।</p>
+${groups.map((g) => `<h2>${esc(g)}</h2><div class="lg">${printed.filter((b) => b.genre === g).map(card).join("")}</div>`).join("\n")}
+<p style="text-align:center"><a class="btn gold" href="/#books">কার্টে নিয়ে অর্ডার করুন</a> <a class="btn" href="${AUTHOR_SITE}/" rel="noopener">লেখকের নিজস্ব সাইট</a></p>
+</main>
+<footer>© বই জংশন (Boi Junction)। সর্বস্বত্ব সংরক্ষিত। · লেখক: <a href="${AUTHOR_SITE}/" rel="noopener">${AUTHOR}</a> · <a href="/#books">সব বই</a></footer>
+</body></html>`;
+  fs.writeFileSync(path.join(dir, "index.html"), html);
+})();
+
 /* sitemap.xml: হোমপেজ + লেখার পাতা + বইয়ের পাতা */
 const dirs = (d) => (fs.existsSync(path.join(root, d)) ? fs.readdirSync(path.join(root, d)).filter((n) => fs.existsSync(path.join(root, d, n, "index.html"))).sort() : []);
-const urls = [SITE + "/", ...all.map((b) => `${SITE}/b/${b.slug}/`)];
+const urls = [SITE + "/", SITE + "/arif-khandaker-books/", ...all.map((b) => `${SITE}/b/${b.slug}/`)];
 fs.writeFileSync(path.join(root, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${u}</loc><lastmod>${new Date().toISOString().slice(0,10)}</lastmod></url>`).join("\n")}\n</urlset>\n`);
 console.log("sitemap.xml হালনাগাদ:", urls.length, "টি ঠিকানা");
 
