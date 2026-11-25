@@ -18,7 +18,7 @@ const SETS = grab("SETS");
 const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://boijunction.com";
 const AUTHOR_SITE = "https://authorarifkhandaker.com";
-const V = "20261104a";
+const V = "20261125c";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -131,7 +131,7 @@ function page(b) {
 <meta property="og:description" content="${esc(d)}">
 <meta property="og:image" content="${image}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/favicon.ico?v=2" sizes="any">
+<link rel="icon" href="/favicon.ico?v=3" sizes="any">
 <link rel="manifest" href="/manifest.webmanifest">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H027R58T1E"></script>
