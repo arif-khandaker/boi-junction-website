@@ -3,4 +3,4 @@ Allow: /
 Disallow: /reviews-admin/
 Disallow: /admin/
 
-Sitemap: https://wwwboijunction.com/sitemap.xml
+Sitemap: https://boijunction.com/sitemap.xml

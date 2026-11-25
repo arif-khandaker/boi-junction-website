@@ -16,7 +16,7 @@ const BOOKS = grab("BOOKS");
 const EBOOKS = grab("EBOOKS");
 const SETS = grab("SETS");
 const AUTHOR = "আরিফ খন্দকার";
-const SITE = "https://wwwboijunction.com";
+const SITE = "https://boijunction.com";
 const AUTHOR_SITE = "https://authorarifkhandaker.com";
 const V = "20261104a";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
