@@ -750,6 +750,15 @@ const BOOKS = [
   },
 ];
 
+/* এই বইগুলো তালিকার শুরুতে দেখাবে (এই ক্রমে)। ক্রম বদলাতে এই তালিকা বদলান। */
+const PRIORITY_SLUGS = ["ajat", "bedona-ronger-bari", "gulshan", "asman-jominer-upakhyan", "ajmeri", "unamanush", "nira", "rojonigandha-resort"];
+(function () {
+  const rank = (b) => { const i = PRIORITY_SLUGS.indexOf(b.slug); return i === -1 ? 999 : i; };
+  const keep = BOOKS.map((b, i) => [b, i]);
+  keep.sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1]);
+  BOOKS.splice(0, BOOKS.length, ...keep.map((x) => x[0]));
+})();
+
 
 /* ---------- ইবুক (প্রিন্টেড বইয়ের নিচে আলাদা জায়গায় দেখায়) ----------
    link: ইবুক কেনার ঠিকানা। নতুন ইবুক যোগ করতে একটি { … } ব্লক কপি করুন। */
