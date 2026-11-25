@@ -1,0 +1,24 @@
+/* বইয়ের আলাদা পাতা — শপ থিম (হালকা) */
+html{background:#f4f6f9}
+body{background:#f4f6f9;color:#1f2430;font-family:"Noto Sans Bengali","AK Sans",sans-serif}
+a{color:#2b5fb4}
+.top{background:#fff;border-bottom:1px solid #e3e7ee;box-shadow:0 2px 10px -6px rgba(16,24,40,.2);position:sticky;top:0;z-index:40}
+.brand{color:#7a1f2b;font-family:"Noto Sans Bengali","AK Sans",sans-serif;font-weight:700}
+.brand small{color:#667085}
+.top a.back{border:1.5px solid #2b5fb4;color:#2b5fb4}
+main{background:#fff;border:1px solid #e3e7ee;border-radius:16px;margin:16px auto;padding:24px 20px;box-shadow:0 1px 2px rgba(16,24,40,.06),0 4px 14px -6px rgba(16,24,40,.1)}
+.book img{box-shadow:0 10px 24px -10px rgba(0,0,0,.4);border-radius:3px}
+.kicker{color:#2b5fb4;letter-spacing:.03em}
+h1,h2{font-family:"Noto Sans Bengali","AK Sans",sans-serif;font-weight:700;color:#1f2430}
+.by,dt{color:#667085}
+.signed{border:1px solid #cfe6d5;background:#eef8f0;color:#2b8a3e;border-radius:12px;font-size:16px}
+.ship{background:#f4f6f9;color:#344054}.ship b{color:#1f2430}
+.buybar{background:rgba(255,255,255,.97);border-top:1px solid #e3e7ee}
+.buybar .pr{color:#1f2430}
+.btn{border:1.5px solid #2b5fb4;color:#2b5fb4;background:#fff;font-weight:600}
+.btn.gold{background:#2b5fb4;border-color:#2b5fb4;color:#fff}
+.btn.wa{background:#25a455;border-color:#25a455;color:#fff}
+.syn p{font-family:"Noto Sans Bengali","AK Sans",sans-serif;font-size:17px;line-height:1.95;color:#1f2430}
+.rel a{color:#1f2430}
+footer,.foot{color:#667085}
+.rv *{color:inherit}

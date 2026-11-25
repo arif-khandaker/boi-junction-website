@@ -18,7 +18,7 @@ const SETS = grab("SETS");
 const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://boijunction.com";
 const AUTHOR_SITE = "https://authorarifkhandaker.com";
-const V = "20261125c";
+const V = "20261125d";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -177,6 +177,7 @@ h2{font-family:"AK Tiro","AK Serif",serif;font-weight:400;font-size:26px;margin:
 footer{margin-top:50px;padding:26px 22px;text-align:center;color:#a59c8b;font-size:13px;border-top:1px solid rgba(201,164,92,.22)}
 @media (max-width:640px){.book{grid-template-columns:1fr;text-align:center}.book img{max-width:220px;margin:0 auto}dl{text-align:left;max-width:320px;margin-left:auto;margin-right:auto}.actions{justify-content:center}.rel{grid-template-columns:repeat(2,1fr)}.syn p{text-align:left}}
 </style>
+<link rel="stylesheet" href="/shop-book.css?v=${V}">
 </head>
 <body${canBuy ? ' class="hasbar"' : ""}>
 <header class="top"><a class="brand" href="/"><span style="color:#e5484d">বই</span> <span style="color:#3dbb72">জংশন</span><small>BOI JUNCTION</small></a><a class="back" href="/#books">← সব বই</a></header>
