@@ -1317,7 +1317,7 @@ function renderBooks() {
         ${coverMarkup(book)}${coverBadge(book)}
       </button>
       <p class="book-genre">${esc(book.genre)}</p>
-      <h3 class="book-title">${esc(book.title)}</h3>
+      <h3 class="book-title"><a class="book-title-link" href="/b/${esc(book.slug || "")}/">${esc(book.title)}</a></h3>
       <p class="book-meta">${[book.publisher, book.year].filter(isFilled).map(esc).concat(isFilled(book.price) ? [`<span class="price">${esc(book.price)}</span>`] : []).join(" · ")}</p>
       ${canBuy(book) ? signedBadge() : ""}
       <div class="book-actions">
