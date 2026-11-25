@@ -1,0 +1,537 @@
+/* =========================================================
+   বই জংশন — শপ থিম (সাদা জমি · নীল রং · কার্ডভিত্তিক)
+   এই ফাইল সবার শেষে লোড হয় এবং আগের কালো-সোনালি থিম বদলে দেয়।
+   ========================================================= */
+
+:root {
+  --rk-blue: #2b5fb4;
+  --rk-blue-2: #3a73cf;
+  --rk-blue-d: #1f4a91;
+  --rk-pale: #eaf1fd;
+  --rk-pale-2: #dbe7fb;
+  --rk-bg: #f4f6f9;
+  --rk-card: #fff;
+  --rk-line: #e3e7ee;
+  --rk-text: #1f2430;
+  --rk-muted: #667085;
+  --rk-red: #e5525c;
+  --rk-green: #2b8a3e;
+  --rk-star: #f59f1b;
+  --rk-maroon: #7a1f2b;
+  --rk-shadow: 0 1px 2px rgba(16,24,40,.06), 0 4px 14px -6px rgba(16,24,40,.1);
+
+  --header-h: 0px;
+  --font-display: "Noto Sans Bengali", "Tiro Bangla", sans-serif;
+  --font-body: "Noto Sans Bengali", sans-serif;
+  --font-literary: "Noto Sans Bengali", "Noto Serif Bengali", sans-serif;
+}
+
+html { scroll-padding-top: 130px; }
+body {
+  background: var(--rk-bg);
+  color: var(--rk-text);
+  font-size: 16px;
+  line-height: 1.7;
+  padding-bottom: 72px;
+}
+h1, h2, h3, h4 { color: var(--rk-text); font-family: var(--font-display); font-weight: 600; }
+::selection { background: var(--rk-pale-2); color: var(--rk-text); }
+a { color: var(--rk-blue); }
+:focus-visible { outline: 2px solid var(--rk-blue); outline-offset: 2px; }
+
+/* ---------- লোডিং, কার্সর, রেল (পুরনো থিমের জিনিস) ---------- */
+.cursor-glow, .bj-rail, .hero-frame, .hero-dust, .scroll-cue { display: none !important; }
+.preloader { background: #fff !important; }
+.pl-name, .pl-tag { color: var(--rk-text) !important; }
+.pl-ring circle { stroke: var(--rk-blue) !important; }
+.pl-mark { color: var(--rk-blue) !important; }
+.scroll-progress { background: var(--rk-blue) !important; height: 3px; }
+
+/* ---------- হটলাইন ও হেডার ---------- */
+.rk-hotline {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 7px 12px; background: #eef1f6; color: var(--rk-text);
+  font-size: 14px; line-height: 1.4; text-align: center;
+}
+.rk-hotline svg { width: 17px; height: 17px; flex: none; color: var(--rk-blue); }
+.rk-hotline a { color: var(--rk-text); font-weight: 600; text-decoration: none; }
+
+.site-header {
+  position: sticky; top: 0; inset: auto; height: auto; z-index: 100;
+  background: #fff; color: var(--rk-text);
+  box-shadow: 0 2px 10px -4px rgba(16,24,40,.18);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.site-header.scrolled { background: #fff; box-shadow: 0 2px 10px -4px rgba(16,24,40,.22); }
+.header-inner {
+  height: auto; padding-top: 10px; padding-bottom: 10px;
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px 12px;
+  grid-template-areas: "menu brand cart" "search search search";
+}
+.menu-toggle {
+  grid-area: menu; display: block; width: 42px; height: 42px; padding: 11px 9px;
+  background: none; border: 0; border-radius: 8px; color: var(--rk-text);
+}
+.menu-toggle span { background: var(--rk-text); height: 2px; margin: 6px 0; }
+.brand { grid-area: brand; gap: 10px; min-width: 0; }
+.brand-mark, .brand-mark.bj-mark {
+  width: 40px; height: 40px; border: 0; padding: 0; border-radius: 10px; background: none;
+}
+.brand-bn { font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--rk-maroon); }
+.brand-en { font-family: var(--font-body); font-size: 11px; letter-spacing: .18em; color: var(--rk-muted); text-transform: uppercase; }
+
+.rk-cart {
+  grid-area: cart; position: relative; width: 42px; height: 42px; display: grid; place-items: center;
+  background: none; border: 0; color: var(--rk-text); cursor: pointer; border-radius: 8px;
+}
+.rk-cart svg { width: 26px; height: 26px; }
+.rk-cart-count {
+  position: absolute; top: 1px; right: 0; min-width: 19px; height: 19px; padding: 0 5px;
+  display: grid; place-items: center; font-size: 12px; line-height: 1; color: #fff;
+  background: var(--rk-red); border-radius: 999px;
+}
+.rk-cart-count[hidden] { display: none; }
+
+.rk-search {
+  grid-area: search; display: flex; align-items: center; gap: 0;
+  border: 2px solid var(--rk-blue); border-radius: 999px; background: #fff; padding: 3px;
+}
+.rk-search input {
+  flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; font: inherit; font-size: 15px;
+  padding: 7px 14px; color: var(--rk-text);
+}
+.rk-search input::placeholder { color: #98a2b3; }
+.rk-search button {
+  flex: none; border: 0; cursor: pointer; font: inherit; font-size: 15px; font-weight: 600; color: #fff;
+  padding: 8px 20px; border-radius: 999px;
+  background: linear-gradient(180deg, var(--rk-blue-2), var(--rk-blue));
+}
+.rk-search button:active { transform: scale(.97); }
+
+/* মোবাইলের মেনু (পর্দা-জোড়া) */
+@media (max-width: 860px) {
+  .site-nav {
+    position: fixed; inset: 0; z-index: 120; background: #fff; display: flex; flex-direction: column;
+    justify-content: flex-start; padding: 84px 22px 30px; overflow-y: auto;
+  }
+  .site-nav ul { flex-direction: column; gap: 0; }
+  .site-nav a {
+    display: block; font-family: var(--font-body); font-size: 18px; font-weight: 500; padding: 14px 4px;
+    color: var(--rk-text); border-bottom: 1px solid var(--rk-line);
+  }
+  .site-nav a.active { color: var(--rk-blue); }
+  .nav-foot { margin-top: 26px; border-top: 0; font-family: var(--font-body); color: var(--rk-muted); letter-spacing: .08em; }
+  .menu-toggle { position: relative; z-index: 130; }
+  body.no-scroll .site-header { z-index: 130; }
+}
+
+/* ডেস্কটপ: ওপরে লোগো-সার্চ-কার্ট, নিচে মেনু-সারি */
+@media (min-width: 861px) {
+  .menu-toggle { display: none; }
+  .header-inner {
+    grid-template-columns: auto minmax(280px, 640px) auto; justify-content: space-between;
+    grid-template-areas: "brand search cart" "nav nav nav"; row-gap: 6px;
+  }
+  .rk-search { grid-area: search; }
+  .site-nav { grid-area: nav; position: static; background: none; opacity: 1; visibility: visible; padding: 0; border-top: 1px solid var(--rk-line); }
+  .site-nav ul { gap: 4px; flex-wrap: wrap; }
+  .site-nav a {
+    display: block; padding: 10px 14px; font-size: 15px; font-weight: 500; color: var(--rk-text); border-radius: 8px;
+    opacity: 1; transform: none;
+  }
+  .site-nav a::after { display: none; }
+  .site-nav a:hover { background: var(--rk-pale); color: var(--rk-blue); }
+  .site-nav a.active { color: var(--rk-blue); background: var(--rk-pale); }
+}
+
+/* ---------- বোতাম ---------- */
+.btn {
+  border-radius: 10px; font-family: var(--font-body); font-weight: 600; letter-spacing: 0;
+  min-height: 44px; transition: background .2s, color .2s, border-color .2s, transform .1s;
+}
+.btn-gold, .btn-gold::after { background-image: none; }
+.btn-gold { background: var(--rk-blue); border-color: var(--rk-blue); color: #fff; }
+.btn-gold:hover { background: var(--rk-blue-d); border-color: var(--rk-blue-d); color: #fff; }
+.btn-gold::after { display: none; }
+.btn-ghost, .btn-outline, .btn-outline-gold {
+  background: #fff; color: var(--rk-blue); border: 1.5px solid var(--rk-blue);
+}
+.btn-ghost:hover, .btn-outline:hover, .btn-outline-gold:hover { background: var(--rk-pale); color: var(--rk-blue-d); border-color: var(--rk-blue-d); }
+.btn svg { fill: currentColor; }
+
+/* ---------- হোম: ব্যানার ও ক্যাটাগরি ---------- */
+.bj-hero.rk-home { padding: 14px 0 6px; text-align: left; min-height: 0; background: var(--rk-bg); }
+.rk-home .hero-inner { align-items: stretch; }
+.rk-banner {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 22px 20px; border-radius: 16px; color: #fff; overflow: hidden; position: relative;
+  background: linear-gradient(120deg, #8a2633 0%, #6c1b28 55%, #4f1320 100%);
+  box-shadow: var(--rk-shadow);
+}
+.rk-banner::before {
+  content: "অ ক ই খ আ"; position: absolute; right: 8%; top: 8px; font-size: 54px; letter-spacing: 18px;
+  color: rgba(255,255,255,.07); transform: rotate(-8deg); white-space: nowrap; pointer-events: none;
+}
+.rk-banner-text { position: relative; z-index: 1; min-width: 0; }
+.rk-banner-kicker { margin: 0 0 4px; font-size: 13.5px; color: #f3d9c6; }
+.rk-banner-title { margin: 0 0 6px; font-size: clamp(30px, 8vw, 46px); color: #fff; line-height: 1.2; font-weight: 700; }
+.rk-banner-sub { margin: 0 0 16px; max-width: 520px; font-size: 15.5px; line-height: 1.7; color: #f6e8de; }
+.rk-banner-sub strong { color: #fff; }
+.rk-banner .hero-actions { justify-content: flex-start; gap: 10px; }
+.rk-banner .btn-gold { background: #fff; border-color: #fff; color: var(--rk-maroon); }
+.rk-banner .btn-gold:hover { background: #f6e6e0; color: var(--rk-maroon); }
+.rk-banner .btn-ghost { background: transparent; border-color: rgba(255,255,255,.7); color: #fff; }
+.rk-banner .btn-ghost:hover { background: rgba(255,255,255,.12); color: #fff; }
+.rk-banner-art { flex: none; width: 112px; height: 112px; border-radius: 22px; position: relative; z-index: 1; box-shadow: 0 10px 28px -8px rgba(0,0,0,.45); }
+@media (max-width: 520px) { .rk-banner-art { display: none; } .rk-banner { padding: 20px 18px; } }
+@media (min-width: 861px) { .rk-banner { padding: 34px 40px; } .rk-banner-art { width: 190px; height: 190px; } }
+
+.rk-cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0 4px; }
+@media (min-width: 640px) { .rk-cats { grid-template-columns: repeat(6, 1fr); } }
+.rk-cat {
+  display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 12px 6px 10px; text-align: center;
+  background: #fff; border: 1px solid var(--rk-line); border-radius: 14px; color: var(--rk-text);
+  font-size: 14px; font-weight: 500; text-decoration: none; line-height: 1.3; box-shadow: var(--rk-shadow);
+}
+.rk-cat span { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; background: var(--rk-pale); color: var(--rk-blue); }
+.rk-cat svg { width: 26px; height: 26px; }
+.rk-cat:hover { border-color: var(--rk-blue); }
+
+.bj-points { color: var(--rk-muted); margin-top: 14px; justify-content: flex-start; gap: 6px 18px; font-size: 14px; }
+.bj-points b, .bj-tagline strong { color: var(--rk-blue); }
+
+/* ---------- সেকশনের সাধারণ ধরন ---------- */
+.section { padding: 34px 0; }
+.section-dark, .section-tint { background: transparent; color: var(--rk-text); }
+.section-dark h2, .section-dark h3, .section-tint h2, .section-tint h3 { color: var(--rk-text); }
+.section-head { margin-bottom: 18px; text-align: left; }
+.section-head h2 { font-size: clamp(22px, 5.4vw, 30px); font-weight: 700; }
+.section-head h2::after, .js .section-head h2::after, .js .section-head-center h2::after { display: none !important; }
+.section-eyebrow, .section-dark .section-eyebrow { color: var(--rk-blue); font-family: var(--font-body); font-weight: 600; font-size: 13.5px; letter-spacing: .04em; margin-bottom: 2px; }
+.section-sub, .section-dark .section-sub { color: var(--rk-muted); font-size: 15px; }
+.section-sub strong, .section-dark .section-sub strong { color: var(--rk-text); }
+.container { --gutter: 14px; }
+@media (min-width: 861px) { .container { --gutter: 24px; } .section { padding: 44px 0; } }
+
+/* ---------- বইয়ের কার্ড (রকমারি-ধাঁচ) ---------- */
+.book-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;
+}
+@media (min-width: 700px) { .book-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; } }
+@media (min-width: 980px) { .book-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; } }
+.book {
+  background: #fff; border: 1px solid var(--rk-line); border-radius: 14px; padding: 0 0 12px;
+  box-shadow: var(--rk-shadow); overflow: hidden; transition: box-shadow .2s, transform .2s;
+}
+.book:hover { box-shadow: 0 8px 24px -8px rgba(16,24,40,.22); transform: translateY(-2px); }
+.book .book-cover, .book-cover {
+  margin: 0 0 10px; border-radius: 0; box-shadow: none; background: #f3f4f6; transform: none !important; aspect-ratio: 3 / 4;
+  display: grid; place-items: center; padding: 12px 14%;
+}
+.book-cover::after, .book-cover .shine { display: none !important; }
+.book-cover img { width: auto; max-width: 100%; height: 100%; object-fit: contain; box-shadow: 0 6px 16px -6px rgba(0,0,0,.4); border-radius: 2px; }
+.book-cover:hover { box-shadow: none; transform: none; }
+.book > .book-genre, .book > .book-title, .book > .book-meta, .book > .signed-badge, .book > .book-actions, .book > .synopsis-box, .book > .link-btn { margin-left: 12px; margin-right: 12px; }
+.book-genre { color: var(--rk-muted); font-size: 12.5px; margin-bottom: 2px; }
+.book-title { font-family: var(--font-body); font-weight: 600; font-size: 16px; line-height: 1.4; color: var(--rk-text); margin-bottom: 4px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.book-meta { color: var(--rk-muted); font-size: 12.5px; margin-bottom: 6px; flex-grow: 0; }
+.book-meta .price { display: inline-block; color: var(--rk-text); font-weight: 700; font-size: 17px; margin-left: 0; }
+.signed-badge { display: flex; align-items: center; gap: 5px; margin: 0 0 8px; color: var(--rk-green); font-size: 12.5px; font-weight: 500; line-height: 1.3; }
+.signed-badge svg { width: 15px; height: 15px; flex: none; }
+.book .book-actions { display: grid; grid-template-columns: 1fr; gap: 6px; margin-top: auto; }
+.book .btn, .book-actions .btn { min-height: 40px; padding: 6px 10px; font-size: 14px; border-radius: 999px; font-weight: 600; }
+.book .btn-gold, .book-actions .btn-gold { background: var(--rk-pale); color: var(--rk-blue); border-color: var(--rk-pale); }
+.book .btn-gold:hover, .book-actions .btn-gold:hover { background: var(--rk-blue); color: #fff; border-color: var(--rk-blue); }
+.book .btn-outline-gold, .book-actions .btn-outline-gold { background: #fff; border: 1px solid var(--rk-line); color: var(--rk-muted); font-weight: 500; font-size: 13px; min-height: 34px; }
+.book .btn-outline-gold:hover { color: var(--rk-blue); border-color: var(--rk-blue); background: #fff; }
+.cover-badge, .book-cover [class*="badge"] { z-index: 2; }
+
+/* নির্বাচিত বই */
+.featured-book {
+  background: #fff; border: 1px solid var(--rk-line); border-radius: 16px; padding: 16px; margin-bottom: 18px; gap: 16px;
+  grid-template-columns: minmax(0, 1fr); box-shadow: var(--rk-shadow); border-bottom: 1px solid var(--rk-line);
+}
+@media (min-width: 700px) { .featured-book { grid-template-columns: 220px minmax(0, 1fr); gap: 28px; padding: 24px; } }
+.featured-book .book-cover { max-width: 240px; border-radius: 10px; }
+.featured-label { background: var(--rk-red); color: #fff; border-radius: 6px; padding: 2px 10px; font-size: 13px; letter-spacing: 0; }
+.featured-book h3 { font-size: clamp(24px, 6vw, 34px); }
+.featured-genre { color: var(--rk-muted); }
+.featured-summary { font-family: var(--font-body); color: var(--rk-text); font-size: 16px; line-height: 1.85; }
+.book-details { border-top: 1px solid var(--rk-line); border-bottom: 1px solid var(--rk-line); grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 16px 0; }
+@media (min-width: 700px) { .book-details { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.book-details div + div { border-left: 1px solid var(--rk-line); }
+.book-details dt { color: var(--rk-muted); }
+.book-details dd { color: var(--rk-text); font-weight: 600; }
+.featured-book .book-actions .btn-gold { background: var(--rk-blue); color: #fff; border-color: var(--rk-blue); border-radius: 999px; }
+
+/* ---------- খোঁজা ও ফিল্টার ---------- */
+.book-tools { background: #fff; border: 1px solid var(--rk-line); border-radius: 14px; padding: 12px; margin-bottom: 14px; box-shadow: var(--rk-shadow); }
+.book-search input, .book-tools input[type=search] {
+  width: 100%; border: 1.5px solid var(--rk-line); border-radius: 999px; padding: 9px 16px; font: inherit; font-size: 15px;
+  background: #fff; color: var(--rk-text);
+}
+.book-search input:focus { border-color: var(--rk-blue); outline: 0; }
+.book-chips { display: flex; gap: 8px; overflow-x: auto; padding: 10px 2px 4px; -webkit-overflow-scrolling: touch; scrollbar-width: none; flex-wrap: nowrap; }
+.book-chips::-webkit-scrollbar { display: none; }
+.book-chips button, .book-chip, .chip, .filter-btn {
+  flex: none; border: 1px solid var(--rk-line); background: #fff; color: var(--rk-text); border-radius: 999px;
+  padding: 6px 14px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; min-height: 36px;
+}
+.book-chips button:hover, .filter-btn:hover { border-color: var(--rk-blue); color: var(--rk-blue); background: #fff; }
+.book-chips button[aria-pressed="true"], .book-chips button.is-on, .book-chips button.on, .filter-btn[aria-pressed="true"] {
+  background: var(--rk-blue); color: #fff; border-color: var(--rk-blue);
+}
+.book-count { color: var(--rk-muted); font-size: 13.5px; margin: 6px 2px 0; }
+.quiz-cta { margin: 0 0 14px; }
+.quiz-cta .btn { width: 100%; background: var(--rk-pale); color: var(--rk-blue); border-color: var(--rk-pale); }
+
+/* ---------- “এখন ছাড়ছে” (আগের ডাকঘর বোর্ড) ---------- */
+.bj-dep {
+  background: #fff; border: 1px solid var(--rk-line); border-radius: 14px; box-shadow: var(--rk-shadow); margin: 14px 0 0; max-width: none; color: var(--rk-text);
+}
+.bj-dep::after { display: none; }
+.dep-head { background: var(--rk-pale); border-bottom: 1px solid var(--rk-line); }
+.dep-title { color: var(--rk-text); font-family: var(--font-body); font-weight: 600; font-size: 16px; }
+.dep-clock { color: var(--rk-blue); text-shadow: none; font-size: 16px; }
+.dep-cols { color: var(--rk-muted); border-bottom: 1px solid var(--rk-line); }
+.dep-row { border-bottom: 1px solid var(--rk-line); }
+.dep-row:hover { background: var(--rk-pale); }
+.dep-to { color: var(--rk-text); font-family: var(--font-body); font-weight: 600; font-size: 15.5px; }
+.dep-row:hover .dep-to { color: var(--rk-blue); }
+.dep-pl { color: var(--rk-muted); }
+.dep-pl i { background: var(--rk-blue); color: #fff; }
+.dep-row:nth-child(even) .dep-pl i { background: var(--rk-green); color: #fff; }
+.dep-fare { color: var(--rk-text); font-weight: 700; }
+.dep-fare small { color: var(--rk-muted); }
+.dep-buy { background: var(--rk-pale); color: var(--rk-blue); border-radius: 999px; font-weight: 600; }
+.dep-buy:hover, .dep-buy:focus-visible { background: var(--rk-blue); color: #fff; }
+.dep-wa { background: var(--rk-green); color: #fff; border-radius: 999px; }
+.dep-all { color: var(--rk-blue); border-top: 0; }
+.dep-lamp { background: var(--rk-green); }
+
+/* ---------- কোন বই পড়বেন (পিকার) ---------- */
+.pk-panel { background: #fff; border: 1px solid var(--rk-line); border-radius: 14px; box-shadow: var(--rk-shadow); color: var(--rk-text); }
+.pk-top { color: var(--rk-text); font-family: var(--font-body); }
+.pk-win { background: var(--rk-pale); border: 1px solid var(--rk-pale-2); border-radius: 10px; }
+.pk-name, .pk-win.is-landed .pk-name { color: var(--rk-blue); text-shadow: none; font-family: var(--font-body); font-weight: 600; }
+.pk-ph { color: var(--rk-muted); }
+.pk-res { border-color: var(--rk-line); }
+.pk-genre { color: var(--rk-muted); }
+.pk-more { color: var(--rk-blue); }
+
+/* ---------- কীভাবে অর্ডার ---------- */
+.how-order { background: #fff; border: 1px solid var(--rk-line); border-radius: 14px; box-shadow: var(--rk-shadow); padding: 18px; margin-top: 20px; color: var(--rk-text); }
+.how-order h3 { color: var(--rk-text); font-size: 20px; }
+.how-steps li > span { background: var(--rk-blue); color: #fff; border: 0; }
+.how-steps p, .how-steps strong { color: var(--rk-text); }
+.how-steps em { color: var(--rk-blue); font-style: normal; font-weight: 600; }
+.how-pay, .how-pay strong { color: var(--rk-muted); }
+
+/* ---------- কার্ট বোতাম ও কার্ট ---------- */
+.cart-fab {
+  display: none !important; /* কার্ট এখন হেডারে ও নিচের মেনুতে */
+}
+@media (min-width: 861px) {
+  .cart-fab { display: flex !important; background: var(--rk-blue); border-color: var(--rk-blue); color: #fff; bottom: 20px; right: 20px; box-shadow: 0 10px 26px -8px rgba(31,74,145,.6); }
+  .cart-fab[hidden] { display: none !important; }
+  .cart-fab-count { background: #fff; color: var(--rk-blue); }
+}
+.wa-float {
+  background: #25a455; color: #fff; border: 0; right: 14px; bottom: 82px; height: 48px; padding: 0 16px 0 12px; border-radius: 999px;
+  box-shadow: 0 8px 22px -6px rgba(0,0,0,.4);
+}
+.wa-float:hover { background: #1f8f49; color: #fff; }
+.wa-float span { display: none; }
+@media (min-width: 861px) { .wa-float { bottom: 20px; right: auto; left: 20px; } .wa-float span { display: inline; } }
+.to-top-btn { bottom: 82px; left: 12px; right: auto; background: #fff; border: 1px solid var(--rk-line); color: var(--rk-blue); }
+.tt-track { stroke: var(--rk-line); } .tt-bar { stroke: var(--rk-blue); }
+@media (min-width: 861px) { .to-top-btn { bottom: 20px; left: auto; right: 90px; } }
+
+/* ---------- নিচের ট্যাব বার (মোবাইল) ---------- */
+.rk-tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: grid; grid-template-columns: repeat(5, 1fr);
+  background: rgba(255,255,255,.97); border-top: 1px solid var(--rk-line); box-shadow: 0 -4px 16px -8px rgba(16,24,40,.2);
+  padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.rk-tabbar a, .rk-tabbar button {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 2px; border: 0; background: none;
+  color: var(--rk-text); font: inherit; font-size: 12.5px; text-decoration: none; cursor: pointer; line-height: 1.3;
+}
+.rk-tabbar svg { width: 24px; height: 24px; }
+.rk-tabbar .is-on { color: var(--rk-blue); }
+.rk-tabbar em {
+  position: absolute; top: 0; left: 52%; min-width: 17px; height: 17px; padding: 0 4px; display: grid; place-items: center;
+  font-style: normal; font-size: 11px; color: #fff; background: var(--rk-red); border-radius: 999px;
+}
+.rk-tabbar em[hidden] { display: none; }
+@media (min-width: 861px) { .rk-tabbar { display: none; } body { padding-bottom: 0; } }
+
+/* ---------- ইবুক, উক্তি, তালিকা ---------- */
+.ebook-shelf, .quote-cards { color: var(--rk-text); }
+.ebook-head h3, .ebook-head h4 { color: var(--rk-text); }
+.catalog { background: #fff; border: 1px solid var(--rk-line); border-radius: 14px; padding: 16px; box-shadow: var(--rk-shadow); margin-top: 20px; }
+.catalog-head h3, .catalog-group h4 { color: var(--rk-text); font-family: var(--font-body); font-weight: 600; }
+.catalog-head p, .catalog-title small { color: var(--rk-muted); }
+.catalog-order { color: var(--rk-blue); border-color: var(--rk-blue); }
+.catalog-order:hover { background: var(--rk-blue); color: #fff; }
+.catalog-group li { border-color: var(--rk-line); }
+
+/* ---------- ফর্ম ও যোগাযোগ ---------- */
+.contact-form, .cart-form { color: var(--rk-text); }
+.field input, .field textarea, .field select, .cart-form input:not([type=radio]):not([type=checkbox]), .cart-form textarea, .cart-form select, input[type=email], input[type=text], input[type=tel] {
+  background: #fff; color: var(--rk-text); border: 1.5px solid var(--rk-line); border-radius: 10px;
+}
+.field input:focus, .field textarea:focus, .field select:focus { border-color: var(--rk-blue); outline: 0; }
+.field span, .form-title { color: var(--rk-text); }
+.contact-form { background: #fff; border: 1px solid var(--rk-line); border-radius: 14px; box-shadow: var(--rk-shadow); padding: 18px; }
+.contact-form::before { display: none; }
+.contact-list a { color: var(--rk-blue); }
+.contact-label { color: var(--rk-muted); }
+
+/* ---------- ফুটার ---------- */
+.site-footer { background: #1b2a4a; color: #c3cde0; border-top: 0; padding: 34px 0 20px; margin-top: 10px; }
+.footer-top { border-bottom: 1px solid rgba(255,255,255,.14); }
+.footer-name { color: #fff; font-family: var(--font-body); font-weight: 700; font-size: 26px; }
+.footer-en { color: #9fb1d3; letter-spacing: .12em; font-family: var(--font-body); }
+.footer-mark.bj-mark { border-radius: 14px; border: 0; }
+.site-footer a { color: #fff; }
+.to-top { color: #fff; }
+.footer-privacy { color: #9fb1d3; }
+.social a { color: #fff; border-color: rgba(255,255,255,.3); }
+
+/* ---------- পপআপ (modal) ---------- */
+.modal-backdrop { background: rgba(16,24,40,.55); }
+.modal-panel { background: #fff; color: var(--rk-text); border: 0; border-radius: 16px; box-shadow: 0 24px 60px -16px rgba(0,0,0,.45); }
+.modal-title { color: var(--rk-text); font-family: var(--font-body); font-weight: 700; }
+.modal-kicker { color: var(--rk-blue); }
+.modal-meta { color: var(--rk-muted); }
+.modal-body { color: var(--rk-text); }
+.modal-close { color: var(--rk-text); background: var(--rk-bg); border-radius: 999px; border: 0; }
+.modal-actions .btn-gold { background: var(--rk-blue); color: #fff; border-color: var(--rk-blue); }
+.modal-actions .btn-outline-gold, .modal:not(.is-paper):not(.is-gold) .modal-actions .btn-outline-gold { color: var(--rk-blue); border-color: var(--rk-blue); background: #fff; }
+.cart-row { border-color: var(--rk-line); }
+.cart-info strong { color: var(--rk-text); } .cart-info em { color: var(--rk-muted); }
+.cart-total, .cart-total strong { color: var(--rk-text); }
+.cart-note, .cart-form small { color: var(--rk-muted); }
+.cart-form label, .cart-form legend { color: var(--rk-text); }
+.pay-box { background: var(--rk-pale); border-color: var(--rk-pale-2); color: var(--rk-text); }
+.pay-copy { background: var(--rk-blue); color: #fff; border-color: var(--rk-blue); }
+.cart-signed, .cart-signed-banner, .cart-signed-banner strong { color: var(--rk-green); }
+.cart-qty button, .cart-remove { background: var(--rk-bg); color: var(--rk-text); border-color: var(--rk-line); }
+.toast { background: #1f2430; color: #fff; border-radius: 10px; border: 0; bottom: 90px; }
+
+/* =========================================================
+   বাকি কালো অংশগুলো সাদা/হালকা করা
+   ========================================================= */
+.tk-head, .tk-perf, .tk-stamp { display: none !important; }
+.book.tk { background: #fff; border: 1px solid var(--rk-line); padding: 0 0 12px; border-radius: 14px; box-shadow: var(--rk-shadow); transform: none; }
+.book.tk:hover { transform: translateY(-2px); border-color: var(--rk-line); box-shadow: 0 8px 24px -8px rgba(16,24,40,.22); }
+.book.tk.is-punched { border-color: var(--rk-line); }
+.book .book-title, .book h3.book-title { color: var(--rk-text) !important; }
+.book .book-genre { color: var(--rk-blue); }
+.book-grid .synopsis-box, .book .synopsis-box {
+  background: var(--rk-pale); border: 1px solid var(--rk-pale-2); color: var(--rk-blue); box-shadow: none; animation: none;
+  border-radius: 999px; padding: 8px 14px; font-size: 13.5px; font-weight: 500; min-height: 36px; margin-top: 8px;
+}
+.syn-dot { background: var(--rk-blue) !important; box-shadow: none !important; animation: none !important; }
+
+/* সাদা কার্ড + গাঢ় লেখা: ঘোষণা, সপ্তাহের বই, লাইন, মুড, পিকার, সাবস্ক্রাইব, সোশ্যাল, ট্র্যাকার, উপহার, পোস্ট */
+.bj-announce, .bj-week, .bj-line, .md-panel, .subscribe, .social-box, .tr-body, .tr-plate, .bj-gift, .bj-pass, .bj-readers,
+.bj-post-card, .bj-pick, .bj-dep, .dep-board, .dep-rows, .pk-panel {
+  background: #fff !important; color: var(--rk-text) !important; border-color: var(--rk-line) !important; box-shadow: var(--rk-shadow);
+}
+.bj-announce *, .bj-week *, .bj-line *, .md-panel *, .subscribe *, .social-box *, .tr-body *, .tr-plate *, .bj-gift *, .bj-pass *, .bj-readers *,
+.bj-post-card *, .bj-pick *, .bj-dep *, .pk-panel * { text-shadow: none !important; }
+.bj-announce, .bj-announce .an-item { color: var(--rk-text) !important; }
+.bj-announce { border-radius: 0; box-shadow: none; border-top: 1px solid var(--rk-line); border-bottom: 1px solid var(--rk-line); }
+.bj-week, .bj-line, .subscribe { background: var(--rk-pale) !important; }
+.bj-week h2, .bj-week h3, .bj-line h2, .subscribe h2, .bj-gift h3, .bj-pass h3, .bj-readers h3, .bj-pass h2, .bj-readers h2,
+.md-panel h3, .md-panel p, .social-box h3, .tr-body, .tr-body p, .tr-body strong, .bl-q, .bw-m, .bw-left, .md-sub, .bj-readers-sub, .bj-pass-sub,
+.sb-label, .rl-name, .dep-row *, .md-opt, .pl-sign, .cm-btn { color: var(--rk-text) !important; }
+.bj-readers-sub, .bj-pass-sub, .md-sub, .sb-label, .bw-m { color: var(--rk-muted) !important; }
+.md-opt, .pl-sign { background: #fff !important; border: 1px solid var(--rk-line) !important; border-radius: 10px; }
+.md-opt:hover, .pl-sign:hover { border-color: var(--rk-blue) !important; background: var(--rk-pale) !important; }
+.dep-all { background: #fff !important; color: var(--rk-blue) !important; }
+.dep-row .dep-buy { color: var(--rk-blue) !important; background: var(--rk-pale) !important; }
+.dep-row .dep-wa { color: #fff !important; background: var(--rk-green) !important; }
+.dep-row .dep-pl i { color: #fff !important; }
+.dep-row, .dep-rows, .dep-list { background: #fff !important; }
+.dep-row .dep-to { color: var(--rk-text) !important; }
+.dep-row .dep-pl { color: var(--rk-muted) !important; }
+.dep-row .dep-fare { color: var(--rk-text) !important; }
+.bj-gift-ico, .bj-post-ico { background: var(--rk-pale) !important; color: var(--rk-blue) !important; border-color: var(--rk-pale-2) !important; }
+.tr-chim, .tr-cab, .tr-wh { background: var(--rk-pale) !important; border-color: var(--rk-blue) !important; }
+.cm-btn { background: #fff !important; border: 1px solid var(--rk-line) !important; border-radius: 999px; }
+.an-item { color: var(--rk-text) !important; }
+.catalog-title, .catalog-group li, .catalog-group li * { color: var(--rk-text) !important; }
+.catalog-title small, .catalog-group li small { color: var(--rk-muted) !important; }
+figcaption { color: var(--rk-muted) !important; }
+.featured-label { color: #fff !important; }
+.rl-name.is-pop { color: var(--rk-blue) !important; }
+.subscribe input { background: #fff; }
+
+/* হোম-হিরোর নিচের পুরনো অংশ: ছোট লাইন-তালিকা ও ডাকঘর স্ট্রিপ */
+.bj-tagline, .bj-points, .bj-points * { color: var(--rk-muted) !important; }
+.bj-dep .dep-head { background: var(--rk-pale) !important; }
+
+/* ডাকঘর বোর্ড, সেট কার্ড, উক্তি, পাসপোর্ট */
+.bj-dep, .dep-rows, .dep-row, .dep-flap, .dep-flap *, .dep-cols { background-image: none !important; }
+.dep-flap, .dep-flap * { background-color: transparent !important; color: inherit; text-shadow: none !important; }
+.dep-row .dep-to, .dep-row .dep-to * { color: var(--rk-text) !important; }
+.dep-row .dep-pl { color: var(--rk-muted) !important; }
+.dep-row .dep-fare, .dep-row .dep-fare * { color: var(--rk-text) !important; }
+.dep-row .dep-buy { background-color: var(--rk-pale) !important; }
+.dep-row .dep-wa { background-color: var(--rk-green) !important; }
+.dep-row .dep-pl i { background-color: var(--rk-blue) !important; }
+.dep-cols { color: var(--rk-muted) !important; }
+
+.set-card { background: #fff !important; border: 1px solid var(--rk-line); box-shadow: var(--rk-shadow); }
+.set-card h3 { color: var(--rk-text); font-weight: 700; }
+.set-eyebrow { color: var(--rk-blue); letter-spacing: .04em; }
+.set-names { color: var(--rk-muted); }
+.set-price { color: var(--rk-muted); }
+.set-price strong { color: var(--rk-text); text-shadow: none; }
+.set-price s { color: var(--rk-muted); text-decoration-color: var(--rk-red); }
+.set-perks li { border-color: var(--rk-line); color: var(--rk-text); background: var(--rk-bg); }
+.set-save span { background: var(--rk-red); box-shadow: none; }
+
+.quote-card { background: #fff !important; color: var(--rk-text) !important; border: 1px solid var(--rk-line); box-shadow: var(--rk-shadow); }
+.quote-card blockquote, .quote-card q { color: var(--rk-text) !important; font-family: var(--font-body); }
+.quote-card * { text-shadow: none !important; }
+.quote-card .btn { font-size: 14px; }
+
+.bj-pass-grid { background: #fff !important; border-color: var(--rk-line) !important; box-shadow: var(--rk-shadow); }
+.ps-empty { border-color: var(--rk-line); color: #b8c0cc; }
+.ps-g { color: var(--rk-green); } .ps-r { color: var(--rk-red); }
+
+.synopsis-box, .modal .synopsis-box {
+  background: var(--rk-pale) !important; border: 1px solid var(--rk-pale-2) !important; color: var(--rk-blue) !important;
+  box-shadow: none !important; animation: none !important; border-radius: 999px !important;
+}
+.bj-next, .bj-plat { background: #fff; color: var(--rk-text); border: 1px solid var(--rk-line); border-radius: 14px; }
+.bj-next *, .bj-plat * { color: inherit; }
+.bj-all { background: transparent; }
+.bj-all h2 { color: var(--rk-text); }
+.bj-all-list a { color: var(--rk-text); }
+.bj-coming .tr, .tr { color: var(--rk-text); }
+
+/* হালকা জমিতে সোনালি/ফ্যাকাশে লেখা ঠিক করা */
+.bj-week *, .bj-line *, .bj-announce * { color: var(--rk-text) !important; }
+.bj-week .bw-k, .bj-week [class*="kick"], .bj-week .bw-left, .bj-week .bw-m, .bj-line [class*="kick"], .bj-line .bl-d, .bj-line .bl-by, .bj-line figcaption, .bj-line cite, .bj-line .bl-src { color: var(--rk-muted) !important; }
+.bj-week .btn-gold, .bj-line .btn-gold { color: #fff !important; background: var(--rk-blue) !important; }
+.bj-week .btn-ghost, .bj-week .btn-outline-gold, .bj-line .btn-ghost, .bj-line .btn-outline-gold { color: var(--rk-blue) !important; background: #fff !important; }
+.bj-week { border-left: 0 !important; }
+.bj-announce .an-tag, .bj-announce > :first-child { background: var(--rk-red) !important; color: #fff !important; }
+.bj-announce > :first-child * { color: #fff !important; }
+.bj-announce { background: #fff8e6 !important; }
+.section-sub, .section-eyebrow { color: var(--rk-muted); }
+.section-eyebrow { color: var(--rk-blue) !important; }
+.bj-points, .bj-points span, .bj-points b { color: var(--rk-muted) !important; }
+.bj-points svg, .bj-points i { color: var(--rk-blue) !important; stroke: var(--rk-blue); }
+.section-dark p, .section-dark li, .section-dark dd { color: var(--rk-text); }
+.section-dark .section-sub { color: var(--rk-muted); }
+.social-box *, .social-box h3, .social-box h4, .sb-title { color: var(--rk-text) !important; }
+.social-box svg { color: var(--rk-blue) !important; }
+.social-box a { color: var(--rk-text) !important; }
