@@ -53,13 +53,30 @@ function stats(){
   const mx=Math.max(1,...days.map(d=>cnt[d]||0));
   $("bars").innerHTML=days.map(d=>`<div style="height:${Math.max(2,(cnt[d]||0)/mx*100)}%" title="${d}: ${cnt[d]||0}">${cnt[d]?`<small>${bn(cnt[d])}</small>`:""}</div>`).join("");
   $("lbls").innerHTML=days.map(d=>`<span>${bn(+d.slice(8))}</span>`).join("");
+  const mo={};live.forEach(o=>{const k=dayKey(o.t).slice(0,7);const r=mo[k]||(mo[k]={n:0,v:0});r.n++;r.v+=o.total||0;});
+  const mrows=Object.entries(mo).sort((x,y)=>y[0].localeCompare(x[0])).slice(0,12);
+  const MN=["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
+  $("months").innerHTML='<tr><th>মাস</th><th class="n">অর্ডার</th><th class="n">টাকা</th></tr>'+(mrows.length?mrows.map(r=>`<tr><td>${MN[+r[0].slice(5)-1]} ${bn(r[0].slice(0,4))}</td><td class="n">${bn(r[1].n)}</td><td class="n">${taka(r[1].v)}</td></tr>`).join(""):'<tr><td colspan="3">এখনো অর্ডার নেই</td></tr>');
   const tb={};live.forEach(o=>(o.items||[]).forEach(i=>{const k=i.title||i.slug;const r=tb[k]||(tb[k]={q:0,v:0});const qn=Math.min(Math.max(Math.floor(Number(i.qty))||1,1),999),pn=Number(i.price)||0;r.q+=qn;r.v+=pn*qn;}));
   const rows=Object.entries(tb).sort((a,b)=>b[1].q-a[1].q||b[1].v-a[1].v).slice(0,12);
   $("top").innerHTML='<tr><th>বই</th><th class="n">কপি</th><th class="n">টাকা</th></tr>'+(rows.length?rows.map(r=>`<tr><td>${esc(r[0])}</td><td class="n">${bn(r[1].q)}</td><td class="n">${taka(r[1].v)}</td></tr>`).join(""):'<tr><td colspan="3" class="note">এখনও অর্ডার নেই।</td></tr>');
 }
+function waMsg(o){
+  const n=o.name||"", r=o.ref||"", it=(o.items||[])[0]||{};
+  const rv=it.slug?"https://boijunction.com/b/"+it.slug+"/#reviews":"https://boijunction.com/";
+  const M={
+    new:`আসসালামু আলাইকুম ${n}, বই জংশনে আপনার অর্ডার (${r}) পেয়েছি। শীঘ্রই নিশ্চিত করে জানাব। ধন্যবাদ!`,
+    paid:`আসসালামু আলাইকুম ${n}, আপনার অর্ডারের (${r}) পেমেন্ট পেয়েছি। এবার বই প্যাক করব। ধন্যবাদ!`,
+    packing:`আসসালামু আলাইকুম ${n}, আপনার অর্ডারের (${r}) বই লেখকের স্বাক্ষরসহ প্যাক করা হচ্ছে।`,
+    shipped:`আসসালামু আলাইকুম ${n}, আপনার অর্ডারের (${r}) বই ডাকে/কুরিয়ারে পাঠানো হয়েছে। পেতে ২–৩ দিন লাগতে পারে।`,
+    delivered:`আসসালামু আলাইকুম ${n}, বই পেয়েছেন তো? পড়ার পর কেমন লাগল, এখানে দুই লাইন লিখলে অনেক খুশি হব: ${rv} ধন্যবাদ!`,
+    cancelled:`আসসালামু আলাইকুম ${n}, আপনার অর্ডারটি (${r}) বাতিল করা হয়েছে। কিছু জানতে চাইলে জানাবেন।`
+  };
+  return M[o.status]||M.new;
+}
 function wa(o){
   let p=String(o.phone||"").replace(/\D/g,"");if(p.startsWith("0"))p="88"+p;else if(!p.startsWith("880"))return"";
-  return "https://wa.me/"+p+"?text="+encodeURIComponent(`আসসালামু আলাইকুম ${o.name||""}, বই জংশন থেকে জানাচ্ছি: আপনার অর্ডার (${o.ref}) এখন \"${SL[o.status]||""}\"। ধন্যবাদ।`);
+  return "https://wa.me/"+p+"?text="+encodeURIComponent(waMsg(o));
 }
 function render(){
   const f=$("fs").value,q=$("fq").value.trim().toLowerCase();
@@ -83,7 +100,7 @@ $("list").addEventListener("change",async e=>{
   try{
     await fs.updateDoc(fs.doc(db,"orders",ref),{status:st});
     await fs.setDoc(fs.doc(db,"orderStatus",ref),{status:st,updatedAt:fs.serverTimestamp()});
-    const o=ORD.find(x=>x.id===ref);if(o)o.status=st;ok.textContent="সংরক্ষিত ✓";stats();
+    const o=ORD.find(x=>x.id===ref);if(o){o.status=st;const l=art.querySelector('a[href^="https://wa.me"]');if(l)l.href=wa(o);}ok.textContent="সংরক্ষিত ✓";stats();
   }catch(err){ok.innerHTML='<span class="err">সংরক্ষণ হয়নি</span>';}
 });
 $("csv").onclick=()=>{

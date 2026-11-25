@@ -19,7 +19,7 @@ const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://boijunction.com";
 const AUTHOR_SITE = "https://authorarifkhandaker.com";
 const pic = (c, attrs) => /\.jpg$/i.test(c) ? `<picture><source srcset="/${esc(c.replace(/\.jpg$/i, ".webp"))}" type="image/webp"><img src="/${esc(c)}" ${attrs}></picture>` : `<img src="/${esc(c)}" ${attrs}>`;
-const V = "20261126f";
+const V = "20261126g";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -52,7 +52,7 @@ function related(b) {
 const bnum = (t) => String(t).replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[d]);
 const taka = (n) => bnum(Number(n).toLocaleString("en-US")) + " টাকা";
 const WA = "8801823818887";
-const buyable = (x) => x && x.slug && num(x.price) > 0;
+const buyable = (x) => x && x.slug && !x.out && num(x.price) > 0;
 const physical = BOOKS.filter(buyable);
 const bySlug = (sl) => physical.find((x) => x.slug === sl);
 
@@ -95,11 +95,11 @@ function page(b) {
   if (b.publisher) ld.publisher = { "@type": "Organization", name: b.publisher };
   if (num(b.pages)) ld.numberOfPages = num(b.pages);
   if (yearOf(b.year)) ld.datePublished = yearOf(b.year);
-  if (priceN > 0) ld.offers = { "@type": "Offer", price: priceN, priceCurrency: "BDT", availability: "https://schema.org/InStock", url: b.ebook ? b.link : url };
+  if (priceN > 0) ld.offers = { "@type": "Offer", price: priceN, priceCurrency: "BDT", availability: b.out ? "https://schema.org/OutOfStock" : "https://schema.org/InStock", url: b.ebook ? b.link : url };
   const cta = b.ebook
     ? `<a class="btn gold" href="${esc(b.link)}" target="_blank" rel="noopener">ইবুক কিনুন ↗</a>`
-    : `<a class="btn gold" href="/#book-${esc(b.slug)}">${priceN > 0 ? "কার্টে যোগ করুন / অর্ডার" : "বইয়ের বিস্তারিত"}</a>`;
-  const canBuy = !b.ebook && priceN > 0;
+    : `${b.out ? '<span class="btn out">স্টক আউট</span>' : ""}<a class="btn gold" href="/#book-${esc(b.slug)}">${b.out ? "বিস্তারিত" : priceN > 0 ? "কার্টে যোগ করুন / অর্ডার" : "বইয়ের বিস্তারিত"}</a>`;
+  const canBuy = !b.ebook && !b.out && priceN > 0;
   const waMsg = `আসসালামু আলাইকুম। "${b.title}" বইটি (${taka(priceN)}) অর্ডার করতে চাই।`;
   const waHref = `https://wa.me/${WA}?text=${encodeURIComponent(waMsg)}`;
   const waBtn = canBuy ? `<a class="btn wa" href="${waHref}" target="_blank" rel="noopener">WhatsApp-এ অর্ডার করুন</a>` : "";
@@ -190,6 +190,7 @@ ${b.cover ? `${pic(b.cover, `alt="${esc(b.title)} — প্রচ্ছদ" wid
 <h1>${esc(b.title)}</h1>
 <p class="by">${AUTHOR}</p>
 <dl>${details.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
+${b.out ? '<p class="ship"><b>এই বইটি এখন স্টক আউট।</b> নতুন কপি এলে এখানেই জানানো হবে।</p>' : ""}
 ${canBuy ? '<p class="signed">✎ লেখকের স্বাক্ষরসহ বই, সরাসরি আপনার ঠিকানায়</p>' : ""}
 <div class="actions">${cta}${waBtn}<button type="button" class="btn" id="copy">লিংক কপি করুন</button><a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" rel="noopener">ফেসবুকে শেয়ার</a></div>
 ${canBuy ? '<p class="ship"><b>ডেলিভারি:</b> ঢাকার ভেতরে ২৪ ঘণ্টায় (৫০ টাকা), ঢাকার বাইরে ৪৮–৭২ ঘণ্টায় (৯০ টাকা)।<br><b>পেমেন্ট:</b> বিকাশ, নগদ বা রকেটে।</p>' : ""}
