@@ -9,7 +9,7 @@ const [appM,authM,fs]=await Promise.all([import(B+"firebase-app.js"),import(B+"f
 const app=appM.initializeApp(window.AK_FIREBASE), au=authM.getAuth(app), db=fs.getFirestore(app);
 const $=id=>document.getElementById(id);
 let ORD=[];
-$("login").onclick=()=>authM.signInWithPopup(au,new authM.GoogleAuthProvider()).catch(e=>{$("msg").textContent="ঢোকা যায়নি";});
+$("login").onclick=()=>authM.signInWithPopup(au,new authM.GoogleAuthProvider()).catch(e=>{$("msg").textContent="ঢোকা যায়নি ("+((e&&e.code)||"error")+")";});
 const sendBtn=$("esend");
 if(authM.isSignInWithEmailLink(au,location.href)){
   let em=""; try{em=localStorage.getItem("bj-adm-email")||"";}catch(e){}
