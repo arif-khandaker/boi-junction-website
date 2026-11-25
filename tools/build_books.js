@@ -131,7 +131,7 @@ function page(b) {
 <meta property="og:description" content="${esc(d)}">
 <meta property="og:image" content="${image}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/favicon.ico?v=3" sizes="any">
+<link rel="icon" href="/favicon.ico?v=4" sizes="any">
 <link rel="manifest" href="/manifest.webmanifest">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-H027R58T1E"></script>
