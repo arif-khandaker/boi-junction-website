@@ -708,3 +708,11 @@ picture{display:contents}
 .book-chips { justify-content: flex-start; }
 .book-chips > :first-child { margin-left: auto; }
 .book-chips > :last-child { margin-right: auto; }
+
+/* স্থায়ী ইনস্টল বোতাম ও সাহায্য বাক্স */
+.install-link{display:inline-flex;align-items:center;gap:8px;margin:18px auto 0;padding:10px 22px;border-radius:999px;border:1px solid #2b5fb4;background:transparent;color:inherit;font:inherit;font-size:15px;cursor:pointer}
+.install-link:hover{background:#2b5fb4;color:#fff}
+.install-help{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:20px}
+.install-help-box{background:#fff;color:#222;border-radius:16px;padding:22px;max-width:360px;width:100%;line-height:1.8;box-shadow:0 20px 60px -20px #000}
+.install-help-box p{margin:8px 0 14px}
+.install-help-x{display:block;margin-left:auto;padding:8px 20px;border:0;border-radius:999px;background:#2b5fb4;color:#fff;font:inherit;cursor:pointer}
