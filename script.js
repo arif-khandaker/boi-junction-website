@@ -2919,7 +2919,7 @@ if (yearEl) yearEl.textContent = toBn(new Date().getFullYear());
       try { sessionStorage.setItem("ak-install-headline", "1"); } catch (e) {}
       const h = document.createElement("button");
       h.type = "button"; h.className = "install-headline";
-      h.innerHTML = "<span>📲</span> অ্যাপ ইনস্টল করুন <b>→</b>";
+      h.innerHTML = '<i class="ih-ico">📲</i><span class="ih-txt">অ্যাপ ইনস্টল করুন</span><em class="ih-go">চাপুন ›</em><u class="ih-bar"></u>';
       document.body.appendChild(h);
       requestAnimationFrame(() => h.classList.add("open"));
       if (window.akTrack) akTrack("install_headline_shown");
