@@ -716,3 +716,22 @@ picture{display:contents}
 .install-help-box{background:#fff;color:#222;border-radius:16px;padding:22px;max-width:360px;width:100%;line-height:1.8;box-shadow:0 20px 60px -20px #000}
 .install-help-box p{margin:8px 0 14px}
 .install-help-x{display:block;margin-left:auto;padding:8px 20px;border:0;border-radius:999px;background:#2b5fb4;color:#fff;font:inherit;cursor:pointer}
+
+.install-headline{--a:#5db0ff;--b:#8a7dff;position:fixed;left:0;right:0;top:0;z-index:9998;display:flex;align-items:center;justify-content:center;gap:12px;height:46px;border:0;overflow:hidden;
+  background:linear-gradient(90deg,#05060a,#0d1018 50%,#05060a);color:#fff;font:inherit;font-size:15px;font-weight:600;cursor:pointer;transform:translateY(-110%);transition:transform .45s cubic-bezier(.2,.9,.2,1)}
+.install-headline.open{transform:none}
+/* স্ক্যানলাইন + চলমান আলোর রেখা */
+.install-headline::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 3px)}
+.install-headline::after{content:"";position:absolute;left:-40%;top:0;bottom:0;width:40%;pointer-events:none;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--a) 45%,transparent),transparent);animation:ihSweep 1.4s ease-in-out .3s 2}
+@keyframes ihSweep{to{left:110%}}
+.ih-ico{font-style:normal;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;background:color-mix(in srgb,var(--a) 18%,#000);box-shadow:0 0 0 1px var(--a),0 0 14px var(--a);animation:ihPulse 1s ease-in-out infinite}
+@keyframes ihPulse{50%{box-shadow:0 0 0 1px var(--a),0 0 26px var(--a);transform:scale(1.08)}}
+.ih-txt{position:relative;color:var(--a);letter-spacing:.02em;text-shadow:0 0 12px color-mix(in srgb,var(--a) 70%,transparent);clip-path:inset(0 100% 0 0);border-right:2px solid var(--a);animation:ihType .9s steps(16) .35s forwards,ihCaret .5s step-end 6,ihGlitch 3s linear .4s}
+@keyframes ihType{to{clip-path:inset(0 0 0 0)}}
+@keyframes ihCaret{50%{border-right-color:transparent}}
+@keyframes ihGlitch{0%,38%,42%,100%{transform:none;text-shadow:0 0 12px color-mix(in srgb,var(--a) 70%,transparent)}40%{transform:translateX(-2px);text-shadow:2px 0 var(--b),-2px 0 #ff3b6b}41%{transform:translateX(2px);text-shadow:-2px 0 var(--b),2px 0 #ff3b6b}}
+.ih-go{font-style:normal;font-size:13px;color:#cfd6e6;opacity:0;animation:ihFade .4s ease 1.3s forwards}
+@keyframes ihFade{to{opacity:.9}}
+.ih-bar{position:absolute;left:0;bottom:0;height:2px;width:100%;background:linear-gradient(90deg,var(--a),var(--b));box-shadow:0 0 10px var(--a);transform-origin:left;animation:ihLeft 3s linear forwards}
+@keyframes ihLeft{to{transform:scaleX(0)}}
+@media(prefers-reduced-motion:reduce){.install-headline *,.install-headline::after{animation:none!important}.ih-txt{clip-path:none}.ih-go{opacity:.9}}

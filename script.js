@@ -2910,6 +2910,23 @@ if (yearEl) yearEl.textContent = toBn(new Date().getFullYear());
         help("<strong>কম্পিউটারে ইনস্টল</strong><p>Chrome-এর ঠিকানার ঘরের ডান পাশে ইনস্টল আইকন (⊕) চাপুন। না থাকলে <b>⋮</b> মেনু → <b>Cast, save and share → Install page as app</b>।</p>");
       }
     });
+
+    /* সাইটে ঢুকলেই ওপরে হেডলাইনের মতো ছোট "অ্যাপ ইনস্টল করুন" লেখা: ৩ সেকেন্ড থাকে, চাপলে ইনস্টল। প্রতি ভিজিটে একবার */
+    try { if (sessionStorage.getItem("ak-install-headline")) return; } catch (e) {}
+    setTimeout(() => {
+      if (standalone() || document.querySelector(".install-bar")) return;
+      shown = true;
+      try { sessionStorage.setItem("ak-install-headline", "1"); } catch (e) {}
+      const h = document.createElement("button");
+      h.type = "button"; h.className = "install-headline";
+      h.innerHTML = '<i class="ih-ico">📲</i><span class="ih-txt">অ্যাপ ইনস্টল করুন</span><em class="ih-go">চাপুন ›</em><u class="ih-bar"></u>';
+      document.body.appendChild(h);
+      requestAnimationFrame(() => h.classList.add("open"));
+      if (window.akTrack) akTrack("install_headline_shown");
+      const hide = () => { h.classList.remove("open"); setTimeout(() => h.remove(), 400); };
+      const t = setTimeout(hide, 3000);
+      h.addEventListener("click", () => { clearTimeout(t); hide(); btn.click(); });
+    }, 1200);
   })();
 
   window.addEventListener("appinstalled", () => { deferred = null; const b = $(".install-bar"); if (b) b.remove(); });
