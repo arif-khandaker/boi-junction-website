@@ -2875,5 +2875,42 @@ if (yearEl) yearEl.textContent = toBn(new Date().getFullYear());
     if (isIOS) showHint("ios");
     else if (inApp) showHint("inapp");
   }, 8000);
+  /* স্থায়ী "অ্যাপ ইনস্টল করুন" বোতাম: ফুটারে সবসময় থাকে (ব্যানার বন্ধ করে ফেললেও) */
+  (function permanentInstall() {
+    const ft = document.querySelector(".site-footer .footer-top");
+    if (!ft || standalone()) return;
+    const btn = document.createElement("button");
+    btn.type = "button"; btn.className = "install-link";
+    btn.innerHTML = "📲 অ্যাপ ইনস্টল করুন";
+    ft.appendChild(btn);
+    window.addEventListener("appinstalled", () => btn.remove());
+    function help(html) {
+      const old = document.querySelector(".install-help"); if (old) old.remove();
+      const d = document.createElement("div"); d.className = "install-help"; d.setAttribute("role", "dialog");
+      d.innerHTML = `<div class="install-help-box">${html}<button type="button" class="install-help-x">ঠিক আছে</button></div>`;
+      document.body.appendChild(d);
+      const close = () => d.remove();
+      d.addEventListener("click", (e) => { if (e.target === d || e.target.closest(".install-help-x")) close(); });
+    }
+    btn.addEventListener("click", async () => {
+      if (window.akTrack) akTrack("install_link_click");
+      if (deferred) {
+        deferred.prompt();
+        try { await deferred.userChoice; } catch (e) {}
+        deferred = null; return;
+      }
+      const u = navigator.userAgent || "";
+      if (/FBAN|FBAV|FB_IAB|Instagram|Messenger|Line\//i.test(u)) {
+        help("<strong>Chrome-এ খুলুন</strong><p>ফেসবুক বা ইনস্টাগ্রামের ভেতরের ব্রাউজারে অ্যাপ ইনস্টল হয় না। ডান ওপরের <b>⋮</b> চেপে <b>Open in browser / Chrome</b> বেছে নিন, তারপর আবার এই বোতাম চাপুন।</p>");
+      } else if (/iPhone|iPad|iPod/i.test(u)) {
+        help("<strong>iPhone-এ ইনস্টল</strong><p>Safari-তে নিচে শেয়ার <b>⬆</b> বোতাম চাপুন, তারপর <b>Add to Home Screen</b> বেছে নিন।</p>");
+      } else if (/Android/i.test(u)) {
+        help("<strong>ফোনে ইনস্টল</strong><p>Chrome-এর ডান ওপরের <b>⋮</b> মেনু চাপুন, তারপর <b>Install app</b> বা <b>Add to Home screen</b> বেছে নিন।</p>");
+      } else {
+        help("<strong>কম্পিউটারে ইনস্টল</strong><p>Chrome-এর ঠিকানার ঘরের ডান পাশে ইনস্টল আইকন (⊕) চাপুন। না থাকলে <b>⋮</b> মেনু → <b>Cast, save and share → Install page as app</b>।</p>");
+      }
+    });
+  })();
+
   window.addEventListener("appinstalled", () => { deferred = null; const b = $(".install-bar"); if (b) b.remove(); });
 })();
