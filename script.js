@@ -975,6 +975,19 @@ const BOOK_LIST = [
   { title: "যে নদী ফেরে না", genre: "গল্পগ্রন্থ", ebook: true },
 ];
 
+/* স্টকে থাকা বই আগে (বেশি দামের বই সবার আগে), স্টক আউট বই সবার নিচে। */
+(function sortByStock() {
+  const bn = "০১২৩৪৫৬৭৮৯";
+  const num = (p) => Number(String(p || "").replace(/[০-৯]/g, (d) => bn.indexOf(d)).replace(/[^\d]/g, "")) || 0;
+  const price = {};
+  BOOKS.forEach((b) => { price[b.title] = num(b.price); });
+  const key = (b) => [b.out ? 1 : 0, -(price[b.title] || 0)];
+  const cmp = (a, b) => { const x = key(a), y = key(b); return x[0] - y[0] || x[1] - y[1]; };
+  const stable = (arr) => arr.map((v, i) => [v, i]).sort((a, b) => cmp(a[0], b[0]) || a[1] - b[1]).map((p) => p[0]);
+  BOOKS.splice(0, BOOKS.length, ...stable(BOOKS));
+  BOOK_LIST.splice(0, BOOK_LIST.length, ...stable(BOOK_LIST));
+})();
+
 
 /* ---------- ৫. নির্বাচিত লেখা ----------
    type: লেখার ধরন — যেমন "গল্প", "কবিতা", "প্রবন্ধ"। এই নাম দিয়েই উপরে বাছাইয়ের বোতাম তৈরি হবে।
