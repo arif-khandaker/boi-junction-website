@@ -1920,7 +1920,7 @@ function cartOrderMessage() {
     `ঠিকানা: ${cartForm.address.trim()}`,
     `এলাকা: ${cartForm.area}`,
     `পেমেন্ট মাধ্যম: ${cartForm.method}`,
-    `লেনদেন আইডি (TrxID): ${cartForm.trx.trim() || "এখনো পেমেন্ট করিনি"}`,
+    `লেনদেন আইডি (TrxID): ${cartForm.trx.replace(/\s/g, "")}`,
     ...(cartForm.gift ? ["🎁 এটি উপহার হিসেবে পাঠানো হবে", `উপহার যাঁকে দেওয়া হচ্ছে: ${cartForm.giftTo.trim() || "(নাম দেননি)"}`, ...(cartForm.giftCard.trim() ? [`উপহারের কার্ডে লেখা বার্তা: ${cartForm.giftCard.trim()}`] : []), "দাম বইয়ের গায়ে/প্যাকেটে না রাখার অনুরোধ"] : []),
     ...(cartForm.signName.trim() ? [`স্বাক্ষর যার নামে: ${cartForm.signName.trim()}`] : []),
     ...(cartForm.signMsg.trim() ? [`বইয়ে লিখে দেওয়ার বার্তা: ${cartForm.signMsg.trim()}`] : []),
@@ -2038,9 +2038,9 @@ function renderCart() {
           <legend>কোন মাধ্যমে পাঠাবেন?</legend>
           ${PAY.methods.map((m) => `<label class="cart-radio"><input type="radio" name="cf-method" value="${m}"${cartForm.method === m ? " checked" : ""}> ${m}</label>`).join("")}
         </fieldset>
-        <label>লেনদেন আইডি (TrxID) <small>— টাকা পাঠানোর পর লিখুন</small><input id="cf-trx" autocapitalize="characters" value="${esc(cartForm.trx)}" placeholder="যেমন: 9AB3C4D5EF"></label>
+        <label>লেনদেন আইডি (TrxID) <small>— বাধ্যতামূলক, টাকা পাঠানোর পর লিখুন</small><input id="cf-trx" required autocapitalize="characters" value="${esc(cartForm.trx)}" placeholder="যেমন: 9AB3C4D5EF"></label>
       </div>
-      <p class="cart-note">ডেলিভারি খরচ বইয়ের দামের সাথে যোগ হবে। এখনো টাকা না পাঠালেও অর্ডার পাঠাতে পারেন; মোট অঙ্ক আপনাকে জানিয়ে দেওয়া হবে।${SITE.orderFormKey ? " আপনার অর্ডারের তথ্য ইমেইলের মাধ্যমে লেখকের কাছে পৌঁছায়।" : ""}</p>`;
+      <p class="cart-note">ডেলিভারি খরচ বইয়ের দামের সাথে যোগ হবে। আগে টাকা পাঠিয়ে লেনদেন আইডি (TrxID) লিখুন; আইডি ছাড়া অর্ডার পাঠানো যাবে না। বইয়ের দামের সাথে ডেলিভারি খরচ যোগ করে টাকা পাঠাবেন; ঠিক অঙ্ক না জানলে আগে WhatsApp-এ জেনে নিন।${SITE.orderFormKey ? " আপনার অর্ডারের তথ্য ইমেইলের মাধ্যমে লেখকের কাছে পৌঁছায়।" : ""}</p>`;
     actions.innerHTML =
       (SITE.orderFormKey
         ? `<button class="btn btn-gold" data-cart-act="send-site"${orderSending ? " disabled" : ""}>${orderSending ? "পাঠানো হচ্ছে…" : "অর্ডার পাঠান"}</button>` +
@@ -2063,6 +2063,7 @@ function validPhone(v) {
   return /^01[3-9]\d{8}$/.test(d);
 }
 
+const trxOk = () => /^[A-Za-z0-9]{8,14}$/.test(String(cartForm.trx || "").replace(/\s/g, ""));
 function cartAction(act, slug) {
   const row = cart.find((x) => x.slug === slug);
   if (act === "inc" && row) row.qty = Math.min(10, row.qty + 1);
@@ -2082,6 +2083,10 @@ function cartAction(act, slug) {
     const done = () => toast("নম্বর কপি হয়েছে");
     const fb = () => { const t = document.createElement("textarea"); t.value = PAY.number; t.style.position = "fixed"; t.style.opacity = "0"; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (e) { toast(PAY.number); } t.remove(); };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(PAY.number).then(done, fb); else fb();
+    return;
+  } else if ((act === "send-site" || act === "send") && cart.length && !trxOk()) {
+    toast("আগে টাকা পাঠিয়ে সঠিক লেনদেন আইডি (TrxID) লিখুন");
+    const f = document.getElementById("cf-trx"); if (f) f.focus();
     return;
   } else if (act === "send-site") {
     if (!cart.length || orderSending || !SITE.orderFormKey) return;
