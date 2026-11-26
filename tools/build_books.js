@@ -19,7 +19,7 @@ const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://boijunction.com";
 const AUTHOR_SITE = "https://arifkhandaker.com";
 const pic = (c, attrs) => /\.jpg$/i.test(c) ? `<picture><source srcset="/${esc(c.replace(/\.jpg$/i, ".webp"))}" type="image/webp"><img src="/${esc(c)}" ${attrs}></picture>` : `<img src="/${esc(c)}" ${attrs}>`;
-const V = "20261126l";
+const V = "20261126m";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -263,54 +263,9 @@ ${groups.map((g) => `<h2>${esc(g)}</h2><div class="lg">${printed.filter((b) => b
 })();
 
 
-/* ---- "বই জংশন প্রকাশিত ইবুক" পাতা: শুধু বই জংশনের নিজস্ব ইবুক (script.js-এ bjEbook: true) ---- */
-(function () {
-  const dir = path.join(root, "ebooks");
-  fs.mkdirSync(dir, { recursive: true });
-  const url = SITE + "/ebooks/";
-  const own = EBOOKS.filter((e) => e.bjEbook && e.slug);
-  const card = (e) => `<article class="eb">${pic(e.cover, `alt="${esc(e.title)} — ইবুক" loading="lazy" width="120" height="180"`)}<div><span class="tag">ইবুক</span><h2>${esc(e.title)}</h2><p class="m">${esc(e.genre)}</p>${e.price ? `<p class="pr">${esc(e.price)}</p>` : ""}</div></article>`;
-  const html = `<!doctype html>
-<html lang="bn"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>বই জংশন প্রকাশিত ইবুক | ${AUTHOR}</title>
-<meta name="description" content="বই জংশনের নিজস্ব ইবুক: ফোনে ছাপা বইয়ের মতো পড়ুন, লেখা ছোট-বড় করুন। প্রথম ইবুক আসছে।">
-<link rel="canonical" href="${url}">
-<meta name="theme-color" content="#7a1f2b">
-<meta property="og:type" content="website"><meta property="og:site_name" content="বই জংশন"><meta property="og:locale" content="bn_BD">
-<meta property="og:url" content="${url}"><meta property="og:title" content="বই জংশন প্রকাশিত ইবুক"><meta property="og:description" content="বই জংশনের নিজস্ব ইবুক, ফোনে পড়ার জন্য।"><meta property="og:image" content="${SITE}/boi-junction-logo.png?v=4">
-<link rel="icon" href="/favicon.ico?v=4" sizes="any"><link rel="manifest" href="/manifest.webmanifest">
-${BASE_STYLE}
-<link rel="stylesheet" href="/shop-book.css?v=${V}">
-<style>h1{text-align:center;margin-bottom:6px}.sub{text-align:center;color:#475467;max-width:560px;margin:0 auto 22px;line-height:1.8}.eb{display:flex;gap:16px;align-items:center;background:#fff;border:1px solid #e3e7ee;border-radius:14px;padding:12px;margin:12px 0}.eb img{width:90px;height:135px;object-fit:cover;border-radius:5px;flex:none}.eb h2{margin:4px 0;font-size:18px}.tag{background:#eaf1fd;color:#2b5fb4;font-size:12px;padding:2px 9px;border-radius:999px}.m{color:#667085;margin:2px 0;font-size:14px}.pr{font-weight:700;color:#2b8a3e}
-.soon{background:#eaf1fd;border-radius:14px;padding:22px;margin:10px 0 26px;text-align:center;line-height:1.8}.soon b{color:#2b5fb4;font-size:20px;display:block;margin-bottom:4px}
-.rd{border:1px solid #e3e7ee;border-radius:16px;overflow:hidden;background:#fffdf7;max-width:520px;margin:0 auto 26px;box-shadow:0 10px 30px -18px rgba(16,24,40,.4)}
-.rd-bar{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:10px 14px;background:#fff;border-bottom:1px solid #e3e7ee;font-size:14px;color:#667085}
-.rd-bar button{font:inherit;font-size:15px;border:1px solid #cfd6e4;background:#fff;color:#2b5fb4;border-radius:8px;padding:4px 12px;cursor:pointer}
-.rd-body{padding:20px 22px 26px;font-size:19px;line-height:2;color:#2a2a2a;transition:font-size .15s}
-.rd-body h3{font-size:1.1em;margin:0 0 10px;text-align:center}.rd.night{background:#16181d}.rd.night .rd-body{color:#d9dce3}.rd.night .rd-bar{background:#1d2027;border-color:#2b303a;color:#aab0bd}
-.cap{text-align:center;color:#667085;font-size:13.5px;margin:-14px 0 26px}</style>
-</head><body>
-<header class="top"><a class="brand" href="/"><span style="color:#7a1f2b">ব</span><span style="color:#f28c1e">ই</span> <span style="color:#d92d2d">জং</span><span style="color:#111">শ</span><span style="color:#7a1f2b">ন</span><small>BOIJUNCTION.COM</small></a><a class="back" href="/#books">← সব বই</a></header>
-<main>
-<h1>বই জংশন প্রকাশিত ইবুক</h1>
-<p class="sub">বই জংশনের নিজস্ব ইবুক। ছাপা বইয়ের পাতার মতো সাজানো, ফোনে পড়ুন।</p>
-${own.length ? own.map(card).join("\n") : `<section class="soon"><b>✦ প্রথম ইবুক আসছে</b>একদম নতুন বই, শুধু বই জংশনে। এখানেই কিনে এখানেই পড়তে পারবেন।</section>`}
-<h2 style="text-align:center;font-size:20px">এভাবে পড়বেন (নমুনা)</h2>
-<div class="rd" id="rd"><div class="rd-bar"><span>লেখার আকার</span><span><button type="button" id="rd-m" aria-label="ছোট করুন">অ−</button> <button type="button" id="rd-p" aria-label="বড় করুন">অ+</button> <button type="button" id="rd-n">🌙</button></span></div>
-<div class="rd-body" id="rd-b"><h3>প্রথম অধ্যায়</h3><p>এটি পড়ার পাতার একটি নমুনা মাত্র। এখানে বইয়ের লেখা ছাপা বইয়ের পাতার মতোই সাজানো থাকবে। ওপরের বোতাম চেপে লেখা ছোট বা বড় করুন, আর রাতে পড়ার জন্য কালো রঙের মোড চালু করুন।</p></div></div>
-<p class="cap">ওপরের বোতামগুলো চেপে দেখুন, নমুনাটি সত্যিই কাজ করে।</p>
-<p style="text-align:center"><a class="btn" href="/#books">ছাপা বই দেখুন</a></p>
-</main>
-<footer>© বই জংশন (Boi Junction)। সর্বস্বত্ব সংরক্ষিত। · লেখক: <a href="${AUTHOR_SITE}/" rel="noopener">${AUTHOR}</a> · <a href="/#books">সব বই</a></footer>
-<script>(function(){var b=document.getElementById("rd-b"),r=document.getElementById("rd"),s=19;function a(d){s=Math.max(14,Math.min(30,s+d));b.style.fontSize=s+"px"}document.getElementById("rd-m").onclick=function(){a(-2)};document.getElementById("rd-p").onclick=function(){a(2)};document.getElementById("rd-n").onclick=function(){r.classList.toggle("night")}})();</script>
-</body></html>`;
-  fs.writeFileSync(path.join(dir, "index.html"), html);
-})();
-
 /* sitemap.xml: হোমপেজ + লেখার পাতা + বইয়ের পাতা */
 const dirs = (d) => (fs.existsSync(path.join(root, d)) ? fs.readdirSync(path.join(root, d)).filter((n) => fs.existsSync(path.join(root, d, n, "index.html"))).sort() : []);
-const urls = [SITE + "/", SITE + "/arif-khandaker-books/", SITE + "/ebooks/", ...all.map((b) => `${SITE}/b/${b.slug}/`)];
+const urls = [SITE + "/", SITE + "/arif-khandaker-books/", ...all.map((b) => `${SITE}/b/${b.slug}/`)];
 fs.writeFileSync(path.join(root, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${u}</loc><lastmod>${new Date().toISOString().slice(0,10)}</lastmod></url>`).join("\n")}\n</urlset>\n`);
 console.log("sitemap.xml হালনাগাদ:", urls.length, "টি ঠিকানা");
 
