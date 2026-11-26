@@ -50,7 +50,7 @@ const TIMELINE = [
    প্রথম বইটি বড় করে আলাদাভাবে দেখাবে।
    cover: প্রচ্ছদের ছবির লিংক, অথবা GitHub-এ আপলোড করা ফাইলের নাম। খালি "" রাখলে নকশা করা প্রচ্ছদ দেখাবে।
    summary: বইয়ের পরিচিতি নিজে লিখুন।
-   slug: বইয়ের নিজস্ব লিংকের নাম (ইংরেজি অক্ষরে)। লিংক হবে authorarifkhandaker.com/#book-<slug>
+   slug: বইয়ের নিজস্ব লিংকের নাম (ইংরেজি অক্ষরে)। লিংক হবে arifkhandaker.com/#book-<slug>
    excerpt: "একটু পড়ে দেখুন" বোতামের লেখা। প্রতিটি অনুচ্ছেদ "" এর ভেতরে, কমা দিয়ে আলাদা:
             excerpt: ["প্রথম অনুচ্ছেদ।", "দ্বিতীয় অনুচ্ছেদ।"],
             এটি না লিখলে বোতামটি দেখাবে না। */
@@ -2595,8 +2595,8 @@ if (yearEl) yearEl.textContent = toBn(new Date().getFullYear());
       const book = {
         "@type": "Book",
         name: b.title,
-        url: `https://authorarifkhandaker.com/#book-${b.slug}`,
-        image: `https://authorarifkhandaker.com/${b.cover}`,
+        url: `https://arifkhandaker.com/#book-${b.slug}`,
+        image: `https://arifkhandaker.com/${b.cover}`,
         inLanguage: "bn",
         author: { "@type": "Person", name: SITE.authorName },
       };
@@ -2605,7 +2605,7 @@ if (yearEl) yearEl.textContent = toBn(new Date().getFullYear());
       if (b.publisher) book.publisher = { "@type": "Organization", name: b.publisher };
       if (yr) book.datePublished = yr[0];
       if (b.pages && bnToNum(b.pages)) book.numberOfPages = bnToNum(b.pages);
-      if (canBuy(b)) book.offers = { "@type": "Offer", price: priceOf(b), priceCurrency: "BDT", availability: "https://schema.org/InStock", url: "https://authorarifkhandaker.com/" };
+      if (canBuy(b)) book.offers = { "@type": "Offer", price: priceOf(b), priceCurrency: "BDT", availability: "https://schema.org/InStock", url: "https://arifkhandaker.com/" };
       return { "@type": "ListItem", position: i + 1, item: book };
     });
     const el = document.createElement("script");
@@ -2766,7 +2766,7 @@ if (yearEl) yearEl.textContent = toBn(new Date().getFullYear());
     lines.forEach((ln, n) => g.fillText(ln, W / 2, y0 + n * lh));
     g.font = '130px "AK Serif", serif'; g.globalAlpha = .6; g.fillText("“", W / 2, y0 - 120); g.globalAlpha = 1;
     g.font = '36px "AK Sans", sans-serif'; g.fillText("— আরিফ খন্দকার", W / 2, H - 190);
-    g.font = '26px "AK Sans", sans-serif'; g.globalAlpha = .7; g.fillText("authorarifkhandaker.com", W / 2, H - 120); g.globalAlpha = 1;
+    g.font = '26px "AK Sans", sans-serif'; g.globalAlpha = .7; g.fillText("arifkhandaker.com", W / 2, H - 120); g.globalAlpha = 1;
     return new Promise((r) => c.toBlob(r, "image/png"));
   }
   window.__makeQuote = make;

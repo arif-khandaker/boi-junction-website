@@ -17,9 +17,9 @@ const EBOOKS = grab("EBOOKS");
 const SETS = grab("SETS");
 const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://boijunction.com";
-const AUTHOR_SITE = "https://authorarifkhandaker.com";
+const AUTHOR_SITE = "https://arifkhandaker.com";
 const pic = (c, attrs) => /\.jpg$/i.test(c) ? `<picture><source srcset="/${esc(c.replace(/\.jpg$/i, ".webp"))}" type="image/webp"><img src="/${esc(c)}" ${attrs}></picture>` : `<img src="/${esc(c)}" ${attrs}>`;
-const V = "20261126k";
+const V = "20261126l";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -203,7 +203,7 @@ ${reviewSection(b)}
 <h2>${rel.length && rel.every((x) => x.genre === b.genre) ? "একই ধরনের আরও বই" : "আরও বই"}</h2>
 <div class="rel">${rel.map((x) => `<a href="/b/${x.slug}/">${pic(x.cover, `alt="${esc(x.title)}" loading="lazy"`)}<b>${esc(x.title)}</b><small>${esc(x.genre)}${buyable(x) ? " · " + taka(num(x.price)) : ""}</small></a>`).join("")}</div>
 </main>
-<footer>© বই জংশন (Boi Junction)। সর্বস্বত্ব সংরক্ষিত। · লেখক: <a href="https://authorarifkhandaker.com/" rel="noopener">${AUTHOR}</a> · <a href="/#books">সব বই</a></footer>
+<footer>© বই জংশন (Boi Junction)। সর্বস্বত্ব সংরক্ষিত। · লেখক: <a href="https://arifkhandaker.com/" rel="noopener">${AUTHOR}</a> · <a href="/#books">সব বই</a></footer>
 <script src="/firebase-config.js?v=${V}"></script>
 <script src="/reviews.js?v=${V}"></script>
 ${bar}
