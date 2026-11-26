@@ -1,6 +1,6 @@
 /* বই জংশন সার্ভিস ওয়ার্কার: পাতা/স্ক্রিপ্ট আগে ইন্টারনেট থেকে (সবসময় নতুন), প্রচ্ছদ ছবি আগে মেমরি থেকে (দ্রুত),
    ইন্টারনেট না থাকলে শেষ দেখা পাতা। অর্ডার, ফর্ম বা বাইরের সাইটের অনুরোধে হাত দেয় না। */
-const CACHE = "bj-shell-v23";
+const CACHE = "bj-shell-v27";
 const SHELL = ["/", "/shop.css", "/script.js", "/shop.js", "/favicon-32.png", "/icon-192.png"];
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => Promise.all(SHELL.map((u) => c.add(u).catch(() => {})))).then(() => self.skipWaiting()));

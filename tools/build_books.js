@@ -17,9 +17,9 @@ const EBOOKS = grab("EBOOKS");
 const SETS = grab("SETS");
 const AUTHOR = "আরিফ খন্দকার";
 const SITE = "https://boijunction.com";
-const AUTHOR_SITE = "https://authorarifkhandaker.com";
+const AUTHOR_SITE = "https://arifkhandaker.com";
 const pic = (c, attrs) => /\.jpg$/i.test(c) ? `<picture><source srcset="/${esc(c.replace(/\.jpg$/i, ".webp"))}" type="image/webp"><img src="/${esc(c)}" ${attrs}></picture>` : `<img src="/${esc(c)}" ${attrs}>`;
-const V = "20261126i";
+const V = "20261126m";
 const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const en = (t) => String(t || "").replace(/[০-৯]/g, (d) => "০১২৩৪৫৬৭৮৯".indexOf(d));
 const num = (t) => { const n = parseInt(en(t).replace(/[^0-9]/g, ""), 10); return Number.isFinite(n) ? n : 0; };
@@ -203,7 +203,7 @@ ${reviewSection(b)}
 <h2>${rel.length && rel.every((x) => x.genre === b.genre) ? "একই ধরনের আরও বই" : "আরও বই"}</h2>
 <div class="rel">${rel.map((x) => `<a href="/b/${x.slug}/">${pic(x.cover, `alt="${esc(x.title)}" loading="lazy"`)}<b>${esc(x.title)}</b><small>${esc(x.genre)}${buyable(x) ? " · " + taka(num(x.price)) : ""}</small></a>`).join("")}</div>
 </main>
-<footer>© বই জংশন (Boi Junction)। সর্বস্বত্ব সংরক্ষিত। · লেখক: <a href="https://authorarifkhandaker.com/" rel="noopener">${AUTHOR}</a> · <a href="/#books">সব বই</a></footer>
+<footer>© বই জংশন (Boi Junction)। সর্বস্বত্ব সংরক্ষিত। · লেখক: <a href="https://arifkhandaker.com/" rel="noopener">${AUTHOR}</a> · <a href="/#books">সব বই</a></footer>
 <script src="/firebase-config.js?v=${V}"></script>
 <script src="/reviews.js?v=${V}"></script>
 ${bar}
@@ -221,6 +221,7 @@ all.forEach((b) => {
 console.log("বইয়ের পাতা তৈরি:", all.length);
 
 
+const BASE_STYLE = (() => { const f = path.join(root, "b", all[0].slug, "index.html"); const m = fs.readFileSync(f, "utf8").match(/<style>[\s\S]*?<\/style>/); return m ? m[0] : ""; })();
 /* ---- "আরিফ খন্দকারের বই" পরিচিতি/ল্যান্ডিং পাতা ---- */
 (function () {
   const dir = path.join(root, "arif-khandaker-books");
@@ -245,6 +246,7 @@ console.log("বইয়ের পাতা তৈরি:", all.length);
 <meta property="og:description" content="${AUTHOR}-এর সব বই, লেখকের স্বাক্ষরসহ সরাসরি অর্ডার।"><meta property="og:image" content="${SITE}/boi-junction-logo.png?v=4">
 <link rel="icon" href="/favicon.ico?v=4" sizes="any"><link rel="manifest" href="/manifest.webmanifest">
 ${ld.map((x) => `<script type="application/ld+json">${JSON.stringify(x)}</script>`).join("\n")}
+${BASE_STYLE}
 <link rel="stylesheet" href="/shop-book.css?v=${V}">
 <style>.lead{max-width:640px;margin:8px auto 24px;color:#475467;line-height:1.8}.lg{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:16px;margin:14px 0 30px}.lb{display:block;text-decoration:none;color:#1f2430;text-align:center}.lb img{width:100%;height:auto;aspect-ratio:2/3;object-fit:cover;border-radius:6px;box-shadow:0 6px 16px -8px rgba(16,24,40,.4)}.lb b{display:block;margin-top:8px;font-size:15px}.lb small{color:#667085}h1{text-align:center}</style>
 </head><body>
@@ -259,6 +261,7 @@ ${groups.map((g) => `<h2>${esc(g)}</h2><div class="lg">${printed.filter((b) => b
 </body></html>`;
   fs.writeFileSync(path.join(dir, "index.html"), html);
 })();
+
 
 /* sitemap.xml: হোমপেজ + লেখার পাতা + বইয়ের পাতা */
 const dirs = (d) => (fs.existsSync(path.join(root, d)) ? fs.readdirSync(path.join(root, d)).filter((n) => fs.existsSync(path.join(root, d, n, "index.html"))).sort() : []);
