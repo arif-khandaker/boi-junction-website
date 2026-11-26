@@ -704,3 +704,7 @@ picture{display:contents}
 .wish-out{font-size:13px;color:#98a2b3}
 .wish-rm{border:0;background:none;color:#98a2b3;font-size:16px;cursor:pointer}
 .wish-empty{padding:24px 6px;text-align:center;color:#667085}
+/* ফিল্টার চিপের বাঁ দিকের "সব" কেটে যাওয়া ঠিক: কেন্দ্রে রাখলেও স্ক্রল করলে শুরু থেকে দেখা যাবে */
+.book-chips { justify-content: flex-start; }
+.book-chips > :first-child { margin-left: auto; }
+.book-chips > :last-child { margin-right: auto; }
